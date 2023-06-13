@@ -14,32 +14,27 @@ interface HREventTarget extends EventTarget {
   value: DataView;
 }
 
+const MAX_NUM_DATA_POINTS = 20;
+const EMPTY_DATA = [...Array(MAX_NUM_DATA_POINTS)].map(_ => { return { rr: 0 }; });
+
 
 function RRGraph({ service }: HeartRateProps) {
-  const [rrData, setData] = useState<{rr:number}[]>([{rr:0},{rr:0},{rr:0},{rr:0},{rr:0},{rr:0},{rr:0},{rr:0},{rr:0},{rr:0},{rr:0},{rr:0},{rr:0},{rr:0},{rr:0},{rr:0},{rr:0},{rr:0},{rr:0},{rr:0},]);
+  const [rrData, setData] = useState<{rr:number}[]>(EMPTY_DATA);
 
   async function handleHeartRateValueChange(event: Event) {
     const hrEvent = event as HREvent;
     const value = hrEvent.target.value;
     const flags = value.getUint8(0);  
+    
+    // the data collected from the heart monitor is just an array of bits.  We need to keep track of d
+    // where the interval data starts based on what the data flags say.
     let rate16Bits = flags & 0x1;
     let index = 1;
-    console.log(`rate16Bits ${rate16Bits}`);
-    if (rate16Bits) {
-        index += 2;
-    } else {
-        index += 1;
-    }
-    let contactDetected = flags & 0x2;
-    let contactSensorPresent = flags & 0x4;
-    console.log(`Contact sensor present = ${contactSensorPresent} Contact Detected = ${contactDetected}`);
+    rate16Bits ? index += 2 : index += 1;
     
     let energyPresent = flags & 0x8;
-    console.log(`Enegy present? ${energyPresent}`);
-    if (energyPresent) {
-        console.log(`energy expended ${value.getUint16(index, /*littleEndian=*/true)}`);
-        index += 2;
-    }
+    if (energyPresent) index += 2;
+
     let rrIntervalPresent = flags & 0x10;
     if (rrIntervalPresent) {
       const rrIntervals: {rr:number}[] = [];

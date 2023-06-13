@@ -39,22 +39,13 @@ export default function Home() {
 
     const server = await newDevice.gatt?.connect();
 
-    // Log available services for this device - curiosity only
-    try{
-      const services = await server?.getPrimaryServices();
-      console.log(services);
-    } catch(e) {
-      console.log('could not get list of services');
-      console.log(e);
-    }
-
     // get the heart rate service
     try{
       const newHrService = await server?.getPrimaryService('heart_rate')
       setHrService(newHrService);
     } catch(e) {
-      console.log('could not get hr service');
-      console.log(e);
+      console.error('could not get hr service');
+      console.error(e);
     }
 
     // get the battery service
@@ -62,8 +53,8 @@ export default function Home() {
       const newBatService = await server?.getPrimaryService('battery_service')
       setBatService(newBatService);
     } catch(e) {
-      console.log('could not get bat service');
-      console.log(e);
+      console.error('could not get bat service');
+      console.error(e);
     }
 
     // get the Device Information Service
@@ -71,8 +62,8 @@ export default function Home() {
       const newDisService = await server?.getPrimaryService('device_information')
       setDisService(newDisService);
     } catch(e) {
-      console.log('could not get DIS service');
-      console.log(e);
+      console.error('could not get DIS service');
+      console.error(e);
     }
 
     setStatus(STATUS.CONNECTED);
@@ -83,7 +74,7 @@ export default function Home() {
     setStatus(STATUS.DISCONNECTING);
     setDisService(undefined);
     setBatService(undefined);
-    setBatService(undefined);
+    setHrService(undefined);
     device?.gatt?.disconnect();
   }
   
@@ -93,6 +84,7 @@ export default function Home() {
   }
   
   const buttons = {
+    // TODO: clean up the styles
     [STATUS.CONNECTED]: <button style={{background:'white', width:'200px', borderRadius: '5px', border:'1px solid black', margin: '8px'}}  onClick={handleDisconnectClick}>Disconnect</button>,
     [STATUS.DISCONNECTING]: <button style={{background:'white', width:'200px', borderRadius: '5px', border:'1px solid black', margin: '8px'}} disabled>Disconnecting ...</button>,
     [STATUS.CONNECTING]: <button style={{background:'white', width:'200px', borderRadius: '5px', border:'1px solid black', margin: '8px'}} disabled>Connecting ...</button>,
