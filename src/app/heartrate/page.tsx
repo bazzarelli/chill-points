@@ -1,7 +1,7 @@
 'use client';
 
 import { MouseEvent, useState } from 'react';
-import Header from '../../components/Header'
+import Header from '../components/Header'
 import Battery from './components/Battery';
 import DeviceDesc from './components/DeviceDesc';
 import HeartRate from './components/HeartRate';
