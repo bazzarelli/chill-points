@@ -1,7 +1,6 @@
 'use client';
 
 import { MouseEvent, useState } from 'react';
-import Header from '../components/Header'
 import Battery from './components/Battery';
 import DeviceDesc from './components/DeviceDesc';
 import HeartRate from './components/HeartRate';
@@ -98,13 +97,14 @@ export default function Home() {
   const rrGraph = hrService?.device.gatt?.connected ? <RRGraph service={hrService} /> : <></>;
 
   return (
-    <main className="flex min-h-screen flex-col">
-      <Header />
+    <div>
       {button}
-      {heartRate}
-      {deviceDescription}
-      {batteryStatus}
-      {rrGraph}
-    </main>
+      <div style={{ margin: '10px' }}>
+        {deviceDescription}
+        {batteryStatus}
+        {heartRate}
+        {rrGraph}
+      </div>
+    </div>
   )
 }

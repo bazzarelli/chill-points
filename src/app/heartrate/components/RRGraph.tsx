@@ -64,7 +64,7 @@ function RRGraph({ service }: HeartRateProps) {
 
   return (
     <div className="HeartRateGraph">
-      <h1>RR Intervals</h1>
+      <b>RR Intervals</b>
       <AreaChart
           width={500}
           height={400}

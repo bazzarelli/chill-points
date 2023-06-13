@@ -20,11 +20,10 @@ function Battery({ service }: BatteryProps) {
     getBatLevel(); 
   }, []);
 
-  const content = service && service.device.gatt?.connected ? <div className="Battery-Level"><b>Battery:</b> {batLevel}%</div> : <div className="Battery-No-Service">No service</div>
+  const content = service && service.device.gatt?.connected ? <b style={{ color: 'green' }} className="Battery-Level">{batLevel}%</b> : <b className="Battery-No-Service">No service</b>
   return (
     <div className="Battery">
-    <div className="Battery-title"><h2>Battery Status</h2></div>
-      {content}
+    <div className="Battery-title"><b>Battery Charge: {content}</b></div>
     </div>
   )
 }

@@ -53,20 +53,20 @@ function DeviceDesc({ service, name, id }: DeviceDescProps) {
   const content = service?.device.gatt?.connected ? 
     (
       <div className="DeviceDesc-content">
-        <div><b>Name:</b> {name}</div>
-        <div><b>ID:</b> {id}</div>
-        <div><b>Manufacturer&apos;s Name:</b> {mfName}</div>
-        <div><b>Model Number:</b> {modelNo}</div>
-        <div><b>Hardware Revision:</b> {hardwareRev}</div>
-        <div><b>Firmware Revision:</b> {firmwareRev}</div>
-        <div><b>Software Revision:</b> {softwareRev}</div>
+        <div>Name: {name}</div>
+        <div>ID: {id}</div>
+        <div>Manufacturer&apos;s Name: {mfName}</div>
+        <div>Model Number: {modelNo}</div>
+        <div>Hardware Revision: {hardwareRev}</div>
+        <div>Firmware Revision: {firmwareRev}</div>
+        <div>Software Revision: {softwareRev}</div>
       </div>
     ) :
     (<div className="DeviceDesc-no-service">No Service</div>);
 
   return (
     <div className="DeviceDesc">
-      <div className="DeviceDesc-title"><h2>Connected Device Info</h2></div>
+      <div className="DeviceDesc-title"><b>Connected Device Info</b></div>
       {content}
     </div>
   )
