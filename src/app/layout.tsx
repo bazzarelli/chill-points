@@ -1,5 +1,7 @@
-import './globals.css'
-import { inter } from './utils/fonts'
+import '@/app/globals.css'
+import { inter } from '@/app/utils/fonts'
+import Header from '@/app/components/Header'
+import Footer from '@/app/components/Footer'
 
 export const metadata = {
   title: 'Chill Points',
@@ -13,7 +15,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-theme="winter">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <main className="flex flex-col">
+          <Header />
+          {children}
+        </main>
+        <Footer />
+      </body>
     </html>
   )
 }

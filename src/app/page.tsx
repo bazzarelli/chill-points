@@ -1,11 +1,7 @@
-import Header from '../components/Header'
-import TopNav from '../components/TopNav'
+import NavCards from "@/app/components/NavCards";
 
-export default function Home() {
+export default function Page() {
   return (
-    <main className="flex min-h-screen flex-col">
-      <Header />
-      <TopNav />
-    </main>
+    <NavCards />
   )
 }
