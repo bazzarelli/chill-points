@@ -3,7 +3,7 @@ import { comfortaa } from "@/app/utils/fonts";
 
 export default function Page() {
     return (
-        <section className={`${inter.className} grid grid-cols-3 grid-flow-row grid-rows-3 gap-6 mx-auto mt-12 text-slate-400`}>
+        <section className={`${inter.className} grid grid-cols-3 grid-flow-row grid-rows-3 gap-6 mx-auto mt-12 text-slate-200`}>
             <div className="card w-96 bg-neutral text-primary-content">
                 <div className="card-body">
                     <h2 className={`card-title ${comfortaa.className}`}>Box Breathing</h2>
