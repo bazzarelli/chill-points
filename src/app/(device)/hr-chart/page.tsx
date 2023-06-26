@@ -1,5 +1,6 @@
 "use client"
 
+import Image from 'next/image';
 import { parseHeartRate } from "@/app/utils/parseHRData";
 import { useState, useReducer, useRef } from "react";
 import { displayCurrentTime } from "@/app/utils/time";
@@ -7,16 +8,14 @@ import HRGraph from "@/app/components/HRGraph";
 
 const STATUS = {
     DISCONNECTED: 'disconnected',
-    CONNECT: 'connect',
     CONNECTED: 'connected',
-    CONNECTING: 'connecting',
-    DISCONNECTING: 'disconnecting'
+    CONNECTING: 'connecting'
 }
 
 type State = {
     hrValue: number | null;
     connectonStatus: string;
-    timeConnected: string;
+    timeConnected: string | null;
 }
 
 type Action = {
@@ -40,9 +39,9 @@ const reducer = (state: State, action: Action) => {
         case "displayStatus":
             return { ...state, connectonStatus: action.payload };
         case "displayTimeConnected":
-            const timeString = `Time connected: ${action.payload}`
-            return { 
-                ...state, 
+            const timeString = `connected since ${action.payload}`
+            return {
+                ...state,
                 timeConnected: timeString
             };
         default:
@@ -55,21 +54,18 @@ export default function Page() {
     const [hrGraphData, setHRGraphData] = useState<{ hr: number }[]>([]);
     const [state, dispatch] = useReducer(reducer, {
         hrValue: null,
-        connectonStatus: STATUS.CONNECT,
-        timeConnected: "Has not yet connected"
+        connectonStatus: STATUS.DISCONNECTED,
+        timeConnected: null
     });
 
     const handleCharacteristicValueChanged = (event: Event) => {
-        // console.table(event);
         const hrEvent = event as HREvent;
         const value = hrEvent.target.value;
         const timeStamp = hrEvent.timeStamp;
         const hrData = parseHeartRate(value);
-        // console.log('timestamp:', timeStamp);
 
         dispatch({ type: "displayHR", payload: hrData.heartRate });
         setHRGraphData(prevState => [...prevState, { 'hr': hrData.heartRate }]);
-
         console.log('Heart Rate:', hrData.heartRate);
         console.log('RR intervals:', hrData.rrIntervals);
     }
@@ -77,10 +73,8 @@ export default function Page() {
     const handleServerDisconnect = () => {
         dispatch({ type: "displayStatus", payload: STATUS.DISCONNECTED });
         bluetoothDevice.current?.gatt?.disconnect();
-        console.log('Server disconnected:');
         dispatch({ type: "displayStatus", payload: STATUS.DISCONNECTED });
     }
-
 
     const connectBLEDevice = async () => {
         dispatch({ type: "displayStatus", payload: STATUS.CONNECTING });
@@ -101,20 +95,36 @@ export default function Page() {
             handleCharacteristicValueChanged);
 
         dispatch({ type: "displayStatus", payload: STATUS.CONNECTED });
-        dispatch({ type: "displayTimeConnected", payload: displayCurrentTime()});
+        dispatch({ type: "displayTimeConnected", payload: displayCurrentTime() });
     }
 
     return (
         <main className="flex flex-col">
             <div className="flex w-1/2 mx-auto px-1 text-stone-500">
-                <div className="flex-1 w-1/2">{state.timeConnected}</div>
-                <div className="flex-1 w-1/2 text-right">
-                    <button onClick={handleServerDisconnect}>disconnect</button>
+                <div className={`flex-1 w-1/2`}>
+                    <Image className="opacity-50 inline-block" src={`/icons/bluetooth_${state.connectonStatus}.svg`} alt={`Bluetooth ${state.connectonStatus}`} width="24" height="24" />                    
+                    <span className={`${state.connectonStatus == STATUS.CONNECTED && "text-blue-500"}`}>
+                        {state.connectonStatus}
+                    </span>
                 </div>
-            </div>                                
+                <div className="flex-1 w-1/2 text-right">
+                    {state.connectonStatus === STATUS.CONNECTED && state.timeConnected}
+                </div>
+            </div>
             <div className="p-6 text-center mx-auto w-1/2 bg-sky-900 rounded">
-                <h1 className="text-3xl text-red-500 text-center mt-10">{state.hrValue} ♥️ </h1>
-                <button className="btn btn-info w-1/4 mx-auto mt-10 shadow-lg" onClick={() => connectBLEDevice()}>{state.connectonStatus}</button>
+                {state.connectonStatus === STATUS.DISCONNECTED &&
+                    <button className={`btn btn-info w-1/4 mx-auto mt-5 shadow-lg`} onClick={connectBLEDevice}>
+                        Pair Device
+                    </button>                    
+                }
+                {state.connectonStatus === STATUS.CONNECTED &&
+                    <button className={`btn btn-accent w-1/4 mx-auto mt-5 shadow-lg`} onClick={handleServerDisconnect}>
+                        Unpair Device
+                    </button>
+                }
+                <h1 className="text-3xl text-red-500 text-center mt-5">
+                    {state.connectonStatus === STATUS.CONNECTED && state.hrValue} ♥️
+                </h1>
                 <HRGraph data={hrGraphData} />
             </div>
         </main>

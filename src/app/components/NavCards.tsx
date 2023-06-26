@@ -40,7 +40,7 @@ export default function TopNav() {
                     <p>Get your heart rate monitor ready to pair.</p>
                     <Link href="/hr-chart">
                         <button className="btn drop-shadow-md">
-                            <span className="text-lg">Pair</span>
+                            <span className="text-lg">Start</span>
                             <svg fill="rgb(100, 116, 139)" viewBox="0 -960 960 960" width="20" height="20">
                                 <path d="M321-61.912 231.912-151l329-329-329-329L321-898.088 739.088-480 321-61.912Z" />
                             </svg>
