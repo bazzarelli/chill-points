@@ -8,7 +8,7 @@ export default function TopNav() {
         <section className={`${inter.className} mx-auto mt-12 grid gap-4 lg:grid-cols-3 text-slate-400`}>
             <div className="card w-96 bg-base-100 shadow-xl rounded-tl-none rounded-tr-none">
                 <div className="card-body">
-                    <h2 className="card-title text-slate-500">What are Chill Points?</h2>
+                    <h2 className="card-title text-slate-500">Lorem ipsum dolor</h2>
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                         tempor incididunt ut labore et dolore magna aliqua.
@@ -21,13 +21,11 @@ export default function TopNav() {
             </div>
             <div className="card w-96 bg-base-100 shadow-xl rounded-tl-none rounded-tr-none">
                 <div className="card-body">
-                    <h2 className="card-title text-slate-500">Breath Exercises</h2>
-                    <p>Visit the exercise gallery.</p>
-                    <Link href="/gallery">
-                        <button className="btn drop-shadow-md">
-                            <span className="text-lg">Gallery</span>
-                        </button>
-                    </Link>
+                    <h2 className="card-title text-slate-500">Lorem ipsum dolor</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua.
+                    </p>
                 </div>
                 <figure>
                     <Image className="opacity-20" src="/images/image-icon.svg" alt="Chill Phil" width="384" height="216" />
@@ -36,9 +34,8 @@ export default function TopNav() {
             </div>
             <div className="card w-96 bg-base-100 shadow-xl rounded-tl-none rounded-tr-none">
                 <div className="card-body">
-                    <h2 className="card-title text-slate-500">Begin a session</h2>
-                    <p>Get your heart rate monitor ready to pair.</p>
-                    <Link href="/hr-chart">
+                    <h2 className="card-title text-slate-500 mb-5">Begin a breath session</h2>
+                    <Link href="/gallery">
                         <button className="btn drop-shadow-md">
                             <span className="text-lg">Start</span>
                             <svg fill="rgb(100, 116, 139)" viewBox="0 -960 960 960" width="20" height="20">
