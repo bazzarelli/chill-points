@@ -2,7 +2,7 @@
 export type Status = 'disconnected' | 'connected' | 'connecting';
 
 export type Exercise = {
-    id: string;
+    exerciseId: string;
     title: string;
     subtitle: string;
     description: string;

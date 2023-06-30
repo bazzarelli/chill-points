@@ -1,11 +1,12 @@
 "use client"
 
-import Image from 'next/image';
+import Image from "next/image";
 import { parseHeartRate } from "@/app/utils/parseHRData";
 import { useReducer, useRef } from "react";
 import { displayCurrentTime } from "@/app/utils/time";
 import HRGraph from "@/app/components/HRGraph";
-import { Status } from '@/app/types';
+import { Status } from "@/app/types";
+import ExerciseList from "@/app/components/ExerciseList";
 
 const STATUS: { [key: string]: Status } = {
     DISCONNECTED: 'disconnected',
@@ -14,6 +15,7 @@ const STATUS: { [key: string]: Status } = {
 };
 
 type State = {
+    showExerciseList: boolean;
     hrValue: number | null;
     connectonStatus: string;
     timeConnected: string | null;
@@ -36,6 +38,8 @@ type HREventTarget = EventTarget & {
 
 const reducer = (state: State, action: Action) => {
     switch (action.type) {
+        case "displayExerciseList":
+            return { ...state, showExerciseList: action.payload };
         case "displayHR":
             return { ...state, hrValue: action.payload };
         case "displayStatus":
@@ -59,6 +63,7 @@ const reducer = (state: State, action: Action) => {
 export default function Page() {
     const bluetoothDevice = useRef<BluetoothDevice | undefined>(undefined);
     const [state, dispatch] = useReducer(reducer, {
+        showExerciseList: true,
         hrValue: null,
         connectonStatus: STATUS.DISCONNECTED,
         timeConnected: null,
@@ -103,36 +108,41 @@ export default function Page() {
     }
 
     return (
-        <main className="flex flex-col">
-            <div className="flex w-1/2 mx-auto px-1 text-stone-500">
-                <div className={`flex-1 w-1/2`}>
-                    <Image className="opacity-50 inline-block" src={`/icons/bluetooth_${state.connectonStatus}.svg`} alt={`Bluetooth ${state.connectonStatus}`} width="24" height="24" />
-                    <span className={`${state.connectonStatus == STATUS.CONNECTED && "text-blue-500"}`}>
-                        {state.connectonStatus}
-                    </span>
-                </div>
-                <div className="flex-1 w-1/2 text-right">
-                    {state.connectonStatus === STATUS.CONNECTED && state.timeConnected}
-                </div>
-            </div>
-            <div className="p-6 text-center mx-auto w-1/2 bg-sky-900 rounded">
-                {state.connectonStatus === STATUS.DISCONNECTED &&
-                    <button className={`btn btn-info w-1/4 mx-auto mt-5 shadow-lg`} onClick={connectBLEDevice}>
-                        Pair Device
-                    </button>
-                }
-                {state.connectonStatus === STATUS.CONNECTED &&
-                    <button className={`btn btn-accent w-1/4 mx-auto mt-5 shadow-lg`} onClick={handleServerDisconnect}>
-                        Unpair Device
-                    </button>
-                }
-                <h1 className="text-3xl text-red-500 text-center mt-5">
-                    {state.connectonStatus === STATUS.CONNECTED && state.hrValue} ♥️
-                </h1>
-                {/* HEART RATE GRAPH */}
-                <HRGraph data={state.hrGraphData} />
-            </div>
-        </main>
+        <>
+            {state.showExerciseList ? 
+                <ExerciseList /> :
+                <main className="flex flex-col">
+                    <div className="flex w-1/2 mx-auto px-1 text-stone-500">
+                        <div className={`flex-1 w-1/2`}>
+                            <Image className="opacity-50 inline-block" src={`/icons/bluetooth_${state.connectonStatus}.svg`} alt={`Bluetooth ${state.connectonStatus}`} width="24" height="24" />
+                            <span className={`${state.connectonStatus == STATUS.CONNECTED && "text-blue-500"}`}>
+                                {state.connectonStatus}
+                            </span>
+                        </div>
+                        <div className="flex-1 w-1/2 text-right">
+                            {state.connectonStatus === STATUS.CONNECTED && state.timeConnected}
+                        </div>
+                    </div>
+                    <div className="p-6 text-center mx-auto w-1/2 bg-sky-900 rounded">
+                        {state.connectonStatus === STATUS.DISCONNECTED &&
+                            <button className={`btn btn-info w-1/4 mx-auto mt-5 shadow-lg`} onClick={connectBLEDevice}>
+                                Pair Device
+                            </button>
+                        }
+                        {state.connectonStatus === STATUS.CONNECTED &&
+                            <button className={`btn btn-accent w-1/4 mx-auto mt-5 shadow-lg`} onClick={handleServerDisconnect}>
+                                Unpair Device
+                            </button>
+                        }
+                        <h1 className="text-3xl text-red-500 text-center mt-5">
+                            {state.connectonStatus === STATUS.CONNECTED && state.hrValue} ♥️
+                        </h1>
+                        {/* HEART RATE GRAPH */}
+                        <HRGraph data={state.hrGraphData} />
+                    </div>
+                </main>
+            }
+        </>
     )
 
 }
