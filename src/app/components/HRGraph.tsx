@@ -8,7 +8,7 @@ import {
 } from 'recharts';
 
 type HRGraphProps = {
-    data: { hr: number }[]
+    data: { hr: number }[];
 }
 
 export default function HRGraph({ data }: HRGraphProps) {
@@ -23,7 +23,12 @@ export default function HRGraph({ data }: HRGraphProps) {
                             <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
                         </linearGradient>
                     </defs>
-                    <XAxis style={{ fontFamily: 'Arial', fontSize: '0.5rem' }} stroke="#A3D5FF" />
+                    <XAxis 
+                        dataKey='time' 
+                        tickLine={false} 
+                        style={{ fontFamily: 'Arial', fontSize: '0.5rem' }} 
+                        stroke="#A3D5FF" 
+                    />
                     <YAxis style={{ fontFamily: 'Arial', fontSize: '0.8rem' }} label={{ fontFamily: 'Arial', value: 'bpm', offset: 13, position: 'insideBottomLeft', fill: '#A3D5FF' }} stroke="#A3D5FF" />
                     <Area type="monotone" dataKey="hr" stroke="#A3D5FF" fillOpacity={1} fill="url(#colorUv)" />
                 </AreaChart>

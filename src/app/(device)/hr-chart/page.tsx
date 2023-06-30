@@ -2,20 +2,22 @@
 
 import Image from 'next/image';
 import { parseHeartRate } from "@/app/utils/parseHRData";
-import { useState, useReducer, useRef } from "react";
+import { useReducer, useRef } from "react";
 import { displayCurrentTime } from "@/app/utils/time";
 import HRGraph from "@/app/components/HRGraph";
+import { Status } from '@/app/types';
 
-const STATUS = {
+const STATUS: { [key: string]: Status } = {
     DISCONNECTED: 'disconnected',
     CONNECTED: 'connected',
     CONNECTING: 'connecting'
-}
+};
 
 type State = {
     hrValue: number | null;
     connectonStatus: string;
     timeConnected: string | null;
+    hrGraphData: { hr: number }[];
 }
 
 type Action = {
@@ -39,10 +41,15 @@ const reducer = (state: State, action: Action) => {
         case "displayStatus":
             return { ...state, connectonStatus: action.payload };
         case "displayTimeConnected":
-            const timeString = `connected since ${action.payload}`
+            const timeString = `time connected ${action.payload}`
             return {
                 ...state,
                 timeConnected: timeString
+            };
+        case "sendHRGraphData":
+            return {
+                ...state,
+                hrGraphData: [...state.hrGraphData, action.payload]
             };
         default:
             throw new Error();
@@ -51,23 +58,20 @@ const reducer = (state: State, action: Action) => {
 
 export default function Page() {
     const bluetoothDevice = useRef<BluetoothDevice | undefined>(undefined);
-    const [hrGraphData, setHRGraphData] = useState<{ hr: number }[]>([]);
     const [state, dispatch] = useReducer(reducer, {
         hrValue: null,
         connectonStatus: STATUS.DISCONNECTED,
-        timeConnected: null
+        timeConnected: null,
+        hrGraphData: []
     });
 
     const handleCharacteristicValueChanged = (event: Event) => {
         const hrEvent = event as HREvent;
         const value = hrEvent.target.value;
-        const timeStamp = hrEvent.timeStamp;
         const hrData = parseHeartRate(value);
 
         dispatch({ type: "displayHR", payload: hrData.heartRate });
-        setHRGraphData(prevState => [...prevState, { 'hr': hrData.heartRate }]);
-        console.log('Heart Rate:', hrData.heartRate);
-        console.log('RR intervals:', hrData.rrIntervals);
+        dispatch({ type: "sendHRGraphData", payload: { 'hr': hrData.heartRate } });
     }
 
     const handleServerDisconnect = () => {
@@ -102,7 +106,7 @@ export default function Page() {
         <main className="flex flex-col">
             <div className="flex w-1/2 mx-auto px-1 text-stone-500">
                 <div className={`flex-1 w-1/2`}>
-                    <Image className="opacity-50 inline-block" src={`/icons/bluetooth_${state.connectonStatus}.svg`} alt={`Bluetooth ${state.connectonStatus}`} width="24" height="24" />                    
+                    <Image className="opacity-50 inline-block" src={`/icons/bluetooth_${state.connectonStatus}.svg`} alt={`Bluetooth ${state.connectonStatus}`} width="24" height="24" />
                     <span className={`${state.connectonStatus == STATUS.CONNECTED && "text-blue-500"}`}>
                         {state.connectonStatus}
                     </span>
@@ -115,7 +119,7 @@ export default function Page() {
                 {state.connectonStatus === STATUS.DISCONNECTED &&
                     <button className={`btn btn-info w-1/4 mx-auto mt-5 shadow-lg`} onClick={connectBLEDevice}>
                         Pair Device
-                    </button>                    
+                    </button>
                 }
                 {state.connectonStatus === STATUS.CONNECTED &&
                     <button className={`btn btn-accent w-1/4 mx-auto mt-5 shadow-lg`} onClick={handleServerDisconnect}>
@@ -125,7 +129,8 @@ export default function Page() {
                 <h1 className="text-3xl text-red-500 text-center mt-5">
                     {state.connectonStatus === STATUS.CONNECTED && state.hrValue} ♥️
                 </h1>
-                <HRGraph data={hrGraphData} />
+                {/* HEART RATE GRAPH */}
+                <HRGraph data={state.hrGraphData} />
             </div>
         </main>
     )
