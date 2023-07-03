@@ -1,0 +1,21 @@
+.ExerciseAnimation {
+  opacity: .2;
+	animation: pulse1 8s ease-in-out infinite;
+}
+
+@keyframes pulse1 {
+	from {
+		opacity: .3;
+		transform: scale(.8);
+	}
+
+  50% {
+		opacity: .5;
+		transform: scale(1);
+  }
+
+	to {
+		opacity: .3;
+		transform: scale(.8);
+	}
+}
