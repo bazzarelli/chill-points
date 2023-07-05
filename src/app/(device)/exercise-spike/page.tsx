@@ -15,6 +15,7 @@ enum EXERCISE_STATUS {
 }
 
 type State = {
+    hrService: BluetoothRemoteGATTService | undefined;
     hrValue: number | null;
     connectonStatus: string;
     exerciseStatus: EXERCISE_STATUS;
@@ -37,6 +38,8 @@ type HREventTarget = EventTarget & {
 
 const reducer = (state: State, action: Action) => {
     switch (action.type) {
+        case "hrService": 
+            return { ...state, hrService: action.payload }
         case "displayHR":
             return { ...state, hrValue: action.payload };
         case "displayStatus":
@@ -59,6 +62,7 @@ export default function Page() {
     const [hrGraphData, setHRGraphData] = useState<{ hr: number }[]>([]);
     const [state, dispatch] = useReducer(reducer, {
         hrValue: null,
+        hrService: undefined,
         connectonStatus: CONNECTION_STATUS.DISCONNECTED,
         exerciseStatus: EXERCISE_STATUS.READY,
         timeConnected: null
@@ -110,6 +114,7 @@ export default function Page() {
 
         dispatch({ type: "displayStatus", payload: CONNECTION_STATUS.CONNECTED });
         dispatch({ type: "displayTimeConnected", payload: displayCurrentTime() });
+        dispatch({ type: "hrService", payload: service });
     };
 
     const content = {
@@ -123,7 +128,7 @@ export default function Page() {
             exerciseTitle="[Chosen Exercise Name]" 
             imgSrc=""
             handleExerciseComplete={handleExerciseComplete}/>,
-      [EXERCISE_STATUS.COMPLETE]: <Summary />
+      [EXERCISE_STATUS.COMPLETE]: <Summary hrData={hrGraphData}/>
     }
     return (
         <div className="flex flex-col text-center">
@@ -131,7 +136,9 @@ export default function Page() {
             handleConnect={connectBLEDevice} 
             handleDisconnect={handleServerDisconnect} 
             status={state.connectonStatus} 
-            timeConnected={state.timeConnected}/>
+            timeConnected={state.timeConnected}
+            heartService={state.hrService}
+            />
 
           {content[state.exerciseStatus]}
         </div>

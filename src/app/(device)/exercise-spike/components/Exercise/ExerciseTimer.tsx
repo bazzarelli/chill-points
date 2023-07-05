@@ -24,7 +24,7 @@ export default function ExerciseTimer({ instructions, duration }: ExerciseTimerP
   const seconds = Math.floor((time % 6000) / 100);
 
   return (
-    <div className="mx-auto w-1/3 text-center">
+    <div className="mx-auto w-2/5 text-center">
       <div className="card bg-base-100 shadow-xl text-center h-full">
         <div className="card-bod justify-center mt-4 mb-4 h-full">
           <h2 className="card-title text-slate-500 justify-center">Excercise Timer</h2>

@@ -10,7 +10,7 @@ type ExerciseProps = {
 export default function Exercise({ exerciseTitle, imgSrc, handleExerciseComplete }: ExerciseProps) {
   return (
     <div>
-      <div className="flex mx-auto w-1/2  card-bod text-center mt-4 mb-4">
+      <div className="flex mx-auto w-5/6  card-bod text-center mt-4 mb-4">
         <ExerciseAnimation 
               exerciseTitle={exerciseTitle}
               imgSrc={imgSrc}></ExerciseAnimation>

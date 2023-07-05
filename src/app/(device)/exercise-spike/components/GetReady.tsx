@@ -9,7 +9,7 @@ type GetReadyProps = {
 
 export default function GetReady({ exerciseTitle, imgSrc, handleStart }: GetReadyProps) {
   return (
-    <div className="mx-auto w-1/2 text-center">
+    <div className="mx-auto w-5/6 text-center">
       <div className="card bg-base-100 shadow-xl text-center">
         <div className="card-bod justify-center mt-4 mb-4">
           <h2 className="card-title text-slate-500 justify-center"> Get Ready To Chill</h2>
