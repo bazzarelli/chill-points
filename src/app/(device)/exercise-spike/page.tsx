@@ -6,7 +6,7 @@ import { displayCurrentTime } from "@/app/utils/time";
 import GetReady from "./components/GetReady";
 import Exercise from "./components/Exercise";
 import { CONNECTION_STATUS, DeviceStatus } from "./components/DeviceStatus";
-import { ExitStatus } from "typescript";
+import Summary from "./components/Summary";
 
 enum EXERCISE_STATUS {
   READY = 'ready',
@@ -86,6 +86,10 @@ export default function Page() {
         dispatch({ type: "exerciseStatus", payload: EXERCISE_STATUS.EXCERCISING });
     };
 
+    const handleExerciseComplete = () => { 
+        dispatch({ type: "exerciseStatus", payload: EXERCISE_STATUS.COMPLETE });
+     };
+
     const connectBLEDevice = async () => {
         dispatch({ type: "displayStatus", payload: CONNECTION_STATUS.CONNECTING });
 
@@ -117,12 +121,18 @@ export default function Page() {
       [EXERCISE_STATUS.EXCERCISING]:
         <Exercise 
             exerciseTitle="[Chosen Exercise Name]" 
-            imgSrc=""/>,
-      [EXERCISE_STATUS.COMPLETE]: <></>
+            imgSrc=""
+            handleExerciseComplete={handleExerciseComplete}/>,
+      [EXERCISE_STATUS.COMPLETE]: <Summary />
     }
     return (
-        <div className="flex flex-col">
-          <DeviceStatus handleConnect={connectBLEDevice} handleDisconnect={handleServerDisconnect} status={state.connectonStatus} timeConnected={state.timeConnected}/>
+        <div className="flex flex-col text-center">
+          <DeviceStatus 
+            handleConnect={connectBLEDevice} 
+            handleDisconnect={handleServerDisconnect} 
+            status={state.connectonStatus} 
+            timeConnected={state.timeConnected}/>
+
           {content[state.exerciseStatus]}
         </div>
     )

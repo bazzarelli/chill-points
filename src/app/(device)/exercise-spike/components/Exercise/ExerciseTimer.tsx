@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import StopWatch from "./StopWatch";
 import '../../CSS/ExerciseAnimation.css';
 
 type ExerciseTimerProps = {
@@ -28,10 +29,7 @@ export default function ExerciseTimer({ instructions, duration }: ExerciseTimerP
         <div className="card-bod justify-center mt-4 mb-4 h-full">
           <h2 className="card-title text-slate-500 justify-center">Excercise Timer</h2>
           <h2 className="card-title text-slate-500 justify-center">{instructions}</h2>
-          <div className="card-title text-8xl justify-center items-center h-full">
-            {minutes.toString().padStart(2, "0")}:
-            {seconds.toString().padStart(2, "0")}
-          </div>
+          <StopWatch duration={duration} />
         </div>
       </div>
     </div>

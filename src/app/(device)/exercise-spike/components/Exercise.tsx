@@ -3,16 +3,20 @@ import ExerceriseTimer from "./Exercise/ExerciseTimer"
 
 type ExerciseProps = {
   exerciseTitle: string,
-  imgSrc: string
+  imgSrc: string,
+  handleExerciseComplete: () => void,
 }
 
-export default function Exercise({ exerciseTitle, imgSrc }: ExerciseProps) {
+export default function Exercise({ exerciseTitle, imgSrc, handleExerciseComplete }: ExerciseProps) {
   return (
-    <div className="flex mx-auto w-1/2  card-bod text-center mt-4 mb-4">
-      <ExerciseAnimation 
-            exerciseTitle="[Chosen Exercise Name]" 
-            imgSrc=""></ExerciseAnimation>
-      <ExerceriseTimer duration={2} instructions="[Instructions]"/>
+    <div>
+      <div className="flex mx-auto w-1/2  card-bod text-center mt-4 mb-4">
+        <ExerciseAnimation 
+              exerciseTitle={exerciseTitle}
+              imgSrc={imgSrc}></ExerciseAnimation>
+        <ExerceriseTimer duration={2} instructions="[Instructions]"/>
+      </div>
+      <button className="text-lg" onClick={handleExerciseComplete}>Complete Exercise (Testing Only)</button>
     </div>
   )
 }
