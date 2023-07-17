@@ -1,5 +1,14 @@
 [
     {
+        "exerciseId": "free",
+        "title": "Free Form Session",
+        "subtitle": "Gather heart rate data while practicing your own breathing techniques.",
+        "description": "Choose your own breathing technique, and practice it for as long as you want. You can use this session to practice any breathing technique you want, and gather heart rate data while doing so.",
+        "category": "free",
+        "image": "",
+        "video": ""
+    },
+    {
         "exerciseId": "478",
         "title": "4-7-8 Breathing",
         "subtitle": "De-escalate with this popular enlongated exhale technique.",

@@ -15,8 +15,7 @@ export default function TopNav() {
                     </p>
                 </div>
                 <figure>
-                    <Image className="opacity-20" src="/images/image-icon.svg" alt="Chill Phil" width="384" height="216" />
-                    {/* <img src="/images/chill-lizard.jpg" alt="Chill Phil" /> */}
+                    <Image src="/images/chill-lizard.jpg" alt="Chill Phil" width="2048" height="3072"  />
                 </figure>
             </div>
             <div className="card w-96 bg-base-100 shadow-xl rounded-tl-none rounded-tr-none">
@@ -28,14 +27,13 @@ export default function TopNav() {
                     </p>
                 </div>
                 <figure>
-                    <Image className="opacity-20" src="/images/image-icon.svg" alt="Chill Phil" width="384" height="216" />
-                    {/* <img src="/images/breath-idea.jpg" alt="Abstract image" /> */}
+                    <Image src="/images/breath-idea.jpg" alt="Abstract image" width="2048" height="3072"  />
                 </figure>
             </div>
             <div className="card w-96 bg-base-100 shadow-xl rounded-tl-none rounded-tr-none">
                 <div className="card-body">
                     <h2 className="card-title text-slate-500 mb-5">Begin a breath session</h2>
-                    <Link href="/gallery">
+                    <Link href="/hr-chart">
                         <button className="btn drop-shadow-md">
                             <span className="text-lg">Start</span>
                             <svg fill="rgb(100, 116, 139)" viewBox="0 -960 960 960" width="20" height="20">
@@ -45,8 +43,7 @@ export default function TopNav() {
                     </Link>
                 </div>
                 <figure>
-                    <Image className="opacity-20" src="/images/image-icon.svg" alt="Chill Phil" width="384" height="216" />
-                    {/* <img src="/images/microbiology-art.jpg" alt="Abstract lung nerve cell illustration" /> */}
+                    <Image src="/images/microbiology-art.jpg" alt="Abstract lung nerve cell illustration" width="2048" height="3072"  />
                 </figure>
             </div>
         </section>
