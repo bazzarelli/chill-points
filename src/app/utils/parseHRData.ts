@@ -1,5 +1,5 @@
 
-interface HeartRateData {
+type HeartRateData =  {
     heartRate: number;
     contactDetected?: boolean;
     energyExpended?: number;
