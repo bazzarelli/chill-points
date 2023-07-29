@@ -3,7 +3,7 @@
 export default function HistoryList() {
 
     return (
-        <div className="w-1/3 mx-auto bg-gray-400 text-left">
+        <div className="w-full md:w-1/2 lg:w-1/3 mx-auto bg-gray-400 text-left">
             <h2 className="p-2 text-2xl">History List</h2>
             <div className="flex bg-gray-300 font-semibold">
                 <div className="w-1/2 h-7 pl-2">Jun 19 - 25</div>
