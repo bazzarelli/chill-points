@@ -23,16 +23,17 @@ const renderTime = ({ remainingTime }: RenderTimeProps) => {
 
 type CountdownTimerProps = {
     duration: number;
+    isPlaying: boolean;
 }
 
-export default function CountdownTimer({ duration }: CountdownTimerProps) {
+export default function CountdownTimer({ duration, isPlaying }: CountdownTimerProps) {
     return (
         <CountdownCircleTimer
-            isPlaying
+            isPlaying={isPlaying}
             duration={duration}
             updateInterval={0}
             strokeWidth={4}
-            trailStrokeWidth={10}
+            trailStrokeWidth={12}
             rotation={"counterclockwise"}
             size={256}
             trailColor={"#a8ca9a"}

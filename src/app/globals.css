@@ -18,3 +18,8 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+#frog-screen {
+  -webkit-touch-callout: none;
+  user-select: none;
+}
