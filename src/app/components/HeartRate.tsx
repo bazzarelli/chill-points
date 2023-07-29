@@ -37,7 +37,7 @@ function HeartRate({ service }: HeartRateProps) {
 
   return (
     <div className="HeartRateGraph font-bold">
-      <span>Heart Rate:</span> <span className="text-rose-600"> ❤️ {hr}</span>
+      <span className="text-rose-600"> ❤️ {hr}</span>
     </div>
   )
 }
