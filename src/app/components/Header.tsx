@@ -3,10 +3,10 @@ import Link from 'next/link';
 
 export default function Header() {
     return (
-        <div className="navbar bg-base-100 pt-3 px-8">
+        <div className="navbar bg-sky-200 pt-3 px-8">
             <div className="flex-1">
                 <Link href="/">
-                    <span className={`text-slate-400 text-4xl ${comfortaa.className}`}>Chill Points</span>
+                    <span className={`text-slate-700 text-4xl ${comfortaa.className}`}>Chill Points</span>
                 </Link>
             </div>
             <div className="flex-none gap-2">
