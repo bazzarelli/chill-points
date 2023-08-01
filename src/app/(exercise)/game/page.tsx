@@ -1,28 +1,34 @@
 "use client"
 
-import { useEffect, useState, useRef, useMemo, use } from "react";
+import { useEffect, useState, useRef, use } from "react";
 import { motion, useAnimate } from "framer-motion";
 import { inter } from "@/app/utils/fonts";
+import { frogMsg } from "@/app/resources/frog-msg";
 import CountdownTimer from "@/app/components/CountdownTimer";
 import HelpModal from "@/app/components/HelpModal";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import InfoIcon from "@/app/components/svg/InfoIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
+import BreathCountDots from "@/app/components/BreathCountDots";
 
 export default function Page() {
     const [boxscope, animate] = useAnimate();
     const [isPlaying, setIsPlaying] = useState(false);
     const hasStartedSession = useRef(false);
-    const msgs = {
-        welcome: "Touch & hold frog to begin",
-        inhale: "Inhale while pressing frog",
-        exhale: "Exhale while releasing frog",
-        finished: "Frog is impressed!"
-    };
-    const bannerText = useRef(msgs.welcome);
+    const hasEndedSession = useRef(false);
+    const [bannerText, setBannerText] = useState(frogMsg.welcome);
     const setInhaleTimes = useBreathSessionStore(state => state.setInhaleTimes);    
+    const incrementCycleCount = useBreathSessionStore(state => state.incrementCycleCount);
     const isBreathSessionComplete = useBreathSessionStore(state => state.isComplete);
-    if (isBreathSessionComplete) bannerText.current = msgs.finished;
+    if (isBreathSessionComplete) {
+        hasEndedSession.current = true;
+    }
+
+    useEffect(() => {
+        if (hasEndedSession.current) {
+            setBannerText(frogMsg.finished);
+        }
+    }, [hasEndedSession.current]);
 
     // util to disable some long press browser defaults
     useEffect(() => {
@@ -35,7 +41,7 @@ export default function Page() {
             setIsPlaying(true);
         }
 
-        bannerText.current = msgs.inhale;
+        setBannerText(frogMsg.inhale);
         setInhaleTimes(Date.now());
 
         // frog box animation
@@ -48,8 +54,9 @@ export default function Page() {
     }
 
     function onFrogTapRelease() {
-        bannerText.current = msgs.exhale;
+        setBannerText(frogMsg.exhale);
         setInhaleTimes(0);
+        incrementCycleCount();
 
         // frog box animation
         animate(boxscope.current, {
@@ -70,12 +77,13 @@ export default function Page() {
                         className="text-sky-300/70 text-2xl mb-4 opacity-0"
                         animate={{ opacity: 1 }}
                     >
-                        {bannerText.current}
+                        {bannerText}
                     </motion.h3>
                     <div className="w-40 h-40 mx-auto">
                         <CountdownTimer isPlaying={isPlaying} duration={60} />
                     </div>
                 </div>
+                <BreathCountDots />
                 {/* FROG TAP TARGET */}
                 <motion.div
                     onPointerDown={onFrogTapStart}
@@ -83,7 +91,7 @@ export default function Page() {
                     className="relative w-64 h-48 mx-auto bg-[url(/images/buddha-belly-frog-sm.webp)] bg-center bg-contain bg-no-repeat"
                     id="frog-box"
                 >
-                    <div ref={boxscope} className="absolute bottom-0 left-0 w-full h-0"></div>
+                    <div ref={boxscope} className="absolute bottom-0 left-0 right-0 h-0"></div>
                 </motion.div>
             </div>
             <HelpModal />
