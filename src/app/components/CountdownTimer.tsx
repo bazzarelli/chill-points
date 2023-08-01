@@ -7,7 +7,7 @@ type RenderTimeProps = {
 
 const renderTime = ({ remainingTime }: RenderTimeProps) => {
     if (remainingTime === 0) {
-        return <div className="text-3xl text-[#a8ca9a]">Done</div>;
+        return <div className="text-3xl text-sky-300/90">Done</div>;
     }
 
     const minutes = Math.floor(remainingTime / 60)
@@ -16,7 +16,7 @@ const renderTime = ({ remainingTime }: RenderTimeProps) => {
     const timeFormatted = minutes ? `${minutes}:${secondsFormatted}` : `${secondsFormatted}`
 
     return (
-        <div className="text-4xl font-semibold text-[#a8ca9a]">
+        <div className="text-4xl text-sky-300/90">
             {timeFormatted}
         </div>
     );
@@ -39,7 +39,7 @@ export default function CountdownTimer({ duration, isPlaying }: CountdownTimerPr
             trailStrokeWidth={10}
             size={160}
             trailColor={"#1b2533"}
-            colors={"#a8ca9a"}
+            colors={"#10b981"}
             onComplete={() => {
                 timerComplete(); // set state
                 ({ shouldRepeat: false })
