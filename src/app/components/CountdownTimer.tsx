@@ -1,4 +1,5 @@
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 
 type RenderTimeProps = {
     remainingTime: number;
@@ -6,7 +7,7 @@ type RenderTimeProps = {
 
 const renderTime = ({ remainingTime }: RenderTimeProps) => {
     if (remainingTime === 0) {
-        return <div className="text-3xl text-[#a8ca9a]">all done!</div>;
+        return <div className="text-3xl text-[#a8ca9a]">Done</div>;
     }
 
     const minutes = Math.floor(remainingTime / 60)
@@ -27,18 +28,22 @@ type CountdownTimerProps = {
 }
 
 export default function CountdownTimer({ duration, isPlaying }: CountdownTimerProps) {
+    const timerComplete = useBreathSessionStore(state => state.toggleSessionStatus);
+    
     return (
         <CountdownCircleTimer
             isPlaying={isPlaying}
             duration={duration}
             updateInterval={0}
             strokeWidth={4}
-            trailStrokeWidth={12}
-            rotation={"counterclockwise"}
+            trailStrokeWidth={10}
             size={160}
-            trailColor={"#a8ca9a"}
-            colors={"#1b2533"}
-            onComplete={() => ({ shouldRepeat: false, delay: 1 })}
+            trailColor={"#1b2533"}
+            colors={"#a8ca9a"}
+            onComplete={() => {
+                timerComplete(); // set state
+                ({ shouldRepeat: false })
+            }}
         >
             {renderTime}
         </CountdownCircleTimer>
