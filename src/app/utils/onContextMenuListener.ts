@@ -3,11 +3,11 @@
 export default function onContextMenuListener() {
   window.oncontextmenu = function (event: any) {
     // eslint-disable-next-line no-console
-    console.log(event); // prints [object PointerEvent]
+    // console.log(event); // prints [object PointerEvent]
 
     const pointerEvent = event as PointerEvent;
     // eslint-disable-next-line no-console
-    console.log(`window.oncontextmenu: ${pointerEvent.pointerType}`);
+    // console.log(`window.oncontextmenu: ${pointerEvent.pointerType}`);
 
     if (pointerEvent.pointerType === 'touch') {
       // context menu was triggerd by long press

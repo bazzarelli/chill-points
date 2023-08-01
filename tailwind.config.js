@@ -32,6 +32,7 @@ module.exports = {
       'dark',
       'dracula',
       'winter',
+      'forest',
     ],
   },
 }
