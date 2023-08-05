@@ -34,7 +34,7 @@ export default function CountdownTimer({
   isPlaying,
 }: CountdownTimerProps) {
   const timerComplete = useBreathSessionStore(
-    (state) => state.setSessionStatus,
+    (state) => state.setIsCompleteStatus,
   );
 
   return (

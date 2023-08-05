@@ -1,18 +1,27 @@
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
-type State = {
+type NewGameState = {
   cycleCount: number;
   inhaleTimes: number[];
   isComplete: boolean;
-  sessionsData: { date: string; inhaleTimes: number[] }[];
+};
+
+type State = NewGameState & {
+  sessionsData: {
+    date: string;
+    inhaleTimes: number[];
+    cycleCount: number;
+    id: number;
+  }[];
 };
 
 type Actions = {
   incrementCycleCount: () => void;
   setInhaleTimes: (inhaleTimes: number) => void;
   setSessionsData: () => void;
-  setSessionStatus: (isComplete: boolean) => void;
+  setIsCompleteStatus: (isComplete: boolean) => void;
+  resetGame: () => void;
   reset: () => void;
 };
 
@@ -21,6 +30,12 @@ const initialState: State = {
   inhaleTimes: [],
   isComplete: false,
   sessionsData: [],
+};
+
+const newGameState: NewGameState = {
+  cycleCount: 0,
+  inhaleTimes: [],
+  isComplete: false,
 };
 
 export const useBreathSessionStore = create<State & Actions>()(
@@ -39,17 +54,26 @@ export const useBreathSessionStore = create<State & Actions>()(
             sessionsData: [
               ...state.sessionsData,
               {
-                date: new Date().toLocaleDateString(),
+                date: new Date().toLocaleDateString(undefined, {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "2-digit",
+                }),
                 inhaleTimes: get().inhaleTimes,
                 cycleCount: get().cycleCount,
+                id: Date.now(),
               },
             ],
           })),
-        setSessionStatus: (isComplete) =>
+        setIsCompleteStatus: (isComplete) =>
           set(() => ({ isComplete: isComplete })),
+        resetGame: () => set(newGameState),
         reset: () => set(initialState),
       }),
-      { name: "breath-session-storage" },
+      {
+        name: "breath-session-storage",
+        storage: createJSONStorage(() => sessionStorage),
+      },
     ),
     { enabled: true, name: "breath-session-storage" },
   ),

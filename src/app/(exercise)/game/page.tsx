@@ -1,47 +1,47 @@
 "use client";
 
-import { useEffect, useState, useRef, use } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, useAnimate } from "framer-motion";
 import { inter } from "@/app/utils/fonts";
 import { frogMsg } from "@/app/resources/frog-msg";
+import onContextMenuListener from "@/app/utils/onContextMenuListener";
+import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import CountdownTimer from "@/app/components/CountdownTimer";
 import HelpModal from "@/app/components/HelpModal";
-import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import InfoIcon from "@/app/components/svg/InfoIcon";
-import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import BreathCountDots from "@/app/components/BreathCountDots";
+import HistoryList from "@/app/components/HistoryList";
 
 export default function Page() {
   const [boxscope, animate] = useAnimate();
   const hasStartedSession = useRef(false);
-  const hasEndedSession = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [bannerText, setBannerText] = useState(frogMsg.welcome);
   const setInhaleTimes = useBreathSessionStore((state) => state.setInhaleTimes);
   const setSessionsData = useBreathSessionStore(
     (state) => state.setSessionsData,
   );
-  const setSessionStatus = useBreathSessionStore(
-    (state) => state.setSessionStatus,
-  );
   const incrementCycleCount = useBreathSessionStore(
     (state) => state.incrementCycleCount,
   );
+  const resetGame = useBreathSessionStore((state) => state.resetGame);
+
+  // checking if the session is complete
   const isBreathSessionComplete = useBreathSessionStore(
     (state) => state.isComplete,
   );
-  if (isBreathSessionComplete) {
-    console.log("isBreathSessionComplete", isBreathSessionComplete);
-    hasEndedSession.current = true;
-    setSessionStatus(true);
-  }
 
   useEffect(() => {
-    if (hasEndedSession.current) {
+    if (isBreathSessionComplete) {
+      console.log("isBreathSessionComplete", isBreathSessionComplete);
       setBannerText(frogMsg.finished);
+      // save the session data
       setSessionsData();
+      // reset the game for next play
+      resetGame();
+      hasStartedSession.current = false;
     }
-  }, [hasEndedSession.current]);
+  }, [isBreathSessionComplete]);
 
   // util to disable some long press browser defaults
   useEffect(() => {
@@ -95,7 +95,10 @@ export default function Page() {
         <div className="mx-auto md:w-1/3">
           <button
             className="w-full text-right"
-            onClick={() => (window as any).help_modal.showModal()}
+            onClick={() => {
+              resetGame();
+              (window as any).help_modal.showModal();
+            }}
           >
             <InfoIcon
               className="mr-4 mt-3 inline-block"
@@ -129,6 +132,7 @@ export default function Page() {
         </motion.div>
       </div>
       <HelpModal />
+      <HistoryList />
     </section>
   );
 }
