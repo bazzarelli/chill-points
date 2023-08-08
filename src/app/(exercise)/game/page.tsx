@@ -1,28 +1,62 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { motion, useAnimate } from "framer-motion";
-import { inter } from "@/app/utils/fonts";
-import { frogMsg } from "@/app/resources/frog-msg";
-import onContextMenuListener from "@/app/utils/onContextMenuListener";
-import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
+import BreathCountDots from "@/app/components/BreathCountDots";
 import CountdownTimer from "@/app/components/CountdownTimer";
 import HelpModal from "@/app/components/HelpModal";
 import InfoIcon from "@/app/components/svg/InfoIcon";
-import BreathCountDots from "@/app/components/BreathCountDots";
-import HistoryList from "@/app/components/HistoryList";
+import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
+import { frogMsg } from "@/app/resources/frog-msg";
+import { inter } from "@/app/utils/fonts";
+import onContextMenuListener from "@/app/utils/onContextMenuListener";
+import { motion, useAnimate } from "framer-motion";
+import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useLongPress } from "use-long-press";
+
+const BOX_ANIM = {
+  GROW: {
+    bgColor: "rgb(125, 211, 252)",
+    height: "12rem",
+    opacity: 0.8,
+  },
+  SHRINK: {
+    bgColor: "#43AA8B",
+    height: "0.4rem",
+    opacity: 0.2,
+  },
+  CANCEL: {
+    bgColor: "rgb(255, 0, 0)",
+    height: "0.4rem",
+    opacity: 0.5,
+  },
+  START: {
+    bgColor: "rgb(125, 211, 252)",
+    height: "0.4rem",
+    opacity: 0.2,
+  },
+} as const;
+
+type ObjectValues<T> = T[keyof T];
+type BoxAnim = ObjectValues<typeof BOX_ANIM>;
 
 export default function Page() {
   const [boxscope, animate] = useAnimate();
   const hasStartedSession = useRef(false);
+  const isCancelled = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [bannerText, setBannerText] = useState(frogMsg.welcome);
+  const [key, setKey] = useState(0);
   const setInhaleTimes = useBreathSessionStore((state) => state.setInhaleTimes);
-  const setSessionsData = useBreathSessionStore(
-    (state) => state.setSessionsData,
-  );
+  // const getInhaleTimes = useBreathSessionStore((state) => state.inhaleTimes);
+  const getCycleCount = useBreathSessionStore((state) => state.cycleCount);
   const incrementCycleCount = useBreathSessionStore(
     (state) => state.incrementCycleCount,
+  );
+  const resetCycleCount = useBreathSessionStore(
+    (state) => state.resetCycleCount,
+  );
+  const setSessionsData = useBreathSessionStore(
+    (state) => state.setSessionsData,
   );
   const resetGame = useBreathSessionStore((state) => state.resetGame);
 
@@ -46,7 +80,12 @@ export default function Page() {
   // util to disable some long press browser defaults
   useEffect(() => {
     onContextMenuListener();
+    resetGame();
   }, []);
+
+  function boxAnimation(duration: number, boxAnim: BoxAnim) {
+    animate(boxscope.current, { ...boxAnim }, { duration: duration });
+  }
 
   function onFrogTapStart() {
     // only fire once to start the timer
@@ -58,15 +97,8 @@ export default function Page() {
     setInhaleTimes(Date.now());
 
     // frog box animation
-    animate(
-      boxscope.current,
-      {
-        height: "12rem",
-        backgroundColor: "rgb(125 211 252)",
-        opacity: 0.8,
-      },
-      { duration: 5 },
-    );
+    boxAnimation(5, BOX_ANIM.GROW);
+    isCancelled.current = false;
     hasStartedSession.current = true;
   }
 
@@ -74,18 +106,45 @@ export default function Page() {
     setBannerText(frogMsg.exhale);
     setInhaleTimes(0);
     incrementCycleCount();
-
     // frog box animation
-    animate(
-      boxscope.current,
-      {
-        height: "0.4rem",
-        backgroundColor: "rgb(255 0 0)",
-        opacity: 0.2,
-      },
-      { duration: 5 },
-    );
+    boxAnimation(5, BOX_ANIM.SHRINK);
   }
+
+  function onFrogTapCancel() {
+    console.log("Press cancelled cycle count: ", getCycleCount);
+    setBannerText(frogMsg.cancelled);
+    setIsPlaying(false);
+    resetCycleCount();
+    isCancelled.current = true;
+    // frog box animation
+    boxAnimation(5, BOX_ANIM.CANCEL);
+  }
+
+  function startOver() {
+    console.log("startOver");
+    //! check isCancelled
+    // setKey resets the clock
+    setKey((prevKey) => prevKey + 1);
+    // frog box animation
+    boxAnimation(5, BOX_ANIM.START);
+    isCancelled.current = false;
+    resetGame();
+  }
+
+  const callback = useCallback((event: any) => {
+    console.log("Long pressed!");
+  }, []);
+
+  const bind = useLongPress(callback, {
+    onStart: (event) => onFrogTapStart(),
+    onFinish: (event) => onFrogTapRelease(),
+    onCancel: (event) => onFrogTapCancel(), // called if long press is aborted (touch is released before the threshold)
+    onMove: (event) => console.log("Detected mouse or touch movement"),
+    filterEvents: (event) => true, // All events can potentially trigger long press
+    threshold: 2000, // Time threshold before long press callback is fired
+    captureEvent: true,
+    cancelOnMovement: false,
+  });
 
   return (
     <section
@@ -114,25 +173,43 @@ export default function Page() {
             {bannerText}
           </motion.h3>
           <div className="mx-auto h-40 w-40">
-            <CountdownTimer isPlaying={isPlaying} duration={60} />
+            <CountdownTimer isPlaying={isPlaying} duration={60} key={key} />
           </div>
         </div>
-        <BreathCountDots />
-        {/* FROG TAP TARGET */}
-        <motion.div
-          onPointerDown={onFrogTapStart}
-          onPointerUp={onFrogTapRelease}
+        <div className="my-3 h-6 w-full text-center">
+          {getCycleCount ? (
+            <BreathCountDots />
+          ) : (
+            <button onClick={startOver} className="text-xl text-sky-300/80">
+              {isCancelled.current ? "Start over?" : ""}
+            </button>
+          )}
+        </div>
+
+        {/* THE FROG */}
+        <button
+          {...bind()}
           className="relative mx-auto h-48 w-64 bg-[url(/images/buddha-belly-frog-sm.webp)] bg-contain bg-center bg-no-repeat"
           id="frog-box"
         >
           <div
             ref={boxscope}
-            className="absolute bottom-0 left-0 right-0 h-0"
+            className="absolute bottom-0 left-0 right-0 h-1 bg-sky-300/50"
           ></div>
-        </motion.div>
+        </button>
       </div>
+
+      <div className="w-full text-center mt-4 text-white">
+        {!hasStartedSession.current ? (
+          <Link href="/history">
+            <button className="btn btn-sm btn-secondary">view history</button>
+          </Link>
+        ) : (
+          <span>{`hasStartedSession: ${hasStartedSession.current}`}</span>
+        )}
+      </div>
+
       <HelpModal />
-      <HistoryList />
     </section>
   );
 }

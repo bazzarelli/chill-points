@@ -6,7 +6,7 @@ function BreathCountDots() {
   const breathCycleDot = "⚪️";
 
   return (
-    <div className="my-3 h-6 w-full text-center">
+    <>
       {Array.from({ length: cycleCount }).map((_, index) => (
         <motion.span
           initial={{
@@ -22,7 +22,7 @@ function BreathCountDots() {
           {breathCycleDot}
         </motion.span>
       ))}
-    </div>
+    </>
   );
 }
 
