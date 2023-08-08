@@ -18,11 +18,12 @@ type State = NewGameState & {
 
 type Actions = {
   incrementCycleCount: () => void;
+  resetCycleCount: () => void;
   setInhaleTimes: (inhaleTimes: number) => void;
   setSessionsData: () => void;
   setIsCompleteStatus: (isComplete: boolean) => void;
   resetGame: () => void;
-  reset: () => void;
+  resetAll: () => void;
 };
 
 const initialState: State = {
@@ -45,6 +46,7 @@ export const useBreathSessionStore = create<State & Actions>()(
         ...initialState,
         incrementCycleCount: () =>
           set((state) => ({ cycleCount: state.cycleCount + 1 })),
+        resetCycleCount: () => set(() => ({ cycleCount: 0 })),
         setInhaleTimes: (inhaleTimes) =>
           set((state) => ({
             inhaleTimes: [...state.inhaleTimes, inhaleTimes],
@@ -68,7 +70,7 @@ export const useBreathSessionStore = create<State & Actions>()(
         setIsCompleteStatus: (isComplete) =>
           set(() => ({ isComplete: isComplete })),
         resetGame: () => set(newGameState),
-        reset: () => set(initialState),
+        resetAll: () => set(initialState),
       }),
       {
         name: "breath-session-storage",

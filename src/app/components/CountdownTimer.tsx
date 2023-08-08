@@ -1,5 +1,7 @@
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
+"use client";
+
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 type RenderTimeProps = {
   remainingTime: number;

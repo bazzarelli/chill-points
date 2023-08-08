@@ -1,6 +1,6 @@
 import { comfortaa } from "@/app/utils/fonts";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Header() {
   return (
@@ -31,10 +31,10 @@ export default function Header() {
             className="dropdown-content menu rounded-box menu-sm z-10 mt-3 w-52 bg-base-100 p-2 shadow"
           >
             <li>
-              <Link href="/gallery">Exercise Gallery</Link>
+              <a>Pair Device</a>
             </li>
             <li>
-              <Link href="/device">Breath Session</Link>
+              <a>Exercise Gallery</a>
             </li>
             <li>
               <a>Settings</a>
