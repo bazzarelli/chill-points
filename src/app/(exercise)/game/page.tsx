@@ -95,8 +95,6 @@ export default function Page() {
 
     setBannerText(frogMsg.inhale);
     setInhaleTimes(Date.now());
-
-    // frog box animation
     boxAnimation(5, BOX_ANIM.GROW);
     isCancelled.current = false;
     hasStartedSession.current = true;
@@ -106,7 +104,6 @@ export default function Page() {
     setBannerText(frogMsg.exhale);
     setInhaleTimes(0);
     incrementCycleCount();
-    // frog box animation
     boxAnimation(5, BOX_ANIM.SHRINK);
   }
 
@@ -116,18 +113,16 @@ export default function Page() {
     setIsPlaying(false);
     resetCycleCount();
     isCancelled.current = true;
-    // frog box animation
     boxAnimation(5, BOX_ANIM.CANCEL);
   }
 
   function startOver() {
-    console.log("startOver");
-    //! check isCancelled
+    setBannerText(frogMsg.welcome);
     // setKey resets the clock
     setKey((prevKey) => prevKey + 1);
-    // frog box animation
-    boxAnimation(5, BOX_ANIM.START);
+    boxAnimation(1, BOX_ANIM.START);
     isCancelled.current = false;
+    hasStartedSession.current = false;
     resetGame();
   }
 
@@ -155,7 +150,7 @@ export default function Page() {
           <button
             className="w-full text-right"
             onClick={() => {
-              resetGame();
+              startOver();
               (window as any).help_modal.showModal();
             }}
           >
@@ -167,7 +162,9 @@ export default function Page() {
             />
           </button>
           <motion.h3
-            className="mb-4 text-2xl text-sky-300/70 opacity-0"
+            className={`mb-4 text-2xl ${
+              isCancelled.current ? "text-orange-500/70" : "text-sky-300/70"
+            } opacity-0`}
             animate={{ opacity: 1 }}
           >
             {bannerText}
@@ -200,12 +197,10 @@ export default function Page() {
       </div>
 
       <div className="w-full text-center mt-4 text-white">
-        {!hasStartedSession.current ? (
+        {!hasStartedSession.current && (
           <Link href="/history">
             <button className="btn btn-sm btn-secondary">view history</button>
           </Link>
-        ) : (
-          <span>{`hasStartedSession: ${hasStartedSession.current}`}</span>
         )}
       </div>
 

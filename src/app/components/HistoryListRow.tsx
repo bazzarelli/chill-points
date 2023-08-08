@@ -1,6 +1,6 @@
 "use client";
 
-import RarrowIcon from "@/app/components/svg/RarrowIcon";
+// import RarrowIcon from "@/app/components/svg/RarrowIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 
 export default function HistoryListRow() {
@@ -16,7 +16,7 @@ export default function HistoryListRow() {
           <div className="h-5 w-6/12 pl-2">{session.date}</div>
           <div className="h-5 w-5/12 pl-2">{session.cycleCount} bpm</div>
           <div className="h-5 w-1/12">
-            <RarrowIcon className="inline-block" width={15} height={15} />
+            {/* <RarrowIcon className="inline-block" width={15} height={15} /> */}
           </div>
         </div>
       ))}
