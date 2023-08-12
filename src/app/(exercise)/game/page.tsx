@@ -2,8 +2,10 @@
 
 import BreathCountDots from "@/app/components/BreathCountDots";
 import CountdownTimer from "@/app/components/CountdownTimer";
+import BOX_ANIM from "@/app/components/FrogBoxAnim";
+import GameInstructions from "@/app/components/GameInstructions";
 import HelpModal from "@/app/components/HelpModal";
-import InfoIcon from "@/app/components/svg/InfoIcon";
+import SettingsIcon from "@/app/components/svg/SettingsIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { frogMsg } from "@/app/resources/frog-msg";
 import { inter } from "@/app/utils/fonts";
@@ -11,133 +13,118 @@ import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import { motion, useAnimate } from "framer-motion";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useLongPress } from "use-long-press";
-
-const BOX_ANIM = {
-  GROW: {
-    bgColor: "rgb(125, 211, 252)",
-    height: "12rem",
-    opacity: 0.8,
-  },
-  SHRINK: {
-    bgColor: "#43AA8B",
-    height: "0.4rem",
-    opacity: 0.2,
-  },
-  CANCEL: {
-    bgColor: "rgb(255, 0, 0)",
-    height: "0.4rem",
-    opacity: 0.5,
-  },
-  START: {
-    bgColor: "rgb(125, 211, 252)",
-    height: "0.4rem",
-    opacity: 0.2,
-  },
-} as const;
+import { LongPressReactEvents, useLongPress } from "use-long-press";
 
 type ObjectValues<T> = T[keyof T];
 type BoxAnim = ObjectValues<typeof BOX_ANIM>;
 
 export default function Page() {
   const [boxscope, animate] = useAnimate();
-  const hasStartedSession = useRef(false);
-  const isCancelled = useRef(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [bannerText, setBannerText] = useState(frogMsg.welcome);
-  const [key, setKey] = useState(0);
-  const setInhaleTimes = useBreathSessionStore((state) => state.setInhaleTimes);
-  // const getInhaleTimes = useBreathSessionStore((state) => state.inhaleTimes);
-  const getCycleCount = useBreathSessionStore((state) => state.cycleCount);
-  const incrementCycleCount = useBreathSessionStore(
-    (state) => state.incrementCycleCount,
-  );
-  const resetCycleCount = useBreathSessionStore(
-    (state) => state.resetCycleCount,
-  );
-  const setSessionsData = useBreathSessionStore(
-    (state) => state.setSessionsData,
-  );
-  const resetGame = useBreathSessionStore((state) => state.resetGame);
+  const [clockKey, setClockKey] = useState(0);
 
-  // checking if the session is complete
-  const isBreathSessionComplete = useBreathSessionStore(
-    (state) => state.isComplete,
-  );
+  const {
+    cycleCount,
+    sessionsData,
+    isCancelled,
+    isComplete,
+    isInProgress,
+    incrementCycleCount,
+    resetGame,
+    resetCycleCount,
+    setInhaleTimes,
+    setIsInProgressStatus,
+    setIsCancelledStatus,
+    setSessionsData,
+  } = useBreathSessionStore();
 
+  //* things to take care of when the session is complete
   useEffect(() => {
-    if (isBreathSessionComplete) {
-      console.log("isBreathSessionComplete", isBreathSessionComplete);
+    if (isComplete) {
+      console.log("isBreathSessionComplete", isComplete);
+      // set the banner text e.g. "Done"
       setBannerText(frogMsg.finished);
       // save the session data
       setSessionsData();
       // reset the game for next play
       resetGame();
-      hasStartedSession.current = false;
+      // flag the session as not started
+      setIsInProgressStatus(false);
+      setClockKey((prevKey) => prevKey + 1);
     }
-  }, [isBreathSessionComplete]);
+  }, [isComplete]);
 
-  // util to disable some long press browser defaults
   useEffect(() => {
+    // util to disable some long press browser defaults
     onContextMenuListener();
     resetGame();
   }, []);
 
-  function boxAnimation(duration: number, boxAnim: BoxAnim) {
-    animate(boxscope.current, { ...boxAnim }, { duration: duration });
-  }
+  function handleFrogAction(action: string) {
+    const boxAnimation = (duration: number, boxAnim: BoxAnim) => {
+      animate(boxscope.current, { ...boxAnim }, { duration: duration });
+    };
 
-  function onFrogTapStart() {
-    // only fire once to start the timer
-    if (!hasStartedSession.current) {
-      setIsPlaying(true);
+    switch (action) {
+      case "start":
+        setBannerText(frogMsg.inhale);
+        !isInProgress && setClockKey((prevKey) => prevKey + 1);
+        setIsInProgressStatus(true);
+        setInhaleTimes(Date.now());
+        setIsCancelledStatus(false);
+        setIsInProgressStatus(true);
+        boxAnimation(5, BOX_ANIM.GROW);
+        break;
+      case "release":
+        setBannerText(frogMsg.exhale);
+        setInhaleTimes(0);
+        incrementCycleCount();
+        boxAnimation(5, BOX_ANIM.SHRINK);
+        break;
+      case "cancel":
+        setBannerText(frogMsg.cancelled);
+        setIsInProgressStatus(false);
+        resetCycleCount();
+        setIsCancelledStatus(true);
+        boxAnimation(1, BOX_ANIM.CANCEL);
+        break;
+      case "reset":
+        setIsCancelledStatus(false);
+        resetGame();
+        setBannerText(frogMsg.welcome);
+        // setKey resets the clock
+        setClockKey((prevKey) => prevKey + 1);
+        setIsInProgressStatus(false);
+        boxAnimation(1, BOX_ANIM.RESET);
+        break;
+      case "disable":
+        boxAnimation(1, BOX_ANIM.CANCEL);
+        break;
+      default:
+        break;
     }
-
-    setBannerText(frogMsg.inhale);
-    setInhaleTimes(Date.now());
-    boxAnimation(5, BOX_ANIM.GROW);
-    isCancelled.current = false;
-    hasStartedSession.current = true;
   }
 
-  function onFrogTapRelease() {
-    setBannerText(frogMsg.exhale);
-    setInhaleTimes(0);
-    incrementCycleCount();
-    boxAnimation(5, BOX_ANIM.SHRINK);
-  }
+  const longPressCallback = useCallback(
+    (event: LongPressReactEvents<Element>) => {
+      console.log("Long pressed!");
+      // after the time preference feature is added
+      // this can be the entire length of the inhale
+      // console.log("event", event);
+    },
+    [],
+  );
 
-  function onFrogTapCancel() {
-    console.log("Press cancelled cycle count: ", getCycleCount);
-    setBannerText(frogMsg.cancelled);
-    setIsPlaying(false);
-    resetCycleCount();
-    isCancelled.current = true;
-    boxAnimation(5, BOX_ANIM.CANCEL);
-  }
-
-  function startOver() {
-    setBannerText(frogMsg.welcome);
-    // setKey resets the clock
-    setKey((prevKey) => prevKey + 1);
-    boxAnimation(1, BOX_ANIM.START);
-    isCancelled.current = false;
-    hasStartedSession.current = false;
-    resetGame();
-  }
-
-  const callback = useCallback((event: any) => {
-    console.log("Long pressed!");
-  }, []);
-
-  const bind = useLongPress(callback, {
-    onStart: (event) => onFrogTapStart(),
-    onFinish: (event) => onFrogTapRelease(),
-    onCancel: (event) => onFrogTapCancel(), // called if long press is aborted (touch is released before the threshold)
-    onMove: (event) => console.log("Detected mouse or touch movement"),
+  const bind = useLongPress(longPressCallback, {
+    onStart: (event) => {
+      isCancelled ? handleFrogAction("disable") : handleFrogAction("start");
+    },
+    onFinish: (event) => handleFrogAction("release"),
+    onCancel: (event) => handleFrogAction("cancel"),
+    // onMove: (event) => console.log("Detected mouse or touch movement"),
     filterEvents: (event) => true, // All events can potentially trigger long press
     threshold: 2000, // Time threshold before long press callback is fired
-    captureEvent: true,
+    captureEvent: true, // Capture event on the target element, not the child elements
     cancelOnMovement: false,
   });
 
@@ -150,11 +137,11 @@ export default function Page() {
           <button
             className="w-full text-right"
             onClick={() => {
-              startOver();
+              handleFrogAction("reset");
               (window as any).help_modal.showModal();
             }}
           >
-            <InfoIcon
+            <SettingsIcon
               className="mr-4 mt-3 inline-block"
               width={28}
               height={28}
@@ -163,23 +150,34 @@ export default function Page() {
           </button>
           <motion.h3
             className={`mb-4 text-2xl ${
-              isCancelled.current ? "text-orange-500/70" : "text-sky-300/70"
+              isCancelled ? "text-orange-500/70" : "text-sky-300/70"
             } opacity-0`}
             animate={{ opacity: 1 }}
           >
             {bannerText}
           </motion.h3>
+          {/* THE COUNTDOWN CLOCK */}
           <div className="mx-auto h-40 w-40">
-            <CountdownTimer isPlaying={isPlaying} duration={60} key={key} />
+            <CountdownTimer
+              isPlaying={isInProgress}
+              duration={60}
+              key={clockKey}
+            />
           </div>
         </div>
+        {/* THE DOTS */}
         <div className="my-3 h-6 w-full text-center">
-          {getCycleCount ? (
+          {cycleCount ? (
             <BreathCountDots />
           ) : (
-            <button onClick={startOver} className="text-xl text-sky-300/80">
-              {isCancelled.current ? "Start over?" : ""}
-            </button>
+            isCancelled && (
+              <button
+                onClick={() => handleFrogAction("reset")}
+                className="text-xl text-sky-300/80"
+              >
+                Start over?
+              </button>
+            )
           )}
         </div>
 
@@ -196,14 +194,20 @@ export default function Page() {
         </button>
       </div>
 
-      <div className="w-full text-center mt-4 text-white">
-        {!hasStartedSession.current && (
+      <div className="w-full text-center mt-4 mx-4">
+        {!isInProgress && sessionsData.length > 0 && (
           <Link href="/history">
-            <button className="btn btn-sm btn-secondary">view history</button>
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-xl mb-4 text-sky-300/80 btn btn-sm btn-secondary"
+            >
+              view history
+            </motion.button>
           </Link>
         )}
+        <GameInstructions />
       </div>
-
       <HelpModal />
     </section>
   );
