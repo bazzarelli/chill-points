@@ -5,6 +5,8 @@ type NewGameState = {
   cycleCount: number;
   inhaleTimes: number[];
   isComplete: boolean;
+  isInProgress: boolean;
+  isCancelled: boolean;
 };
 
 type State = NewGameState & {
@@ -22,6 +24,8 @@ type Actions = {
   setInhaleTimes: (inhaleTimes: number) => void;
   setSessionsData: () => void;
   setIsCompleteStatus: (isComplete: boolean) => void;
+  setIsCancelledStatus: (isCancelled: boolean) => void;
+  setIsInProgressStatus: (isInProgress: boolean) => void;
   resetGame: () => void;
   resetAll: () => void;
 };
@@ -30,6 +34,8 @@ const initialState: State = {
   cycleCount: 0,
   inhaleTimes: [],
   isComplete: false,
+  isCancelled: false,
+  isInProgress: false,
   sessionsData: [],
 };
 
@@ -37,6 +43,8 @@ const newGameState: NewGameState = {
   cycleCount: 0,
   inhaleTimes: [],
   isComplete: false,
+  isCancelled: false,
+  isInProgress: false,
 };
 
 export const useBreathSessionStore = create<State & Actions>()(
@@ -69,6 +77,10 @@ export const useBreathSessionStore = create<State & Actions>()(
           })),
         setIsCompleteStatus: (isComplete) =>
           set(() => ({ isComplete: isComplete })),
+        setIsCancelledStatus: (isCancelled) =>
+          set(() => ({ isCancelled: isCancelled })),
+        setIsInProgressStatus: (isInProgress) =>
+          set(() => ({ isInProgress: isInProgress })),
         resetGame: () => set(newGameState),
         resetAll: () => set(initialState),
       }),

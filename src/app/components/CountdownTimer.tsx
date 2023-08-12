@@ -1,13 +1,14 @@
 "use client";
 
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
+import { ReactNode } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 type RenderTimeProps = {
   remainingTime: number;
 };
 
-const ClockText = function ({ children }: { children: string }) {
+const ClockText = function ({ children }: { children: string | ReactNode }) {
   return <div className="text-4xl text-sky-300/90">{children}</div>;
 };
 
@@ -35,10 +36,7 @@ export default function CountdownTimer({
   duration,
   isPlaying,
 }: CountdownTimerProps) {
-  const timerComplete = useBreathSessionStore(
-    (state) => state.setIsCompleteStatus,
-  );
-
+  const { setIsCompleteStatus } = useBreathSessionStore();
   return (
     <CountdownCircleTimer
       isPlaying={isPlaying}
@@ -50,7 +48,7 @@ export default function CountdownTimer({
       trailColor={"#1b2533"}
       colors={"#10b981"}
       onComplete={() => {
-        timerComplete(true); // set state
+        setIsCompleteStatus(true); // set state
         ({ shouldRepeat: false });
       }}
     >

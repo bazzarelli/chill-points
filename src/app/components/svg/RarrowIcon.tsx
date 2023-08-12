@@ -4,6 +4,7 @@ type SvgProps = {
 
 const RarrowIcon = (props: SvgProps) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     width={20}
     height={20}
     fill="#64748B"
