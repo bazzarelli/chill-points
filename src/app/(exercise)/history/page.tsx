@@ -1,4 +1,4 @@
-import HistoryList from "@/app/components/HistoryList";
+import HistoryList from "@/app/components/game/HistoryList";
 import { inter } from "@/app/utils/fonts";
 import Link from "next/link";
 

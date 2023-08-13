@@ -1,6 +1,6 @@
 "use client";
 
-import HistoryListRow from "@/app/components/HistoryListRow";
+import HistoryListRow from "@/app/components/game/HistoryListRow";
 
 export default function HistoryList() {
   return (
