@@ -1,18 +1,18 @@
 "use client";
 
-import BreathCountDots from "@/app/components/BreathCountDots";
-import CountdownTimer from "@/app/components/CountdownTimer";
-import BOX_ANIM from "@/app/components/FrogBoxAnim";
-import GameInstructions from "@/app/components/GameInstructions";
-import HelpModal from "@/app/components/HelpModal";
+import BreathCountDots from "@/app/components/game/BreathCountDots";
+import CountdownTimer from "@/app/components/game/CountdownTimer";
+import BOX_ANIM from "@/app/components/game/FrogBoxAnim";
+import GameInstructions from "@/app/components/game/GameInstructions";
+import HelpModal from "@/app/components/game/HelpModal";
 import SettingsIcon from "@/app/components/svg/SettingsIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
-import { frogMsg } from "@/app/resources/frog-msg";
+import { frogMsg } from "@/app/i18n/frog-msg";
 import { inter } from "@/app/utils/fonts";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import { motion, useAnimate } from "framer-motion";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
 
 type ObjectValues<T> = T[keyof T];
@@ -25,6 +25,7 @@ export default function Page() {
 
   const {
     cycleCount,
+    cycleSpeed,
     sessionsData,
     isCancelled,
     isComplete,
@@ -41,16 +42,11 @@ export default function Page() {
   //* things to take care of when the session is complete
   useEffect(() => {
     if (isComplete) {
-      console.log("isBreathSessionComplete", isComplete);
-      // set the banner text e.g. "Done"
-      setBannerText(frogMsg.finished);
-      // save the session data
-      setSessionsData();
-      // reset the game for next play
-      resetGame();
-      // flag the session as not started
-      setIsInProgressStatus(false);
-      setClockKey((prevKey) => prevKey + 1);
+      setBannerText(frogMsg.finished); // set the banner text
+      setSessionsData(); // save the session data
+      resetGame(); // reset the game for next play
+      setIsInProgressStatus(false); // the session is not in progress
+      setClockKey((prevKey) => prevKey + 1); // reset the clock
     }
   }, [isComplete]);
 
@@ -60,7 +56,7 @@ export default function Page() {
     resetGame();
   }, []);
 
-  function handleFrogAction(action: string) {
+  async function handleFrogAction(action: string) {
     const boxAnimation = (duration: number, boxAnim: BoxAnim) => {
       animate(boxscope.current, { ...boxAnim }, { duration: duration });
     };
@@ -73,13 +69,15 @@ export default function Page() {
         setInhaleTimes(Date.now());
         setIsCancelledStatus(false);
         setIsInProgressStatus(true);
-        boxAnimation(5, BOX_ANIM.GROW);
+        boxAnimation(cycleSpeed, BOX_ANIM.GROW);
         break;
       case "release":
-        setBannerText(frogMsg.exhale);
         setInhaleTimes(0);
         incrementCycleCount();
-        boxAnimation(5, BOX_ANIM.SHRINK);
+        await boxAnimation(cycleSpeed, BOX_ANIM.SHRINK);
+        setTimeout(() => {
+          setBannerText(frogMsg.inhale);
+        }, cycleSpeed * 1000);
         break;
       case "cancel":
         setBannerText(frogMsg.cancelled);
@@ -92,8 +90,7 @@ export default function Page() {
         setIsCancelledStatus(false);
         resetGame();
         setBannerText(frogMsg.welcome);
-        // setKey resets the clock
-        setClockKey((prevKey) => prevKey + 1);
+        setClockKey((prevKey) => prevKey + 1); // key to reset the clock
         setIsInProgressStatus(false);
         boxAnimation(1, BOX_ANIM.RESET);
         break;
@@ -107,10 +104,7 @@ export default function Page() {
 
   const longPressCallback = useCallback(
     (event: LongPressReactEvents<Element>) => {
-      console.log("Long pressed!");
-      // after the time preference feature is added
-      // this can be the entire length of the inhale
-      // console.log("event", event);
+      setBannerText(frogMsg.exhale);
     },
     [],
   );
@@ -123,7 +117,7 @@ export default function Page() {
     onCancel: (event) => handleFrogAction("cancel"),
     // onMove: (event) => console.log("Detected mouse or touch movement"),
     filterEvents: (event) => true, // All events can potentially trigger long press
-    threshold: 2000, // Time threshold before long press callback is fired
+    threshold: cycleSpeed * 1000, // Time threshold before long press callback is fired
     captureEvent: true, // Capture event on the target element, not the child elements
     cancelOnMovement: false,
   });
@@ -200,7 +194,7 @@ export default function Page() {
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-xl mb-4 text-sky-300/80 btn btn-sm btn-secondary"
+              className="text-xl mb-4 text-slate-800 btn btn-sm btn-accent"
             >
               view history
             </motion.button>
