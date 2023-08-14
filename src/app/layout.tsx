@@ -14,10 +14,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="garden">
+    <html lang="en" data-theme="dracula">
       <link rel="manifest" href="/manifest.json" />
       <body className={inter.className}>
-        <main className="flex flex-col">
+        <main className="flex min-h-screen flex-col">
           <Header />
           {children}
         </main>

@@ -45,7 +45,7 @@ export default function HelpModal() {
             min={3}
             max={5}
             value={breathCycleRange}
-            className="range range-xs range-accent"
+            className="range range-xs range-primary"
             step={1}
           />
           <div className="w-full flex justify-between text-sm px-2">
@@ -63,7 +63,7 @@ export default function HelpModal() {
             min={1}
             max={5}
             value={gameLengthRange}
-            className="range range-xs range-accent"
+            className="range range-xs range-primary"
             step={1}
           />
           <div className="w-full flex justify-between text-sm px-2">
@@ -76,10 +76,11 @@ export default function HelpModal() {
         </section>
 
         <section className="pb-4">
-          <p className="mb-2 text-sm text-red-700 font-semibold">
-            Erase game sessions from history.
-          </p>
-          <button onClick={resetAll} className="btn btn-sm btn-outline">
+          <p className="mb-2 text-sm font-semibold">Erase game history</p>
+          <button
+            onClick={resetAll}
+            className="btn btn-sm btn-primary btn-outline"
+          >
             Clear History
           </button>
         </section>
