@@ -15,6 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-theme="garden">
+      <link rel="manifest" href="/manifest.json" />
       <body className={inter.className}>
         <main className="flex flex-col">
           <Header />
