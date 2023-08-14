@@ -218,8 +218,6 @@ export default function Page() {
             </Link>
           </>
         )}
-
-        <GameInstructions />
       </div>
       <HelpModal />
     </section>

@@ -1,7 +1,5 @@
-import NavCards from "@/app/components/NavCards";
+import Home from "@/app/components/Home";
 
 export default function Page() {
-  return (
-    <NavCards />
-  )
+  return <Home />;
 }
