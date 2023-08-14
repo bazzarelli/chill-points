@@ -1,7 +1,7 @@
 export const frogMsg = {
-  welcome: "Touch & hold frog to begin",
-  inhale: "Inhale while holding",
-  exhale: "Release and exhale",
+  welcome: "Press & hold frog to begin",
+  inhale: "Inhale - press frog",
+  exhale: "Exhale - release frog",
   finished: "Frog is impressed!",
-  cancelled: "Inhale wasn't long enough",
+  cancelled: "Hold press while inhaling",
 };

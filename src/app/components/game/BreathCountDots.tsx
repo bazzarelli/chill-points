@@ -17,7 +17,7 @@ function BreathCountDots() {
           }}
           transition={{ duration: 3.5 }}
           key={index}
-          className="mr-2"
+          className="mr-2 text-xs overflow-x-hidden"
         >
           {breathCycleDot}
         </motion.span>

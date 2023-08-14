@@ -42,7 +42,7 @@ export default function CountdownTimer({
       isPlaying={isPlaying}
       duration={duration}
       updateInterval={0}
-      strokeWidth={4}
+      strokeWidth={5}
       trailStrokeWidth={10}
       size={160}
       trailColor={"#1b2533"}

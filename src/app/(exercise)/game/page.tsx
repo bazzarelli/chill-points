@@ -5,6 +5,7 @@ import CountdownTimer from "@/app/components/game/CountdownTimer";
 import BOX_ANIM from "@/app/components/game/FrogBoxAnim";
 import GameInstructions from "@/app/components/game/GameInstructions";
 import HelpModal from "@/app/components/game/HelpModal";
+import ReplayIcon from "@/app/components/svg/ReplayIcon";
 import SettingsIcon from "@/app/components/svg/SettingsIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { frogMsg } from "@/app/i18n/frog-msg";
@@ -12,7 +13,7 @@ import { inter } from "@/app/utils/fonts";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import { motion, useAnimate } from "framer-motion";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
 
 type ObjectValues<T> = T[keyof T];
@@ -22,10 +23,12 @@ export default function Page() {
   const [boxscope, animate] = useAnimate();
   const [bannerText, setBannerText] = useState(frogMsg.welcome);
   const [clockKey, setClockKey] = useState(0);
+  const gameOver = useRef(false);
 
   const {
     cycleCount,
     cycleSpeed,
+    gameLength,
     sessionsData,
     isCancelled,
     isComplete,
@@ -39,21 +42,21 @@ export default function Page() {
     setSessionsData,
   } = useBreathSessionStore();
 
-  //* things to take care of when the session is complete
+  //* when the session is complete
   useEffect(() => {
     if (isComplete) {
+      gameOver.current = true; // set the game over reference
       setBannerText(frogMsg.finished); // set the banner text
       setSessionsData(); // save the session data
-      resetGame(); // reset the game for next play
+      // resetGame(); // reset the game for next play
       setIsInProgressStatus(false); // the session is not in progress
-      setClockKey((prevKey) => prevKey + 1); // reset the clock
     }
   }, [isComplete]);
 
   useEffect(() => {
     // util to disable some long press browser defaults
     onContextMenuListener();
-    resetGame();
+    handleFrogAction("reset");
   }, []);
 
   async function handleFrogAction(action: string) {
@@ -73,11 +76,11 @@ export default function Page() {
         break;
       case "release":
         setInhaleTimes(0);
-        incrementCycleCount();
+        !gameOver.current && incrementCycleCount();
         await boxAnimation(cycleSpeed, BOX_ANIM.SHRINK);
         setTimeout(() => {
-          setBannerText(frogMsg.inhale);
-        }, cycleSpeed * 1000);
+          !gameOver.current && setBannerText(frogMsg.inhale);
+        }, cycleSpeed * 950);
         break;
       case "cancel":
         setBannerText(frogMsg.cancelled);
@@ -87,8 +90,8 @@ export default function Page() {
         boxAnimation(1, BOX_ANIM.CANCEL);
         break;
       case "reset":
-        setIsCancelledStatus(false);
         resetGame();
+        setIsCancelledStatus(false);
         setBannerText(frogMsg.welcome);
         setClockKey((prevKey) => prevKey + 1); // key to reset the clock
         setIsInProgressStatus(false);
@@ -115,7 +118,6 @@ export default function Page() {
     },
     onFinish: (event) => handleFrogAction("release"),
     onCancel: (event) => handleFrogAction("cancel"),
-    // onMove: (event) => console.log("Detected mouse or touch movement"),
     filterEvents: (event) => true, // All events can potentially trigger long press
     threshold: cycleSpeed * 1000, // Time threshold before long press callback is fired
     captureEvent: true, // Capture event on the target element, not the child elements
@@ -154,7 +156,7 @@ export default function Page() {
           <div className="mx-auto h-40 w-40">
             <CountdownTimer
               isPlaying={isInProgress}
-              duration={60}
+              duration={gameLength * 60}
               key={clockKey}
             />
           </div>
@@ -190,16 +192,33 @@ export default function Page() {
 
       <div className="w-full text-center mt-4 mx-4">
         {!isInProgress && sessionsData.length > 0 && (
-          <Link href="/history">
+          <>
             <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-xl mb-4 text-slate-800 btn btn-sm btn-accent"
+              onClick={() => handleFrogAction("reset")}
+              className="mb-4 btn btn-sm btn-accent block mx-auto"
             >
-              view history
+              <span className="text-slate-800 text-lg align-middle">
+                replay
+              </span>
+              <ReplayIcon
+                className="mr-1 inline-block"
+                width={20}
+                height={20}
+                fill={`rgb(30 41 59)`}
+              />
             </motion.button>
-          </Link>
+            <Link href="/history">
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-xl mb-4 text-slate-800 btn btn-sm btn-accent"
+              >
+                view history
+              </motion.button>
+            </Link>
+          </>
         )}
+
         <GameInstructions />
       </div>
       <HelpModal />
