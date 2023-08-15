@@ -8,9 +8,9 @@ import { redirect } from "next/navigation";
 export default async function Header() {
   const session = await getServerSession(options);
 
-  if (!session) {
-    redirect("/api/auth/signin?callbackUrl=/server");
-  }
+  // if (!session) {
+  //   redirect("/api/auth/signin?callbackUrl=/server");
+  // }
 
   const userImage = session?.user?.image || "";
   console.log("User image from github", userImage);
