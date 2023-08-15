@@ -1,15 +1,25 @@
+import { options } from "@/app/api/auth/[...nextauth]/options";
 import { comfortaa } from "@/app/utils/fonts";
+import { getServerSession } from "next-auth/next";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-export default function Header() {
+export default async function Header() {
+  const session = await getServerSession(options);
+
+  if (!session) {
+    redirect("/api/auth/signin?callbackUrl=/server");
+  }
+
+  const userImage = session?.user?.image || "";
+  console.log("User image from github", userImage);
+
   return (
-    <div className="navbar bg-sky-200 px-4 pt-3 md:px-8">
+    <div className="navbar bg-info px-4 pt-3 md:px-8">
       <div className="flex-1">
         <Link href="/">
-          <span
-            className={`text-3xl text-slate-700 md:text-4xl ${comfortaa.className}`}
-          >
+          <span className={`text-3xl md:text-4xl ${comfortaa.className}`}>
             Chill Points
           </span>
         </Link>
@@ -22,25 +32,22 @@ export default function Header() {
                 alt="user avatar"
                 width="40"
                 height="40"
-                src="/images/sample-avatar.jpg"
+                src={session ? userImage : "/images/sample-avatar.jpg"}
               />
             </div>
           </label>
           <ul
             tabIndex={0}
-            className="dropdown-content menu rounded-box menu-sm z-10 mt-3 w-52 bg-base-100 p-2 shadow"
+            className="dropdown-content menu rounded-box menu-sm z-10 mt-3 w-52 p-2 shadow bg-info"
           >
             <li>
               <a>Pair Device</a>
             </li>
             <li>
-              <a>Exercise Gallery</a>
+              <a>Install App</a>
             </li>
             <li>
-              <a>Settings</a>
-            </li>
-            <li>
-              <a>Logout</a>
+              <Link href="/api/auth/signout">Logout</Link>
             </li>
           </ul>
         </div>
