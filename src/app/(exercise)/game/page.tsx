@@ -195,7 +195,7 @@ export default function Page() {
           <>
             <motion.button
               onClick={() => handleFrogAction("reset")}
-              className="mb-4 btn btn-sm btn-accent block mx-auto"
+              className="mb-4 btn btn-sm btn-primary block mx-auto"
             >
               <span className="text-slate-800 text-lg align-middle">
                 replay
@@ -211,7 +211,7 @@ export default function Page() {
               <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-xl mb-4 text-slate-800 btn btn-sm btn-accent"
+                className="text-xl mb-4 btn btn-sm btn-primary"
               >
                 view history
               </motion.button>
