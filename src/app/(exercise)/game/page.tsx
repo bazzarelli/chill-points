@@ -3,7 +3,6 @@
 import BreathCountDots from "@/app/components/game/BreathCountDots";
 import CountdownTimer from "@/app/components/game/CountdownTimer";
 import BOX_ANIM from "@/app/components/game/FrogBoxAnim";
-import GameInstructions from "@/app/components/game/GameInstructions";
 import HelpModal from "@/app/components/game/HelpModal";
 import ReplayIcon from "@/app/components/svg/ReplayIcon";
 import SettingsIcon from "@/app/components/svg/SettingsIcon";
@@ -169,7 +168,7 @@ export default function Page() {
             isCancelled && (
               <button
                 onClick={() => handleFrogAction("reset")}
-                className="text-xl text-sky-300/80"
+                className="text-xl text-orange-500/90"
               >
                 Start over?
               </button>

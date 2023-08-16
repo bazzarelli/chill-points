@@ -1,22 +1,41 @@
+import Image from "next/image";
+import Link from "next/link";
+
 function GameInstructions() {
   return (
-    <div className="border border-sky-800 rounded-md text-left text-sky-300/80 mb-6">
-      <div className="text-xl p-4 pb-0">Game Instructions</div>
-      <div className="p-4">
+    <div className="collapse collapse-arrow border border-sky-800 rounded-md mt-6 bg-slate-800">
+      <h2 className="text-lg pb-2 collapse-title">Game Instructions</h2>
+      <input type="checkbox" />
+      <div className="collapse-content">
         <p className="text-lg">
           The game begins when you press and hold the frog.
         </p>
-        <p className="pt-3">
-          Inhale through your nose - the blue box grows to match the frog&apos;s
-          height.
-        </p>
-        <p className="pt-3">
-          Exhale through your nose - the box shrinks back down.
-        </p>
-        <p className="pt-3">
-          Each inhale/exhale cycle is represented by a pearl. Keep your finger
-          on the frog during inhales and off during exhales.
-        </p>
+        <ul className="list-decimal list-inside">
+          <li className="pt-3">
+            Inhale through your nose - the blue box grows to match the
+            frog&apos;s height.
+          </li>
+          <li className="pt-3">
+            Exhale through your nose - the box shrinks back down.
+          </li>
+          <li className="pt-3">
+            Inhale time is set to 5 seconds, exhale time is set to 5 seconds.
+          </li>
+          <li className="pt-3">
+            Keep your finger on the frog during inhales and off during exhales.
+          </li>
+        </ul>
+        <figure className="mt-6">
+          <Link href="/game">
+            <Image
+              alt="Screen capture of the game"
+              src="/images/game-screen-cap.jpg"
+              width="200"
+              height="200"
+              className="border border-info rounded-xl"
+            />
+          </Link>
+        </figure>
       </div>
     </div>
   );

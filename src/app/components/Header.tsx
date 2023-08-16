@@ -3,7 +3,8 @@ import { comfortaa } from "@/app/utils/fonts";
 import { getServerSession } from "next-auth/next";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+
+// import { redirect } from "next/navigation";
 
 export default async function Header() {
   const session = await getServerSession(options);
