@@ -1,3 +1,4 @@
+import TouchIcon from "@/app/components/svg/TouchIcon";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -25,16 +26,22 @@ function GameInstructions() {
             Keep your finger on the frog during inhales and off during exhales.
           </li>
         </ul>
-        <figure className="mt-6">
+        <figure className="relative mt-6 w-[200px]">
           <Link href="/game">
             <Image
               alt="Screen capture of the game"
               src="/images/game-screen-cap.jpg"
               width="200"
               height="200"
-              className="border border-info rounded-xl"
+              className="border border-info rounded-md"
             />
           </Link>
+          <TouchIcon
+            className="absolute left-20 bottom-6"
+            width={50}
+            height={50}
+            fill={`#1b2533`}
+          />
         </figure>
       </div>
     </div>

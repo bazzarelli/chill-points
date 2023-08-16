@@ -1,3 +1,4 @@
+import RarrowIcon from "@/app/components/svg/RarrowIcon";
 import { inter } from "@/app/utils/fonts";
 import Link from "next/link";
 
@@ -14,14 +15,7 @@ export default function Home() {
       <Link href="/game">
         <button className="btn btn-sm btn-info drop-shadow-md">
           <span className="text-base">Start</span>
-          <svg
-            fill="rgb(48,28,39)"
-            viewBox="0 -960 960 960"
-            width="16"
-            height="16"
-          >
-            <path d="M321-61.912 231.912-151l329-329-329-329L321-898.088 739.088-480 321-61.912Z" />
-          </svg>
+          <RarrowIcon width={16} height={16} fill={`rgb(48,28,39)`} />
         </button>
       </Link>
 
