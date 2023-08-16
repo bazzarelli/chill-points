@@ -13,6 +13,7 @@
     "@types/react": "18.2.9",
     "@types/react-dom": "18.2.4",
     "@types/web-bluetooth": "0.0.17",
+    "@vercel/kv": "0.2.2",
     "autoprefixer": "10.4.14",
     "daisyui": "3.0.20",
     "eslint": "8.42.0",
@@ -33,9 +34,9 @@
     "zustand": "4.3.9"
   },
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^4.2.0",
+    "@trivago/prettier-plugin-sort-imports": "4.2.0",
     "eslint-config-prettier": "8.9.0",
-    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-prettier": "5.0.0",
     "husky": "8.0.3",
     "lint-staged": "13.2.3",
     "prettier": "3.0.0",

@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export default function HelpModal() {
   const { setCycleSpeed, setGameLength, resetAll } = useBreathSessionStore();
-  const [breathCycleRange, setBreathCycleRange] = useState(5);
+  const [breathCycleRange, setBreathCycleRange] = useState(3);
   const [gameLengthRange, setGameLengthRange] = useState(1);
 
   function handleBreathCycleRangeChange(
@@ -79,7 +79,7 @@ export default function HelpModal() {
           <p className="mb-2 text-sm font-semibold">Erase game history</p>
           <button
             onClick={resetAll}
-            className="btn btn-sm btn-info btn-outline"
+            className="btn btn-sm btn-primary btn-outline"
           >
             Clear History
           </button>

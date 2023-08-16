@@ -5,12 +5,12 @@ const BOX_ANIM = {
     opacity: 0.8,
   },
   SHRINK: {
-    backgroundColor: "#85cbf8",
+    backgroundColor: "#A1E887",
     height: "0.4rem",
     opacity: 0.5,
   },
   CANCEL: {
-    backgroundColor: "rgb(249 115 22)",
+    backgroundColor: "#f97316",
     height: "0.4rem",
     opacity: 0.5,
   },

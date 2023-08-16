@@ -36,7 +36,7 @@ type Actions = {
 
 const initialState: State = {
   cycleCount: 0,
-  cycleSpeed: 5,
+  cycleSpeed: 3,
   gameLength: 1,
   inhaleTimes: [],
   isComplete: false,
@@ -47,7 +47,7 @@ const initialState: State = {
 
 const newGameState: NewGameState = {
   cycleCount: 0,
-  cycleSpeed: 5,
+  cycleSpeed: 3,
   gameLength: 1,
   inhaleTimes: [],
   isComplete: false,

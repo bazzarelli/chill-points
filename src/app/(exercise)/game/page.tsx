@@ -3,11 +3,11 @@
 import BreathCountDots from "@/app/components/game/BreathCountDots";
 import CountdownTimer from "@/app/components/game/CountdownTimer";
 import BOX_ANIM from "@/app/components/game/FrogBoxAnim";
-import HelpModal from "@/app/components/game/HelpModal";
+import SettingsModal from "@/app/components/game/SettingsModal";
 import ReplayIcon from "@/app/components/svg/ReplayIcon";
 import SettingsIcon from "@/app/components/svg/SettingsIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
-import { frogMsg } from "@/app/i18n/frog-msg";
+import { msg } from "@/app/i18n/frog-msg";
 import { inter } from "@/app/utils/fonts";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import { motion, useAnimate } from "framer-motion";
@@ -20,7 +20,7 @@ type BoxAnim = ObjectValues<typeof BOX_ANIM>;
 
 export default function Page() {
   const [boxscope, animate] = useAnimate();
-  const [bannerText, setBannerText] = useState(frogMsg.welcome);
+  const [bannerText, setBannerText] = useState(msg.welcome);
   const [clockKey, setClockKey] = useState(0);
   const gameOver = useRef(false);
 
@@ -45,7 +45,7 @@ export default function Page() {
   useEffect(() => {
     if (isComplete) {
       gameOver.current = true; // set the game over reference
-      setBannerText(frogMsg.finished); // set the banner text
+      setBannerText(msg.finished); // set the banner text
       setSessionsData(); // save the session data
       // resetGame(); // reset the game for next play
       setIsInProgressStatus(false); // the session is not in progress
@@ -65,7 +65,7 @@ export default function Page() {
 
     switch (action) {
       case "start":
-        setBannerText(frogMsg.inhale);
+        setBannerText(msg.inhale);
         !isInProgress && setClockKey((prevKey) => prevKey + 1);
         setIsInProgressStatus(true);
         setInhaleTimes(Date.now());
@@ -74,15 +74,15 @@ export default function Page() {
         boxAnimation(cycleSpeed, BOX_ANIM.GROW);
         break;
       case "release":
-        setInhaleTimes(0);
+        setInhaleTimes(Date.now());
         !gameOver.current && incrementCycleCount();
         await boxAnimation(cycleSpeed, BOX_ANIM.SHRINK);
         setTimeout(() => {
-          !gameOver.current && setBannerText(frogMsg.inhale);
-        }, cycleSpeed * 950);
+          !gameOver.current && setBannerText(msg.inhale);
+        }, cycleSpeed * 900);
         break;
       case "cancel":
-        setBannerText(frogMsg.cancelled);
+        setBannerText(msg.cancelled);
         setIsInProgressStatus(false);
         resetCycleCount();
         setIsCancelledStatus(true);
@@ -91,7 +91,7 @@ export default function Page() {
       case "reset":
         resetGame();
         setIsCancelledStatus(false);
-        setBannerText(frogMsg.welcome);
+        setBannerText(msg.welcome);
         setClockKey((prevKey) => prevKey + 1); // key to reset the clock
         setIsInProgressStatus(false);
         boxAnimation(1, BOX_ANIM.RESET);
@@ -106,13 +106,14 @@ export default function Page() {
 
   const longPressCallback = useCallback(
     (event: LongPressReactEvents<Element>) => {
-      setBannerText(frogMsg.exhale);
+      setBannerText(msg.exhale);
     },
     [],
   );
 
   const bind = useLongPress(longPressCallback, {
     onStart: (event) => {
+      if (isComplete) return;
       isCancelled ? handleFrogAction("disable") : handleFrogAction("start");
     },
     onFinish: (event) => handleFrogAction("release"),
@@ -147,6 +148,7 @@ export default function Page() {
             className={`mb-4 text-2xl ${
               isCancelled ? "text-orange-500/70" : "text-sky-300/70"
             } opacity-0`}
+            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
             {bannerText}
@@ -168,9 +170,9 @@ export default function Page() {
             isCancelled && (
               <button
                 onClick={() => handleFrogAction("reset")}
-                className="text-xl text-orange-500/90"
+                className="text-xl text-sky-300/80"
               >
-                Start over?
+                {msg.restart}
               </button>
             )
           )}
@@ -194,10 +196,10 @@ export default function Page() {
           <>
             <motion.button
               onClick={() => handleFrogAction("reset")}
-              className="mb-4 btn btn-sm btn-primary block mx-auto"
+              className="mb-4 btn btn-sm btn-info block mx-auto"
             >
               <span className="text-slate-800 text-lg align-middle">
-                replay
+                {msg.replay}
               </span>
               <ReplayIcon
                 className="mr-1 inline-block"
@@ -207,18 +209,14 @@ export default function Page() {
               />
             </motion.button>
             <Link href="/history">
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-xl mb-4 btn btn-sm btn-primary"
-              >
-                view history
+              <motion.button className="text-xl mb-4 btn btn-sm btn-info">
+                {msg.view_history}
               </motion.button>
             </Link>
           </>
         )}
       </div>
-      <HelpModal />
+      <SettingsModal />
     </section>
   );
 }
