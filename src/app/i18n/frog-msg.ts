@@ -3,5 +3,5 @@ export const frogMsg = {
   inhale: "Inhale - press frog",
   exhale: "Exhale - release frog",
   finished: "Frog is impressed!",
-  cancelled: "Hold press while inhaling",
+  cancelled: "Long press during inhale",
 };
