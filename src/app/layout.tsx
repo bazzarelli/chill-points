@@ -3,6 +3,7 @@ import Header from "@/app/components/Header";
 import AuthProvider from "@/app/context/AuthProvider";
 import "@/app/globals.css";
 import { inter } from "@/app/utils/fonts";
+import Script from "next/script";
 
 export const metadata = {
   title: "Chill a minute",
@@ -25,6 +26,16 @@ export default function RootLayout({
           </main>
           {/* <Footer /> */}
         </AuthProvider>
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-V7MV6G44ZC" />
+        <Script id="google-analytics">
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+ 
+          gtag('config', 'G-V7MV6G44ZC');
+        `}
+        </Script>
       </body>
     </html>
   );

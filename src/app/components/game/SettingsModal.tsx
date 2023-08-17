@@ -8,7 +8,7 @@ import { useState } from "react";
 export default function SettingsModal() {
   const { setCycleSpeed, setGameLength } = useBreathSessionStore();
   const [breathCycleRange, setBreathCycleRange] = useState(3);
-  const [gameLengthRange, setGameLengthRange] = useState(1);
+  // const [gameLengthRange, setGameLengthRange] = useState(1);
 
   function handleBreathCycleRangeChange(
     event: React.ChangeEvent<HTMLInputElement>,
@@ -19,14 +19,14 @@ export default function SettingsModal() {
     setCycleSpeed(cycleSpeed); // update the state
   }
 
-  function handleGameLengthRangeChange(
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) {
-    console.log(event.target.value);
-    const gameLength = parseInt(event.target.value, 10);
-    setGameLengthRange(gameLength); // update the UI
-    setGameLength(gameLength); // update the state
-  }
+  // function handleGameLengthRangeChange(
+  //   event: React.ChangeEvent<HTMLInputElement>,
+  // ) {
+  //   console.log(event.target.value);
+  //   const gameLength = parseInt(event.target.value, 10);
+  //   setGameLengthRange(gameLength); // update the UI
+  //   setGameLength(gameLength); // update the state
+  // }
 
   return (
     <dialog id="settings_modal" className="modal text-left">
@@ -53,7 +53,7 @@ export default function SettingsModal() {
           </div>
         </section>
 
-        <section className="pb-4">
+        {/* <section className="pb-4">
           <span className="mb-2 text-sm text font-semibold">Game minutes</span>
           <input
             onChange={handleGameLengthRangeChange}
@@ -71,7 +71,7 @@ export default function SettingsModal() {
             <span>4</span>
             <span>5</span>
           </div>
-        </section>
+        </section> */}
 
         <section className="pb-4">
           <Link href="/history">
