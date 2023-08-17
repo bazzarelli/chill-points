@@ -32,7 +32,7 @@ export default function HelpModal() {
         {breathCycleCount() > 0 && (
           <section className="mb-4">
             <span className=" text-sm text-slate-800">
-              {breathCycleCount()} breath cycles completed
+              {breathCycleCount()} breath cycles in one minute
             </span>
           </section>
         )}
