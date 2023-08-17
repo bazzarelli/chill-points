@@ -1,10 +1,12 @@
 "use client";
 
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
+import { msg } from "@/app/i18n/frog-msg";
+import Link from "next/link";
 import { useState } from "react";
 
-export default function HelpModal() {
-  const { setCycleSpeed, setGameLength, resetAll } = useBreathSessionStore();
+export default function SettingsModal() {
+  const { setCycleSpeed, setGameLength } = useBreathSessionStore();
   const [breathCycleRange, setBreathCycleRange] = useState(3);
   const [gameLengthRange, setGameLengthRange] = useState(1);
 
@@ -27,12 +29,8 @@ export default function HelpModal() {
   }
 
   return (
-    <dialog id="help_modal" className="modal text-left">
+    <dialog id="settings_modal" className="modal text-left">
       <form method="dialog" className="modal-box">
-        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-          ✕
-        </button>
-
         <h3 className="font-bold text-lg">Game settings</h3>
 
         <section className="py-4">
@@ -76,14 +74,13 @@ export default function HelpModal() {
         </section>
 
         <section className="pb-4">
-          <p className="mb-2 text-sm font-semibold">Erase game history</p>
-          <button
-            onClick={resetAll}
-            className="btn btn-sm btn-primary btn-outline"
-          >
-            Clear History
-          </button>
+          <Link href="/history">
+            <span>{msg.view_history}</span>
+          </Link>
         </section>
+      </form>
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
       </form>
     </dialog>
   );

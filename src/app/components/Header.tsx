@@ -20,8 +20,10 @@ export default async function Header() {
     <div className="navbar bg-info px-4 pt-3 md:px-8">
       <div className="flex-1">
         <Link href="/">
-          <span className={`text-3xl md:text-4xl ${comfortaa.className}`}>
-            Chill Points
+          <span
+            className={`text-3xl md:text-4xl text-sky-800/80 ${comfortaa.className}`}
+          >
+            Chill-a-minute
           </span>
         </Link>
       </div>

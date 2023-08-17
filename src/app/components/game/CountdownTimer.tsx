@@ -9,12 +9,12 @@ type RenderTimeProps = {
 };
 
 const ClockText = function ({ children }: { children: string | ReactNode }) {
-  return <div className="text-4xl text-sky-300/90">{children}</div>;
+  return <div className="text-2xl text-sky-300/70">{children}</div>;
 };
 
 const renderTime = ({ remainingTime }: RenderTimeProps) => {
   if (remainingTime === 0) {
-    return <ClockText>Done</ClockText>;
+    return <ClockText>done</ClockText>;
   }
 
   const minutes = Math.floor(remainingTime / 60);
@@ -42,11 +42,11 @@ export default function CountdownTimer({
       isPlaying={isPlaying}
       duration={duration}
       updateInterval={0}
-      strokeWidth={5}
-      trailStrokeWidth={10}
-      size={160}
+      strokeWidth={3}
+      trailStrokeWidth={8}
+      size={96}
       trailColor={"#1b2533"}
-      colors={"#10b981"}
+      colors={"#4eacd5"}
       onComplete={() => {
         setIsCompleteStatus(true); // set state
         ({ shouldRepeat: false });

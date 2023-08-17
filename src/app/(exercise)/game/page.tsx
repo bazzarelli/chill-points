@@ -3,15 +3,14 @@
 import BreathCountDots from "@/app/components/game/BreathCountDots";
 import CountdownTimer from "@/app/components/game/CountdownTimer";
 import BOX_ANIM from "@/app/components/game/FrogBoxAnim";
+import GameCompleteModal from "@/app/components/game/GameCompleteModal";
 import SettingsModal from "@/app/components/game/SettingsModal";
-import ReplayIcon from "@/app/components/svg/ReplayIcon";
 import SettingsIcon from "@/app/components/svg/SettingsIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import { inter } from "@/app/utils/fonts";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import { motion, useAnimate } from "framer-motion";
-import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
 
@@ -28,7 +27,6 @@ export default function Page() {
     cycleCount,
     cycleSpeed,
     gameLength,
-    sessionsData,
     isCancelled,
     isComplete,
     isInProgress,
@@ -44,10 +42,12 @@ export default function Page() {
   //* when the session is complete
   useEffect(() => {
     if (isComplete) {
-      gameOver.current = true; // set the game over reference
-      setBannerText(msg.finished); // set the banner text
+      // handleFrogAction("cancel");
       setSessionsData(); // save the session data
-      // resetGame(); // reset the game for next play
+      (window as any).game_complete_modal.showModal();
+      handleFrogAction("reset");
+      gameOver.current = true; // set the game over reference
+      // setBannerText(msg.finished); // set the banner text
       setIsInProgressStatus(false); // the session is not in progress
     }
   }, [isComplete]);
@@ -56,6 +56,7 @@ export default function Page() {
     // util to disable some long press browser defaults
     onContextMenuListener();
     handleFrogAction("reset");
+    console.log("game page mounted");
   }, []);
 
   async function handleFrogAction(action: string) {
@@ -75,11 +76,11 @@ export default function Page() {
         break;
       case "release":
         setInhaleTimes(Date.now());
-        !gameOver.current && incrementCycleCount();
+        !isComplete && incrementCycleCount();
         await boxAnimation(cycleSpeed, BOX_ANIM.SHRINK);
         setTimeout(() => {
           !gameOver.current && setBannerText(msg.inhale);
-        }, cycleSpeed * 900);
+        }, cycleSpeed * 1000);
         break;
       case "cancel":
         setBannerText(msg.cancelled);
@@ -134,18 +135,42 @@ export default function Page() {
             className="w-full text-right"
             onClick={() => {
               handleFrogAction("reset");
-              (window as any).help_modal.showModal();
+              (window as any).settings_modal.showModal();
             }}
           >
             <SettingsIcon
               className="mr-4 mt-3 inline-block"
               width={28}
               height={28}
-              fill={`#afe3fa`}
+              fill={`#7be5fa`}
             />
           </button>
+          {/* COUNTDOWN CLOCK */}
+          <div className="mx-auto h-24 w-24">
+            <CountdownTimer
+              isPlaying={isInProgress}
+              duration={gameLength * 60}
+              key={clockKey}
+            />
+          </div>
+          {/* PEARLS */}
+          <div className="my-3 h-6 w-full text-center">
+            {cycleCount ? (
+              <BreathCountDots />
+            ) : (
+              isCancelled && (
+                <button
+                  onClick={() => handleFrogAction("reset")}
+                  className="text-xl text-sky-300/80"
+                >
+                  {msg.restart}
+                </button>
+              )
+            )}
+          </div>
+          {/* BANNER TEXT */}
           <motion.h3
-            className={`mb-4 text-2xl ${
+            className={`my-2 text-2xl ${
               isCancelled ? "text-orange-500/70" : "text-sky-300/70"
             } opacity-0`}
             initial={{ opacity: 0 }}
@@ -153,32 +178,8 @@ export default function Page() {
           >
             {bannerText}
           </motion.h3>
-          {/* THE COUNTDOWN CLOCK */}
-          <div className="mx-auto h-40 w-40">
-            <CountdownTimer
-              isPlaying={isInProgress}
-              duration={gameLength * 60}
-              key={clockKey}
-            />
-          </div>
         </div>
-        {/* THE DOTS */}
-        <div className="my-3 h-6 w-full text-center">
-          {cycleCount ? (
-            <BreathCountDots />
-          ) : (
-            isCancelled && (
-              <button
-                onClick={() => handleFrogAction("reset")}
-                className="text-xl text-sky-300/80"
-              >
-                {msg.restart}
-              </button>
-            )
-          )}
-        </div>
-
-        {/* THE FROG */}
+        {/* FROG */}
         <button
           {...bind()}
           className="relative mx-auto h-48 w-64 bg-[url(/images/buddha-belly-frog-sm.webp)] bg-contain bg-center bg-no-repeat"
@@ -191,32 +192,8 @@ export default function Page() {
         </button>
       </div>
 
-      <div className="w-full text-center mt-4 mx-4">
-        {!isInProgress && sessionsData.length > 0 && (
-          <>
-            <motion.button
-              onClick={() => handleFrogAction("reset")}
-              className="mb-4 btn btn-sm btn-info block mx-auto"
-            >
-              <span className="text-slate-800 text-lg align-middle">
-                {msg.replay}
-              </span>
-              <ReplayIcon
-                className="mr-1 inline-block"
-                width={20}
-                height={20}
-                fill={`rgb(30 41 59)`}
-              />
-            </motion.button>
-            <Link href="/history">
-              <motion.button className="text-xl mb-4 btn btn-sm btn-info">
-                {msg.view_history}
-              </motion.button>
-            </Link>
-          </>
-        )}
-      </div>
       <SettingsModal />
+      <GameCompleteModal />
     </section>
   );
 }
