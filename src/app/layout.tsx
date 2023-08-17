@@ -5,7 +5,7 @@ import "@/app/globals.css";
 import { inter } from "@/app/utils/fonts";
 
 export const metadata = {
-  title: "Chill Points",
+  title: "Chill a minute",
   description: "Learn to chill to optimize your health.",
 };
 
