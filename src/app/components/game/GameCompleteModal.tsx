@@ -39,18 +39,21 @@ export default function HelpModal() {
 
         <section className="mb-4">
           <button
+            className="btn btn-outline btn-sm border-slate-800 text-slate-800"
             onClick={() => {
               setModalOpen(false);
               resetGame();
             }}
           >
-            <span className="text-slate-800 underline">{msg.replay}</span>
+            {msg.replay}
           </button>
         </section>
 
         <section className="mb-4">
           <Link href="/history">
-            <span className="text-slate-800 underline">{msg.view_history}</span>
+            <button className="btn btn-outline btn-sm border-slate-800 text-slate-800">
+              {msg.view_history}
+            </button>
           </Link>
         </section>
       </motion.form>

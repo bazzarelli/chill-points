@@ -6,7 +6,7 @@ import { inter } from "@/app/utils/fonts";
 import Script from "next/script";
 
 export const metadata = {
-  title: "Chill a minute",
+  title: "Chill a minute: home",
   description: "Learn to chill to optimize your health.",
 };
 

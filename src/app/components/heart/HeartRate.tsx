@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 
 type HeartRateProps = {
-  service: BluetoothRemoteGATTService | undefined
-}
+  service: BluetoothRemoteGATTService | undefined;
+};
 
-interface HREvent extends Event {
-  target: HREventTarget
-}
-interface HREventTarget extends EventTarget {
+type HREvent = Event & {
+  target: HREventTarget;
+};
+
+type HREventTarget = EventTarget & {
   value: DataView;
-}
-
+};
 
 function HeartRate({ service }: HeartRateProps) {
   const [hr, setHr] = useState(0);
@@ -25,9 +25,14 @@ function HeartRate({ service }: HeartRateProps) {
   async function setUpHRListener() {
     if (!service) return;
 
-    const heartRateChar = await service.getCharacteristic('heart_rate_measurement');
+    const heartRateChar = await service.getCharacteristic(
+      "heart_rate_measurement",
+    );
 
-    heartRateChar.addEventListener("characteristicvaluechanged", handleHeartRateValueChange);
+    heartRateChar.addEventListener(
+      "characteristicvaluechanged",
+      handleHeartRateValueChange,
+    );
     await heartRateChar.startNotifications();
   }
 
@@ -39,7 +44,7 @@ function HeartRate({ service }: HeartRateProps) {
     <div className="HeartRateGraph font-bold">
       <span>Heart Rate:</span> <span className="text-rose-600"> ❤️ {hr}</span>
     </div>
-  )
+  );
 }
 
 export default HeartRate;
