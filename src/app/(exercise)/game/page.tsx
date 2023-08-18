@@ -7,12 +7,14 @@ import SettingsModal from "@/app/components/game/SettingsModal";
 import SettingsIcon from "@/app/components/svg/SettingsIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
-import BOX_ANIM from "@/app/utils/FrogBoxAnim";
+import BOX_ANIM from "@/app/utils/boxAnimation";
 import { inter } from "@/app/utils/fonts";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import { motion, useAnimate } from "framer-motion";
+import Head from "next/head";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
+import useSound from "use-sound";
 
 type ObjectValues<T> = T[keyof T];
 type BoxAnim = ObjectValues<typeof BOX_ANIM>;
@@ -21,6 +23,7 @@ export default function Page() {
   const [boxscope, animate] = useAnimate();
   const [bannerText, setBannerText] = useState(msg.welcome);
   const [clockKey, setClockKey] = useState(0);
+  const [playBellSound] = useSound("/sounds/notification-bell.mp3");
   const gameOver = useRef(false);
 
   const {
@@ -78,6 +81,7 @@ export default function Page() {
         setInhaleTimes(Date.now());
         !isComplete && incrementCycleCount();
         await boxAnimation(cycleSpeed, BOX_ANIM.SHRINK);
+        playBellSound();
         setTimeout(() => {
           !gameOver.current && setBannerText(msg.inhale);
         }, cycleSpeed * 1000);
@@ -129,6 +133,9 @@ export default function Page() {
     <section
       className={`${inter.className} flex flex-wrap text-center  text-slate-900`}
     >
+      <Head>
+        <title>Chill a minute: game</title>
+      </Head>
       <div className="w-full touch-none bg-gradient-to-b from-slate-700 via-sky-600 via-70% to-slate-700/20">
         <div className="mx-auto md:w-1/3">
           <button
