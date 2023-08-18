@@ -2,12 +2,12 @@
 
 import BreathCountDots from "@/app/components/game/BreathCountDots";
 import CountdownTimer from "@/app/components/game/CountdownTimer";
-import BOX_ANIM from "@/app/components/game/FrogBoxAnim";
 import GameCompleteModal from "@/app/components/game/GameCompleteModal";
 import SettingsModal from "@/app/components/game/SettingsModal";
 import SettingsIcon from "@/app/components/svg/SettingsIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
+import BOX_ANIM from "@/app/utils/FrogBoxAnim";
 import { inter } from "@/app/utils/fonts";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import { motion, useAnimate } from "framer-motion";
