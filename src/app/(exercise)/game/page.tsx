@@ -7,8 +7,8 @@ import SettingsModal from "@/app/components/game/SettingsModal";
 import SettingsIcon from "@/app/components/svg/SettingsIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
+import BOX_ANIM from "@/app/utils/boxAnimation";
 import { inter } from "@/app/utils/fonts";
-import BOX_ANIM from "@/app/utils/frogBoxAnim";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import { motion, useAnimate } from "framer-motion";
 import Head from "next/head";
@@ -152,8 +152,6 @@ export default function Page() {
               fill={`#7be5fa`}
             />
           </button>
-          {/* <audio src="/sounds/notification-bell.mp3" controls /> */}
-
           {/* COUNTDOWN CLOCK */}
           <div className="mx-auto h-24 w-24">
             <CountdownTimer
