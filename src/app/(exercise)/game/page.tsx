@@ -23,11 +23,12 @@ export default function Page() {
   const [boxscope, animate] = useAnimate();
   const [bannerText, setBannerText] = useState(msg.welcome);
   const [clockKey, setClockKey] = useState(0);
-  const [playBellSound] = useSound("/sounds/notification-bell.mp3");
+  const [playBellSound] = useSound("/sounds/notification-bell.mp3", {
+    volume: 0.85,
+  });
   const gameOver = useRef(false);
 
   const {
-    cycleCount,
     cycleSpeed,
     gameLength,
     isCancelled,
@@ -45,12 +46,11 @@ export default function Page() {
   //* when the session is complete
   useEffect(() => {
     if (isComplete) {
-      // handleFrogAction("cancel");
       setSessionsData(); // save the session data
       (window as any).game_complete_modal.showModal();
-      handleFrogAction("reset");
+      // handleFrogAction("reset");
       gameOver.current = true; // set the game over reference
-      // setBannerText(msg.finished); // set the banner text
+      setBannerText(msg.finished); // set the banner text
       setIsInProgressStatus(false); // the session is not in progress
     }
   }, [isComplete]);
@@ -160,24 +160,9 @@ export default function Page() {
               key={clockKey}
             />
           </div>
-          {/* PEARLS */}
-          <div className="my-3 h-6 w-full text-center">
-            {cycleCount ? (
-              <BreathCountDots />
-            ) : (
-              isCancelled && (
-                <button
-                  onClick={() => handleFrogAction("reset")}
-                  className="text-xl text-sky-300/80"
-                >
-                  {msg.restart}
-                </button>
-              )
-            )}
-          </div>
           {/* BANNER TEXT */}
           <motion.h3
-            className={`my-2 text-2xl ${
+            className={`mt-2 text-2xl ${
               isCancelled ? "text-orange-500/70" : "text-sky-300/70"
             } opacity-0`}
             initial={{ opacity: 0 }}
@@ -185,16 +170,29 @@ export default function Page() {
           >
             {bannerText}
           </motion.h3>
+          {/* COMPLETION PEARLS */}
+          <div className="mt-2 h-6 w-full text-center">
+            {isCancelled ? (
+              <button
+                onClick={() => handleFrogAction("reset")}
+                className="text-xl text-sky-300/80"
+              >
+                {msg.restart}
+              </button>
+            ) : (
+              <BreathCountDots />
+            )}
+          </div>
         </div>
         {/* FROG */}
         <button
           {...bind()}
-          className="relative mx-auto h-48 w-64 bg-[url(/images/buddha-belly-frog-sm.webp)] bg-contain bg-center bg-no-repeat"
+          className="relative mt-5 mx-auto h-48 w-64 bg-[url(/images/buddha-belly-frog-sm.webp)] bg-contain bg-center bg-no-repeat"
           id="frog-box"
         >
           <div
             ref={boxscope}
-            className="absolute bottom-0 left-0 right-0 h-1 bg-sky-300/50"
+            className="absolute bottom-0 left-0 right-0 h-1 bg-sky-300/50 rounded-sm"
           ></div>
         </button>
       </div>
