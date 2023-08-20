@@ -9,7 +9,7 @@ export default function Home() {
     <main
       className={`${inter.className} w-96 mx-auto mt-1 md:mt-12 text-slate-400 p-4`}
     >
-      <h1 className="text-xl mb-4">{msg.intro_hook}</h1>
+      <h1 className="text-2xl mb-4">{msg.intro_hook}</h1>
 
       <Link href="/game">
         <button className="btn btn-sm btn-info drop-shadow-md">

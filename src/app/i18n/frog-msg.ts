@@ -1,5 +1,5 @@
 export const msg = {
-  intro_hook: "Unwind with a quick and calming breathing game.",
+  intro_hook: "Unwind with a quick and calming breath game.",
   welcome: "Press & hold frog to begin",
   inhale: "press + inhale",
   exhale: "release + exhale",

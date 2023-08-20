@@ -2,7 +2,6 @@
 
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
-import { motion } from "framer-motion";
 
 export default function HelpModal() {
   const { sessionsData } = useBreathSessionStore();
@@ -15,15 +14,10 @@ export default function HelpModal() {
 
   return (
     <dialog id="game_complete_modal" className="modal text-left">
-      <motion.form
-        method="dialog"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="modal-box bg-sky-300/90"
-      >
+      <form method="dialog" className="modal-box bg-sky-300/90">
         {breathCycleCount() > 0 && (
-          <section className="mb-4">
-            <button className="btn btn-circle text-slate-200 border-none text-2xl font-semibold bg-sky-700/80 mr-1">
+          <section>
+            <button className="btn btn-circle text-slate-200 border-none text-2xl font-semibold bg-sky-700/80 mr-2">
               {breathCycleCount()}
             </button>
             <span className="text-lg text-slate-800">
@@ -31,7 +25,7 @@ export default function HelpModal() {
             </span>
           </section>
         )}
-      </motion.form>
+      </form>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>
       </form>
