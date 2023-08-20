@@ -3,13 +3,9 @@
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import { motion } from "framer-motion";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export default function HelpModal() {
   const { sessionsData } = useBreathSessionStore();
-  const [modalOpen, setModalOpen] = useState(true);
 
   function breathCycleCount() {
     return sessionsData.length > 0
@@ -17,19 +13,13 @@ export default function HelpModal() {
       : 0;
   }
 
-  const router = useRouter();
-  const handleRefresh = () => router.refresh();
-
   return (
-    <dialog
-      id="game_complete_modal"
-      className={`modal text-left {modalOpen && "modal-open"}`}
-    >
+    <dialog id="game_complete_modal" className="modal text-left">
       <motion.form
         method="dialog"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="modal-box bg-sky-300/80"
+        className="modal-box bg-sky-300/90"
       >
         {breathCycleCount() > 0 && (
           <section className="mb-4">
@@ -37,30 +27,10 @@ export default function HelpModal() {
               {breathCycleCount()}
             </button>
             <span className="text-lg text-slate-800">
-              breath cycles completed
+              {msg.breath_cycles_completed}
             </span>
           </section>
         )}
-
-        <section className="mb-4">
-          <button
-            className="btn btn-outline btn-sm border-slate-800 text-slate-800"
-            onClick={() => {
-              handleRefresh();
-              setModalOpen(false);
-            }}
-          >
-            {msg.replay}
-          </button>
-        </section>
-
-        <section className="mb-4">
-          <Link href="/history">
-            <button className="btn btn-outline btn-sm border-slate-800 text-slate-800">
-              {msg.view_history}
-            </button>
-          </Link>
-        </section>
       </motion.form>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>

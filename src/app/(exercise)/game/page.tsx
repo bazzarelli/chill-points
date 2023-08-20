@@ -4,6 +4,7 @@ import BreathCountDots from "@/app/components/game/BreathCountDots";
 import CountdownTimer from "@/app/components/game/CountdownTimer";
 import GameCompleteModal from "@/app/components/game/GameCompleteModal";
 import SettingsModal from "@/app/components/game/SettingsModal";
+import ReplayIcon from "@/app/components/svg/ReplayIcon";
 import SettingsIcon from "@/app/components/svg/SettingsIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
@@ -29,8 +30,7 @@ export default function Page() {
   const gameOver = useRef(false);
 
   const {
-    cycleSpeed,
-    gameLength,
+    userPreferences: { cycleSpeed, gameLength },
     isCancelled,
     isComplete,
     isInProgress,
@@ -62,9 +62,9 @@ export default function Page() {
     console.log("game page mounted");
   }, []);
 
-  async function handleFrogAction(action: string) {
-    const boxAnimation = (duration: number, boxAnim: BoxAnim) => {
-      animate(boxscope.current, { ...boxAnim }, { duration: duration });
+  function handleFrogAction(action: string) {
+    const animation = (duration: number, boxAnim: BoxAnim) => {
+      return animate(boxscope.current, { ...boxAnim }, { duration: duration });
     };
 
     switch (action) {
@@ -75,23 +75,22 @@ export default function Page() {
         setInhaleTimes(Date.now());
         setIsCancelledStatus(false);
         setIsInProgressStatus(true);
-        boxAnimation(cycleSpeed, BOX_ANIM.GROW);
+        animation(cycleSpeed, BOX_ANIM.GROW);
         break;
       case "release":
         setInhaleTimes(Date.now());
         !isComplete && incrementCycleCount();
-        await boxAnimation(cycleSpeed, BOX_ANIM.SHRINK);
         playBellSound();
-        setTimeout(() => {
+        animation(cycleSpeed, BOX_ANIM.SHRINK).then(() => {
           !gameOver.current && setBannerText(msg.inhale);
-        }, cycleSpeed * 1000);
+        });
         break;
       case "cancel":
         setBannerText(msg.cancelled);
         setIsInProgressStatus(false);
         resetCycleCount();
         setIsCancelledStatus(true);
-        boxAnimation(1, BOX_ANIM.CANCEL);
+        animation(1, BOX_ANIM.CANCEL);
         break;
       case "reset":
         resetGame();
@@ -99,10 +98,10 @@ export default function Page() {
         setBannerText(msg.welcome);
         setClockKey((prevKey) => prevKey + 1); // key to reset the clock
         setIsInProgressStatus(false);
-        boxAnimation(1, BOX_ANIM.RESET);
+        animation(1, BOX_ANIM.RESET);
         break;
       case "disable":
-        boxAnimation(1, BOX_ANIM.CANCEL);
+        animation(1, BOX_ANIM.CANCEL);
         break;
       default:
         break;
@@ -122,7 +121,7 @@ export default function Page() {
       isCancelled ? handleFrogAction("disable") : handleFrogAction("start");
     },
     onFinish: (event) => handleFrogAction("release"),
-    onCancel: (event) => handleFrogAction("cancel"),
+    onCancel: (event) => !isInProgress && handleFrogAction("cancel"),
     filterEvents: (event) => true, // All events can potentially trigger long press
     threshold: cycleSpeed * 1000, // Time threshold before long press callback is fired
     captureEvent: true, // Capture event on the target element, not the child elements
@@ -138,20 +137,35 @@ export default function Page() {
       </Head>
       <div className="w-full touch-none bg-gradient-to-b from-slate-700 via-sky-600 via-70% to-slate-700/20">
         <div className="mx-auto md:w-1/3">
-          <button
-            className="w-full text-right"
-            onClick={() => {
-              handleFrogAction("reset");
-              (window as any).settings_modal.showModal();
-            }}
-          >
-            <SettingsIcon
-              className="mr-4 mt-3 inline-block"
-              width={28}
-              height={28}
-              fill={`#7be5fa`}
-            />
-          </button>
+          <div className="flex">
+            <button
+              className="w-1/2 text-left"
+              onClick={() => {
+                handleFrogAction("reset");
+              }}
+            >
+              <ReplayIcon
+                className="ml-4 mt-3 inline-block"
+                width={28}
+                height={28}
+                fill={`rgba(123, 229, 250, .65)`}
+              />
+            </button>
+            <button
+              className="w-1/2 text-right"
+              onClick={() => {
+                handleFrogAction("reset");
+                (window as any).settings_modal.showModal();
+              }}
+            >
+              <SettingsIcon
+                className="mr-4 mt-3 inline-block"
+                width={28}
+                height={28}
+                fill={`rgba(123, 229, 250, .65)`}
+              />
+            </button>
+          </div>
           {/* COUNTDOWN CLOCK */}
           <div className="mx-auto h-24 w-24">
             <CountdownTimer
