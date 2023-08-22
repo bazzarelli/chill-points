@@ -6,14 +6,13 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function SettingsModal() {
-  const { setCycleSpeed, setGameLength, userPreferences } =
-    useBreathSessionStore();
-  const [breathCycleRange, setBreathCycleRange] = useState(
-    userPreferences.cycleSpeed,
-  );
-  const [gameLengthRange, setGameLengthRange] = useState(
-    userPreferences.gameLength,
-  );
+  const {
+    setCycleSpeed,
+    setGameLength,
+    userPreferences: { cycleSpeed, gameLength },
+  } = useBreathSessionStore();
+  const [breathCycleRange, setBreathCycleRange] = useState(cycleSpeed);
+  const [gameLengthRange, setGameLengthRange] = useState(gameLength);
 
   function handleBreathCycleRangeChange(
     event: React.ChangeEvent<HTMLInputElement>,

@@ -1,4 +1,4 @@
-import { options } from "@/app/api/auth/[...nextauth]/options";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { comfortaa } from "@/app/utils/fonts";
 import { getServerSession } from "next-auth/next";
 import Image from "next/image";
@@ -7,10 +7,10 @@ import Link from "next/link";
 // import { redirect } from "next/navigation";
 
 export default async function Header() {
-  const session = await getServerSession(options);
+  const session = await getServerSession(authOptions);
 
   // if (!session) {
-  //   redirect("/api/auth/signin?callbackUrl=/server");
+  //   redirect("/api/auth/signin?callbackUrl=/");
   // }
 
   const userImage = session?.user?.image || "";
@@ -41,16 +41,19 @@ export default async function Header() {
           </label>
           <ul
             tabIndex={0}
-            className="dropdown-content menu rounded-box menu-sm z-10 mt-3 w-52 p-2 shadow bg-info"
+            className="dropdown-content menu rounded-md menu-md z-10 mt-4 w-52 p-2 shadow-2xl bg-sky-600 text-slate-300"
           >
             <li>
-              <a>Pair Device</a>
+              <Link href="/history">History</Link>
             </li>
             <li>
-              <a>Install App</a>
+              <a>Badge Locker</a>
             </li>
             <li>
-              <Link href="/api/auth/signout">Logout</Link>
+              <Link href="/api/auth/signin">Github Signin</Link>
+            </li>
+            <li>
+              <Link href="/api/auth/signout">Signout</Link>
             </li>
           </ul>
         </div>

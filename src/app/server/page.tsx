@@ -1,10 +1,10 @@
-import { options } from "@/app/api/auth/[...nextauth]/options";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import UserCard from "@/app/components/UserCard";
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 
 export default async function ServerPage() {
-  const session = await getServerSession(options);
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     redirect("/api/auth/signin?callbackUrl=/server");

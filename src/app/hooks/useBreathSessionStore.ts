@@ -1,18 +1,16 @@
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
-type UserPreferences = {
-  cycleSpeed: number;
-  gameLength: number;
-};
-
 type InitialGameState = {
   cycleCount: number;
   inhaleTimes: number[];
   isComplete: boolean;
   isInProgress: boolean;
   isCancelled: boolean;
-  userPreferences: UserPreferences;
+  userPreferences: {
+    cycleSpeed: number;
+    gameLength: number;
+  };
 };
 
 type NewGameState = {
@@ -28,7 +26,6 @@ type SessionsData = {
     date: string;
     inhaleTimes: number[];
     cycleCount: number;
-    id: number;
   }[];
 };
 
@@ -81,16 +78,17 @@ export const useBreathSessionStore = create<
           set(() => ({
             userPreferences: {
               ...get().userPreferences,
-              cycleSpeed: cycleSpeed,
+              cycleSpeed,
             },
           })),
         setGameLength: (gameLength) =>
           set(() => ({
             userPreferences: {
               ...get().userPreferences,
-              gameLength: gameLength,
+              gameLength,
             },
           })),
+
         setInhaleTimes: (inhaleTimes) =>
           set((state) => ({
             inhaleTimes: [...state.inhaleTimes, inhaleTimes],
@@ -107,7 +105,6 @@ export const useBreathSessionStore = create<
                 }),
                 inhaleTimes: get().inhaleTimes,
                 cycleCount: get().cycleCount,
-                id: Date.now(),
               },
             ],
           })),
