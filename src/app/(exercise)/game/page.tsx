@@ -24,13 +24,14 @@ export default function Page() {
   const [boxscope, animate] = useAnimate();
   const [bannerText, setBannerText] = useState(msg.welcome);
   const [clockKey, setClockKey] = useState(0);
-  const [playBellSound] = useSound("/sounds/notification-bell.mp3", {
-    volume: 0.85,
+  const [playBellSound] = useSound("/sounds/retro-award.mp3", {
+    volume: 0.75,
   });
   const gameOver = useRef(false);
 
   const {
-    userPreferences: { cycleSpeed, gameLength },
+    userCycleSpeed,
+    userGameLength,
     isCancelled,
     isComplete,
     isInProgress,
@@ -75,13 +76,13 @@ export default function Page() {
         setInhaleTimes(Date.now());
         setIsCancelledStatus(false);
         setIsInProgressStatus(true);
-        animation(cycleSpeed, BOX_ANIM.GROW);
+        animation(userCycleSpeed, BOX_ANIM.GROW);
         break;
       case "release":
         setInhaleTimes(Date.now());
         !isComplete && incrementCycleCount();
         playBellSound();
-        animation(cycleSpeed, BOX_ANIM.SHRINK).then(() => {
+        animation(userCycleSpeed, BOX_ANIM.SHRINK).then(() => {
           !gameOver.current && setBannerText(msg.inhale);
         });
         break;
@@ -123,7 +124,7 @@ export default function Page() {
     onFinish: (event) => handleFrogAction("release"),
     onCancel: (event) => !isInProgress && handleFrogAction("cancel"),
     filterEvents: (event) => true, // All events can potentially trigger long press
-    threshold: cycleSpeed * 1000, // Time threshold before long press callback is fired
+    threshold: userCycleSpeed * 1000, // Time threshold before long press callback is fired
     captureEvent: true, // Capture event on the target element, not the child elements
     cancelOnMovement: false,
   });
@@ -170,7 +171,7 @@ export default function Page() {
           <div className="mx-auto h-24 w-24">
             <CountdownTimer
               isPlaying={isInProgress}
-              duration={gameLength * 60}
+              duration={userGameLength * 60}
               key={clockKey}
             />
           </div>
