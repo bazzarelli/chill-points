@@ -11,4 +11,6 @@ export const msg = {
   back: "back",
   start: "start",
   breath_cycles_completed: "Breath cycles completed",
+  chillpoints_earned: "Chillpoints earned",
+  chillpoint_earned: "Chillpoint earned",
 };

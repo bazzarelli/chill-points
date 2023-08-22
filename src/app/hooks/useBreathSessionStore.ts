@@ -1,18 +1,14 @@
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
-type UserPreferences = {
-  cycleSpeed: number;
-  gameLength: number;
-};
-
 type InitialGameState = {
   cycleCount: number;
   inhaleTimes: number[];
   isComplete: boolean;
   isInProgress: boolean;
   isCancelled: boolean;
-  userPreferences: UserPreferences;
+  userCycleSpeed: number;
+  userGameLength: number;
 };
 
 type NewGameState = {
@@ -29,14 +25,15 @@ type SessionsData = {
     inhaleTimes: number[];
     cycleCount: number;
     id: number;
+    minutes: number;
   }[];
 };
 
 type Actions = {
   incrementCycleCount: () => void;
   resetCycleCount: () => void;
-  setCycleSpeed: (cycleSpeed: number) => void;
-  setGameLength: (gameLength: number) => void;
+  setUserCycleSpeed: (userCycleSpeed: number) => void;
+  setUserGameLength: (userGameLength: number) => void;
   setInhaleTimes: (inhaleTimes: number) => void;
   setSessionsData: () => void;
   setIsCompleteStatus: (isComplete: boolean) => void;
@@ -47,16 +44,14 @@ type Actions = {
 };
 
 const initialGameState: InitialGameState & SessionsData = {
-  userPreferences: {
-    cycleSpeed: 3,
-    gameLength: 1,
-  },
   cycleCount: 0,
   inhaleTimes: [],
   isComplete: false,
   isCancelled: false,
   isInProgress: false,
   sessionsData: [],
+  userCycleSpeed: 3, // don't reset this
+  userGameLength: 1, // don't reset this
 };
 
 const newGameState: NewGameState = {
@@ -77,20 +72,8 @@ export const useBreathSessionStore = create<
         incrementCycleCount: () =>
           set((state) => ({ cycleCount: state.cycleCount + 1 })),
         resetCycleCount: () => set(() => ({ cycleCount: 0 })),
-        setCycleSpeed: (cycleSpeed) =>
-          set(() => ({
-            userPreferences: {
-              ...get().userPreferences,
-              cycleSpeed: cycleSpeed,
-            },
-          })),
-        setGameLength: (gameLength) =>
-          set(() => ({
-            userPreferences: {
-              ...get().userPreferences,
-              gameLength: gameLength,
-            },
-          })),
+        setUserCycleSpeed: (userCycleSpeed) => set(() => ({ userCycleSpeed })),
+        setUserGameLength: (userGameLength) => set(() => ({ userGameLength })),
         setInhaleTimes: (inhaleTimes) =>
           set((state) => ({
             inhaleTimes: [...state.inhaleTimes, inhaleTimes],
@@ -108,6 +91,7 @@ export const useBreathSessionStore = create<
                 inhaleTimes: get().inhaleTimes,
                 cycleCount: get().cycleCount,
                 id: Date.now(),
+                minutes: get().userGameLength,
               },
             ],
           })),
@@ -118,7 +102,15 @@ export const useBreathSessionStore = create<
         setIsInProgressStatus: (isInProgress) =>
           set(() => ({ isInProgress: isInProgress })),
         resetGame: () => set(newGameState),
-        resetAll: () => set(initialGameState),
+        resetAll: () =>
+          set(() => ({
+            cycleCount: 0,
+            inhaleTimes: [],
+            isComplete: false,
+            isCancelled: false,
+            isInProgress: false,
+            sessionsData: [],
+          })),
       }),
       {
         name: "breath-session-storage",
