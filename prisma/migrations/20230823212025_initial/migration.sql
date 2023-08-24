@@ -41,6 +41,27 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
+CREATE TABLE "UserGamePreference" (
+    "id" SERIAL NOT NULL,
+    "userId" TEXT NOT NULL,
+    "userCycleSpeed" INTEGER NOT NULL,
+    "userGameLength" INTEGER NOT NULL,
+
+    CONSTRAINT "UserGamePreference_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "GameSession" (
+    "id" SERIAL NOT NULL,
+    "userId" TEXT NOT NULL,
+    "gameName" TEXT NOT NULL,
+    "inhaleTimes" INTEGER[],
+    "cycleCount" INTEGER NOT NULL,
+
+    CONSTRAINT "GameSession_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "VerificationToken" (
     "identifier" TEXT NOT NULL,
     "token" TEXT NOT NULL,
@@ -57,6 +78,9 @@ CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "GameSession_gameName_key" ON "GameSession"("gameName");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token");
 
 -- CreateIndex
@@ -67,3 +91,9 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserGamePreference" ADD CONSTRAINT "UserGamePreference_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "GameSession" ADD CONSTRAINT "GameSession_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

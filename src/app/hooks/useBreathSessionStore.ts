@@ -7,6 +7,7 @@ type InitialGameState = {
   isComplete: boolean;
   isInProgress: boolean;
   isCancelled: boolean;
+  gameName: string;
   userCycleSpeed: number;
   userGameLength: number;
 };
@@ -49,6 +50,7 @@ const initialGameState: InitialGameState & SessionsData = {
   isCancelled: false,
   isInProgress: false,
   sessionsData: [],
+  gameName: "Equal Breathing",
   userCycleSpeed: 3,
   userGameLength: 1,
 };

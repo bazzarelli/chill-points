@@ -20,14 +20,14 @@ function GameInstructions() {
           Keep your finger on the frog during inhales and off during exhales.
         </li>
       </ul>
-      <figure className="relative mt-6 mb-3 w-[200px] mx-auto">
+      <figure className="relative mt-6 mb-3 w-[240px] mx-auto">
         <Link href="/game">
           <Image
             alt="Screen capture of the game"
             src="/images/game-screen-cap.jpg"
-            width="869"
-            height="664"
-            className="border border-info rounded-md"
+            width="435"
+            height="332"
+            className="border border-info"
           />
         </Link>
         <figcaption className="text-6xl absolute left-20 bottom-0">
