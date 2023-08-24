@@ -31,10 +31,10 @@ export default function HistoryList() {
                   key={session.date}
                   className="flex border border-b-0 border-slate-400 bg-gray-200 py-1 text-gray-500"
                 >
-                  <div className="h-5 w-4/12 pl-2">{session.date}</div>
-                  <div className="h-5 w-3/12">{session.cycleCount} bpm</div>
-                  <div className="h-5 w-3/12">{session.minutes}</div>
-                  <div className="h-5 w-2/12 pr-2 text-right">
+                  <div className="h-7 w-4/12 pl-2">{session.date}</div>
+                  <div className="h-7 w-3/12">{session.cycleCount} bpm</div>
+                  <div className="h-7 w-3/12">{session.minutes}</div>
+                  <div className="h-7 w-2/12 pr-2 text-right">
                     <RarrowIcon
                       className="inline-block"
                       width={15}

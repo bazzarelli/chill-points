@@ -43,15 +43,17 @@ export default async function Header() {
             tabIndex={0}
             className="dropdown-content menu rounded-md menu-md z-10 mt-4 w-52 p-2 shadow-2xl bg-sky-600 text-slate-300"
           >
-            <li>Awards Locker</li>
             <li>
               <Link href="/history">Game History</Link>
             </li>
             <li>
-              <Link href="/api/auth/signin">Github Signin</Link>
+              <Link href="/profile">Profile</Link>
             </li>
             <li>
-              <Link href="/api/auth/signout">Signout</Link>
+              <Link href="/api/auth/signin">Github Sign in</Link>
+            </li>
+            <li>
+              <Link href="/api/auth/signout">Github Sign out</Link>
             </li>
           </ul>
         </div>

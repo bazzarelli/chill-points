@@ -1,4 +1,4 @@
-import { options } from "@/app/api/auth/[...nextauth]/options";
+// import { options } from "@/app/api/auth/[...nextauth]/options";
 import Home from "@/app/components/Home";
 
 // import { getServerSession } from "next-auth/next";

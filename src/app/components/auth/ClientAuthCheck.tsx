@@ -2,18 +2,14 @@
 
 import { useSession } from "next-auth/react";
 
-type Props = {
-  children: React.ReactNode;
-};
-
-export default function AuthCheck({ children }: Props) {
+export default function AuthCheck({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
 
   console.log(session, status);
 
   if (status === "authenticated") {
-    return <></>;
+    return <>{children}</>;
   } else {
-    return <>Not logged in to see this</>;
+    return <>Login required to see this</>;
   }
 }
