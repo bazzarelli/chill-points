@@ -23,7 +23,7 @@ export default async function Header() {
           <span
             className={`text-3xl md:text-4xl text-sky-800/80 ${comfortaa.className}`}
           >
-            Chill-a-minute
+            Chill a minute
           </span>
         </Link>
       </div>
@@ -43,11 +43,9 @@ export default async function Header() {
             tabIndex={0}
             className="dropdown-content menu rounded-md menu-md z-10 mt-4 w-52 p-2 shadow-2xl bg-sky-600 text-slate-300"
           >
+            <li>Awards Locker</li>
             <li>
-              <Link href="/history">History</Link>
-            </li>
-            <li>
-              <a>Badge Locker</a>
+              <Link href="/history">Game History</Link>
             </li>
             <li>
               <Link href="/api/auth/signin">Github Signin</Link>
