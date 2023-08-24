@@ -24,8 +24,11 @@ export default function Page() {
   const [boxscope, animate] = useAnimate();
   const [bannerText, setBannerText] = useState(msg.welcome);
   const [clockKey, setClockKey] = useState(0);
-  const [playBellSound] = useSound("/sounds/retro-award.mp3", {
+  const [playAwardSound] = useSound("/sounds/retro-award.mp3", {
     volume: 0.75,
+  });
+  const [playErrorSound] = useSound("/sounds/retro-error.mp3", {
+    volume: 0.5,
   });
   const gameOver = useRef(false);
 
@@ -81,13 +84,14 @@ export default function Page() {
       case "release":
         setInhaleTimes(Date.now());
         !isComplete && incrementCycleCount();
-        playBellSound();
+        playAwardSound();
         animation(userCycleSpeed, BOX_ANIM.SHRINK).then(() => {
           !gameOver.current && setBannerText(msg.inhale);
         });
         break;
       case "cancel":
         setBannerText(msg.cancelled);
+        playErrorSound();
         setIsInProgressStatus(false);
         resetCycleCount();
         setIsCancelledStatus(true);
@@ -122,7 +126,7 @@ export default function Page() {
       isCancelled ? handleFrogAction("disable") : handleFrogAction("start");
     },
     onFinish: (event) => handleFrogAction("release"),
-    onCancel: (event) => !isInProgress && handleFrogAction("cancel"),
+    onCancel: (event) => handleFrogAction("cancel"),
     filterEvents: (event) => true, // All events can potentially trigger long press
     threshold: userCycleSpeed * 1000, // Time threshold before long press callback is fired
     captureEvent: true, // Capture event on the target element, not the child elements
