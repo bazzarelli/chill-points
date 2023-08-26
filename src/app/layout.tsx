@@ -10,11 +10,11 @@ export const metadata = {
   description: "Learn to chill to optimize your health.",
 };
 
-export default function RootLayout({
-  children,
-}: {
+type Props = {
   children: React.ReactNode;
-}) {
+};
+
+export default function RootLayout({ children }: Props) {
   return (
     <html lang="en" data-theme="dracula">
       <link rel="manifest" href="/manifest.json" />

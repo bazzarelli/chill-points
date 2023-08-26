@@ -21,4 +21,8 @@ const BOX_ANIM = {
   },
 } as const;
 
+type ObjectValues<T> = T[keyof T];
+type BoxAnim = ObjectValues<typeof BOX_ANIM>;
+export type { ObjectValues, BoxAnim };
+
 export default BOX_ANIM;

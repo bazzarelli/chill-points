@@ -5,27 +5,16 @@ import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 
 export default function HelpModal() {
-  const { sessionsData } = useBreathSessionStore();
-
-  function breathCycleCount() {
-    return sessionsData.length > 0
-      ? sessionsData[sessionsData.length - 1].cycleCount
-      : 0;
-  }
-
-  function chillPointsCount() {
-    return sessionsData.length > 0
-      ? sessionsData[sessionsData.length - 1].minutes
-      : 0;
-  }
+  const { cycleCount, userGameLength, gameName } = useBreathSessionStore();
 
   return (
     <dialog id="game_complete_modal" className="modal text-left">
       <form method="dialog" className="modal-box bg-sky-300/90">
-        {breathCycleCount() > 0 && (
+        {cycleCount > 0 && (
           <div className="grid grid-cols-6 gap-4 gap-x-0">
+            <h2 className="text-xl text-slate-800 col-span-6">{`${gameName} exercise`}</h2>
             <button className="btn btn-sm btn-circle text-slate-200 border-none text-xl font-semibold bg-sky-700/80 mr-2">
-              {breathCycleCount()}
+              {cycleCount}
             </button>
             <span className="text-lg text-slate-800 col-span-5">
               {msg.breath_cycles_completed}
@@ -34,15 +23,15 @@ export default function HelpModal() {
               <SnowflakeIcon width={32} height={32} fill={`rgb(226 232 240)`} />
             </button>
             <span className="text-lg text-slate-800 col-span-5">
-              {chillPointsCount()}{" "}
-              {chillPointsCount() > 1
+              {userGameLength}{" "}
+              {userGameLength > 1
                 ? msg.chillpoints_earned
                 : msg.chillpoint_earned}
             </span>
           </div>
         )}
       </form>
-      <form method="dialog" className="modal-backdrop bg-slate-950/40">
+      <form method="dialog" className="modal-backdrop bg-slate-950/30">
         <button>close</button>
       </form>
     </dialog>

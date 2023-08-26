@@ -8,7 +8,7 @@ import ReplayIcon from "@/app/components/svg/ReplayIcon";
 import SettingsIcon from "@/app/components/svg/SettingsIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
-import BOX_ANIM from "@/app/utils/boxAnimation";
+import BOX_ANIM, { BoxAnim } from "@/app/utils/boxAnimation";
 import { inter } from "@/app/utils/fonts";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import { motion, useAnimate } from "framer-motion";
@@ -17,10 +17,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
 import useSound from "use-sound";
 
-type ObjectValues<T> = T[keyof T];
-type BoxAnim = ObjectValues<typeof BOX_ANIM>;
-
 export default function Page() {
+  const HUMAN_DELAY = 0.3;
   const [boxscope, animate] = useAnimate();
   const [bannerText, setBannerText] = useState(msg.welcome);
   const [clockKey, setClockKey] = useState(0);
@@ -38,29 +36,46 @@ export default function Page() {
     isCancelled,
     isComplete,
     isInProgress,
+    gameName,
+    inhaleTimes,
+    cycleCount,
     incrementCycleCount,
     resetGame,
     resetCycleCount,
     setInhaleTimes,
     setIsInProgressStatus,
     setIsCancelledStatus,
-    setSessionsData,
   } = useBreathSessionStore();
+
+  async function dbSaveSessionData() {
+    const res = await fetch("/game/api", {
+      method: "POST",
+      body: JSON.stringify({
+        gameName,
+        inhaleTimes,
+        cycleCount,
+        gameLength: userGameLength,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
 
   //* when the session is complete
   useEffect(() => {
     if (isComplete) {
-      setSessionsData(); // save the session data
-      (window as any).game_complete_modal.showModal();
-      // handleFrogAction("reset");
+      cycleCount && dbSaveSessionData(); // save the session data to db
       gameOver.current = true; // set the game over reference
-      setBannerText(msg.finished); // set the banner text
       setIsInProgressStatus(false); // the session is not in progress
+      handleFrogAction("release");
+      (window as any).game_complete_modal.showModal();
+      setBannerText(msg.finished); // set the banner text
     }
   }, [isComplete]);
 
   useEffect(() => {
-    // util to disable some long press browser defaults
+    // disable long press browser defaults
     onContextMenuListener();
     handleFrogAction("reset");
     console.log("game page mounted");
@@ -79,13 +94,15 @@ export default function Page() {
         setInhaleTimes(Date.now());
         setIsCancelledStatus(false);
         setIsInProgressStatus(true);
-        animation(userCycleSpeed, BOX_ANIM.GROW);
+        animation(userCycleSpeed - HUMAN_DELAY, BOX_ANIM.GROW);
         break;
       case "release":
         setInhaleTimes(Date.now());
-        !isComplete && incrementCycleCount();
-        playAwardSound();
-        animation(userCycleSpeed, BOX_ANIM.SHRINK).then(() => {
+        if (!isComplete) {
+          incrementCycleCount();
+          playAwardSound();
+        }
+        animation(userCycleSpeed - HUMAN_DELAY, BOX_ANIM.SHRINK).then(() => {
           !gameOver.current && setBannerText(msg.inhale);
         });
         break;
@@ -125,8 +142,14 @@ export default function Page() {
       if (isComplete) return;
       isCancelled ? handleFrogAction("disable") : handleFrogAction("start");
     },
-    onFinish: (event) => handleFrogAction("release"),
-    onCancel: (event) => handleFrogAction("cancel"),
+    onFinish: (event) => {
+      if (isComplete) return;
+      handleFrogAction("release");
+    },
+    onCancel: (event) => {
+      if (isComplete) return;
+      handleFrogAction("cancel");
+    },
     filterEvents: (event) => true, // All events can potentially trigger long press
     threshold: userCycleSpeed * 1000, // Time threshold before long press callback is fired
     captureEvent: true, // Capture event on the target element, not the child elements
@@ -215,7 +238,6 @@ export default function Page() {
           ></div>
         </button>
       </div>
-
       <SettingsModal />
       <GameCompleteModal />
     </section>

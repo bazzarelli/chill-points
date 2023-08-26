@@ -1,19 +1,18 @@
-import { options } from "@/app/api/auth/[...nextauth]/options";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { comfortaa } from "@/app/utils/fonts";
 import { getServerSession } from "next-auth/next";
 import Image from "next/image";
 import Link from "next/link";
-
-// import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export default async function Header() {
-  const session = await getServerSession(options);
+  const session = await getServerSession(authOptions);
 
-  // if (!session) {
-  //   redirect("/api/auth/signin?callbackUrl=/server");
-  // }
+  if (!session) {
+    redirect("/api/auth/signin?callbackUrl=/");
+  }
 
-  const userImage = session?.user?.image || "";
+  const userImage = session?.user?.image || "/images/sample-avatar.jpg";
   console.log("User image from github", userImage);
 
   return (
@@ -31,26 +30,24 @@ export default async function Header() {
         <div className="dropdown-end dropdown">
           <label tabIndex={0} className="btn-ghost btn-circle avatar btn">
             <div className="w-10 rounded-full">
-              <Image
-                alt="user avatar"
-                width="40"
-                height="40"
-                src={session ? userImage : "/images/sample-avatar.jpg"}
-              />
+              <Image alt="user avatar" width="40" height="40" src={userImage} />
             </div>
           </label>
           <ul
             tabIndex={0}
-            className="dropdown-content menu rounded-box menu-sm z-10 mt-3 w-52 p-2 shadow bg-info"
+            className="dropdown-content menu rounded-md menu-md z-10 mt-4 w-52 p-2 shadow-2xl bg-sky-600 text-slate-300"
           >
-            <li>
-              <a>Awards Locker</a>
-            </li>
             <li>
               <Link href="/history">Game History</Link>
             </li>
             <li>
-              <Link href="/api/auth/signout">Logout</Link>
+              <Link href="/profile">Profile</Link>
+            </li>
+            <li>
+              <Link href="/api/auth/signin">Sign in</Link>
+            </li>
+            <li>
+              <Link href="/api/auth/signout">Sign out</Link>
             </li>
           </ul>
         </div>
