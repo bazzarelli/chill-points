@@ -13,6 +13,12 @@ module.exports = withPWA({
         port: "",
         pathname: "/u/**",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.discordapp.com",
+        port: "",
+        pathname: "/avatars/**",
+      },
     ],
   },
 });

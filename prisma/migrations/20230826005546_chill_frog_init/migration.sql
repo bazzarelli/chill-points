@@ -55,8 +55,10 @@ CREATE TABLE "GameSession" (
     "id" SERIAL NOT NULL,
     "userId" TEXT NOT NULL,
     "gameName" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "inhaleTimes" INTEGER[],
     "cycleCount" INTEGER NOT NULL,
+    "gameLength" INTEGER NOT NULL,
 
     CONSTRAINT "GameSession_pkey" PRIMARY KEY ("id")
 );
@@ -76,9 +78,6 @@ CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "GameSession_gameName_key" ON "GameSession"("gameName");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token");

@@ -3,17 +3,16 @@ import { comfortaa } from "@/app/utils/fonts";
 import { getServerSession } from "next-auth/next";
 import Image from "next/image";
 import Link from "next/link";
-
-// import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export default async function Header() {
   const session = await getServerSession(authOptions);
 
-  // if (!session) {
-  //   redirect("/api/auth/signin?callbackUrl=/");
-  // }
+  if (!session) {
+    redirect("/api/auth/signin?callbackUrl=/");
+  }
 
-  const userImage = session?.user?.image || "";
+  const userImage = session?.user?.image || "/images/sample-avatar.jpg";
   console.log("User image from github", userImage);
 
   return (
@@ -31,12 +30,7 @@ export default async function Header() {
         <div className="dropdown-end dropdown">
           <label tabIndex={0} className="btn-ghost btn-circle avatar btn">
             <div className="w-10 rounded-full">
-              <Image
-                alt="user avatar"
-                width="40"
-                height="40"
-                src={session ? userImage : "/images/sample-avatar.jpg"}
-              />
+              <Image alt="user avatar" width="40" height="40" src={userImage} />
             </div>
           </label>
           <ul
@@ -50,10 +44,10 @@ export default async function Header() {
               <Link href="/profile">Profile</Link>
             </li>
             <li>
-              <Link href="/api/auth/signin">Github Sign in</Link>
+              <Link href="/api/auth/signin">Sign in</Link>
             </li>
             <li>
-              <Link href="/api/auth/signout">Github Sign out</Link>
+              <Link href="/api/auth/signout">Sign out</Link>
             </li>
           </ul>
         </div>
