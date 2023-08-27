@@ -62,14 +62,14 @@ export default function Page() {
     });
   }
 
-  //* when the session is complete
+  // when the session is completed
   useEffect(() => {
     if (isComplete) {
       cycleCount && dbSaveSessionData(); // save the session data to db
       gameOver.current = true; // set the game over reference
       setIsInProgressStatus(false); // the session is not in progress
       handleFrogAction("release");
-      (window as any).game_complete_modal.showModal();
+      cycleCount && (window as any).game_complete_modal.showModal();
       setBannerText(msg.finished); // set the banner text
     }
   }, [isComplete]);
@@ -163,7 +163,7 @@ export default function Page() {
       <Head>
         <title>Chill a minute: game</title>
       </Head>
-      <div className="w-full touch-none bg-gradient-to-b from-slate-700 via-sky-600 via-70% to-slate-700/20">
+      <div className="w-full touch-none select-none bg-gradient-to-b from-slate-700 via-sky-600 via-70% to-slate-700/20">
         <div className="mx-auto md:w-1/3">
           <div className="flex">
             <button
@@ -173,10 +173,9 @@ export default function Page() {
               }}
             >
               <ReplayIcon
-                className="ml-4 mt-3 inline-block"
+                className="ml-4 mt-3 inline-block fill-sky-300/80"
                 width={28}
                 height={28}
-                fill={`rgba(123, 229, 250, .65)`}
               />
             </button>
             <button
@@ -187,10 +186,9 @@ export default function Page() {
               }}
             >
               <SettingsIcon
-                className="mr-4 mt-3 inline-block"
+                className="mr-4 mt-3 inline-block fill-sky-300/80"
                 width={28}
                 height={28}
-                fill={`rgba(123, 229, 250, .65)`}
               />
             </button>
           </div>

@@ -1,5 +1,3 @@
-// import Footer from "@/app/components/Footer";
-import Header from "@/app/components/Header";
 import AuthProvider from "@/app/context/AuthProvider";
 import "@/app/globals.css";
 import { inter } from "@/app/utils/fonts";
@@ -20,11 +18,7 @@ export default function RootLayout({ children }: Props) {
       <link rel="manifest" href="/manifest.json" />
       <body className={inter.className}>
         <AuthProvider>
-          <main className="flex min-h-screen flex-col">
-            <Header />
-            {children}
-          </main>
-          {/* <Footer /> */}
+          <main className="flex min-h-screen flex-col">{children}</main>
         </AuthProvider>
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-V7MV6G44ZC" />
         <Script id="google-analytics">

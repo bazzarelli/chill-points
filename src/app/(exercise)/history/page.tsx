@@ -10,10 +10,12 @@ export default function Page() {
   const handleBack = () => router.back();
 
   return (
-    <section className={`${inter.className} h-screen`}>
+    <section
+      className={`${inter.className} h-screen mx-auto w-full md:w-1/2 lg:w-1/3`}
+    >
       <button
         onClick={handleBack}
-        className="my-4 ml-4 btn btn-sm btn-info btn-outline"
+        className="my-4 ml-4 md:ml-0 btn btn-sm btn-info btn-outline"
       >
         {msg.back}
       </button>

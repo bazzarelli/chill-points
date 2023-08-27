@@ -7,9 +7,11 @@ import GameInstructions from "./game/GameInstructions";
 export default function Home() {
   return (
     <main
-      className={`${inter.className} w-96 mx-auto mt-1 md:mt-12 text-slate-400 p-4`}
+      className={`${inter.className} w-96 mx-auto md:mt-12 text-slate-400 p-4`}
     >
-      <h1 className="text-2xl mb-4">{msg.intro_hook}</h1>
+      <h1 className="text-2xl ml-0 m-4 pt-4 border-sky-300 border-t-[10px]">
+        {msg.intro_hook}
+      </h1>
 
       <Link href="/game">
         <button className="btn btn-sm btn-info drop-shadow-md">
