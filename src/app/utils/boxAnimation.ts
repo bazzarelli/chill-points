@@ -1,21 +1,27 @@
+import colors from "tailwindcss/colors";
+
+const sky300 = colors.sky[300];
+const orange500 = colors.orange[500];
+const lime500 = colors.lime[500];
+
 const BOX_ANIM = {
   GROW: {
-    backgroundColor: "#85cbf8",
+    backgroundColor: sky300,
     height: "12rem",
     opacity: 0.8,
   },
   SHRINK: {
-    backgroundColor: "#A1E887",
+    backgroundColor: lime500,
     height: "0.4rem",
     opacity: 0.5,
   },
   CANCEL: {
-    backgroundColor: "#f97316",
+    backgroundColor: orange500,
     height: "0.4rem",
     opacity: 0.5,
   },
   RESET: {
-    backgroundColor: "#85cbf8",
+    backgroundColor: sky300,
     height: "0.4rem",
     opacity: 0.2,
   },

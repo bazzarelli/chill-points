@@ -44,7 +44,7 @@ export default function HistoryList() {
 
   return (
     <MotionConfig transition={transition}>
-      <div className="mx-auto w-full bg-gray-400 text-left opacity-80 md:w-1/2  lg:w-1/3">
+      <div className="w-full bg-gray-400 text-left opacity-80">
         <h2 className="p-2 text-2xl text-gray-800">Your sessions</h2>
         <div className="flex bg-gray-300 font-semibold text-gray-500">
           <div className="h-7 w-5/12 pl-2">Date</div>
@@ -83,7 +83,7 @@ export default function HistoryList() {
           )}
         </motion.div>
       </div>
-      <div className="flex p-4">
+      <div className="flex pt-5 pl-4 md:pl-0">
         <button
           onClick={dbDeleteSessionData}
           className="btn btn-sm btn-outline btn-error"
