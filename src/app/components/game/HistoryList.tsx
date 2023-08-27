@@ -54,11 +54,11 @@ export default function HistoryList() {
         </div>
         <motion.div
           animate={{ height: bounds.height > 0 ? bounds.height : 0 }}
-          transition={{ type: "spring", duration: 0.8, bounce: 0.2 }}
+          transition={{ type: "spring", duration: 0.6, bounce: 0.2 }}
         >
           {sessionData && sessionData.length > 0 && (
             <div ref={ref}>
-              <AnimatePresence mode="popLayout">
+              <AnimatePresence mode="sync">
                 {sessionData.map((session: SessionData) => (
                   <div
                     key={session.id}
@@ -83,7 +83,7 @@ export default function HistoryList() {
           )}
         </motion.div>
       </div>
-      <div className="flex p-5">
+      <div className="flex p-4">
         <button
           onClick={dbDeleteSessionData}
           className="btn btn-sm btn-outline btn-error"
