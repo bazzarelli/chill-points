@@ -7,13 +7,10 @@ import { redirect } from "next/navigation";
 
 export default async function Header() {
   const session = await getServerSession(authOptions);
-
   if (!session) {
     redirect("/api/auth/signin?callbackUrl=/");
   }
-
   const userImage = session?.user?.image || "/images/sample-avatar.jpg";
-  console.log("User image from github", userImage);
 
   return (
     <div className="navbar bg-info px-4 pt-3 md:px-8">
