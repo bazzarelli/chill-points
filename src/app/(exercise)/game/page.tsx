@@ -69,8 +69,8 @@ export default function Page() {
       gameOver.current = true; // set the game over reference
       setIsInProgressStatus(false); // the session is not in progress
       handleFrogAction("release");
-      cycleCount && (window as any).game_complete_modal.showModal();
       setBannerText(msg.finished); // set the banner text
+      cycleCount && (window as any).game_complete_modal.showModal();
     }
   }, [isComplete]);
 
@@ -120,6 +120,7 @@ export default function Page() {
         setBannerText(msg.welcome);
         setClockKey((prevKey) => prevKey + 1); // key to reset the clock
         setIsInProgressStatus(false);
+        gameOver.current = false;
         animation(1, BOX_ANIM.RESET);
         break;
       case "disable":
