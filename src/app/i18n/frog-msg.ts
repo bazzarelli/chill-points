@@ -10,7 +10,7 @@ export const msg = {
   view_history: "View my history",
   back: "back",
   start: "start",
-  breath_cycles_completed: "Breath cycles completed",
-  chillpoints_earned: "Chillpoints earned",
-  chillpoint_earned: "Chillpoint earned",
+  breath_cycles_completed: "breath cycles completed",
+  chillpoints_earned: "chillpoints earned",
+  chillpoint_earned: "chillpoint earned",
 };

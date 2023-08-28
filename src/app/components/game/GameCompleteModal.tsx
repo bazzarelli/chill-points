@@ -3,36 +3,82 @@
 import SnowflakeIcon from "@/app/components/svg/SnowflakeIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
+import { useEffect, useState } from "react";
+import colors from "tailwindcss/colors";
+
+const slate100 = colors.slate[100];
 
 export default function HelpModal() {
-  const { cycleCount, userGameLength, gameName } = useBreathSessionStore();
+  const {
+    cycleCount,
+    userGameLength,
+    userCycleSpeed,
+    gameName,
+    setIsCompleteStatus,
+  } = useBreathSessionStore();
+  const [badgeColor, setBadgeColor] = useState<BadgeColor>("slate");
+  // if the tailwind color classes are not in code they are purged
+  // dynamic class names not possible w/o this hack
+  const badgePossibly = [
+    "from-fuchsia-700",
+    "to-fuchsia-500",
+    "from-amber-700",
+    "to-amber-500",
+    "from-blue-700",
+    "to-blue-500",
+    "from-slate-700",
+    "to-slate-500",
+  ];
+  type BadgeColor = "fuchsia" | "amber" | "blue" | "slate";
+
+  const handleClose = () => {
+    // game is over, prevent modal from reopening
+    setIsCompleteStatus(false);
+  };
+
+  useEffect(() => {
+    const calculateBadgeColor = (): BadgeColor => {
+      if (userCycleSpeed === 5 && cycleCount > 2 && cycleCount <= 6) {
+        return "fuchsia";
+      } else if (userCycleSpeed === 4 && cycleCount > 6 && cycleCount <= 8) {
+        return "amber";
+      } else if (userCycleSpeed === 3 && cycleCount > 8) {
+        return "blue";
+      } else {
+        return "slate";
+      }
+    };
+
+    setBadgeColor(calculateBadgeColor());
+  }, [cycleCount]);
 
   return (
     <dialog id="game_complete_modal" className="modal text-left">
-      <form method="dialog" className="modal-box bg-sky-300/90">
+      <form method="dialog" className="modal-box bg-sky-300/90 rounded-md">
         {cycleCount > 0 && (
-          <div className="grid grid-cols-6 gap-4 gap-x-0">
+          <>
             <h2 className="text-xl text-slate-800 col-span-6">{`${gameName} exercise`}</h2>
-            <button className="btn btn-sm btn-circle text-slate-200 border-none text-xl font-semibold bg-sky-700/80 mr-2">
-              {cycleCount}
-            </button>
-            <span className="text-lg text-slate-800 col-span-5">
-              {msg.breath_cycles_completed}
-            </span>
-            <button className="btn btn-sm btn-circle ring-2 ring-sky-500 border-none  bg-gradient-to-b from-sky-500 to-sky-300 mr-2">
-              <SnowflakeIcon width={32} height={32} fill={`rgb(226 232 240)`} />
-            </button>
-            <span className="text-lg text-slate-800 col-span-5">
+            <section className="my-2">
+              <button
+                className={`btn btn-circle border-none bg-gradient-to-b from-${badgeColor}-700 to-${badgeColor}-500 mr-2 shadow-lg`}
+              >
+                <SnowflakeIcon width={34} height={34} fill={slate100} />
+              </button>
+            </section>
+            <h3 className="text-slate-800">
+              {cycleCount} {msg.breath_cycles_completed}
+            </h3>
+            <h3 className="text-slate-800">
               {userGameLength}{" "}
               {userGameLength > 1
                 ? msg.chillpoints_earned
                 : msg.chillpoint_earned}
-            </span>
-          </div>
+            </h3>
+          </>
         )}
       </form>
       <form method="dialog" className="modal-backdrop bg-slate-950/30">
-        <button>close</button>
+        <button onClick={handleClose}>close</button>
       </form>
     </dialog>
   );
