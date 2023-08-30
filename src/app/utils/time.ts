@@ -32,4 +32,18 @@ function isoDateToLocale(date: string): string {
   return new Date(date).toLocaleDateString();
 }
 
-export { displayCurrentTime, isoDate, isoDateToLocale };
+// date to locale date string with time in 12 hour format
+function isoDateToLocaleWithTime(date: string): string {
+  return new Date(date).toLocaleString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  });
+}
+
+export {
+  displayCurrentTime,
+  isoDate,
+  isoDateToLocale,
+  isoDateToLocaleWithTime,
+};

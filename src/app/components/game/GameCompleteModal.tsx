@@ -3,12 +3,13 @@
 import SnowflakeIcon from "@/app/components/svg/SnowflakeIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import colors from "tailwindcss/colors";
 
 const slate100 = colors.slate[100];
 
-export default function HelpModal() {
+export default function GameCompleteModal() {
   const {
     cycleCount,
     userGameLength,
@@ -65,15 +66,18 @@ export default function HelpModal() {
                 <SnowflakeIcon width={34} height={34} fill={slate100} />
               </button>
             </section>
-            <h3 className="text-slate-800">
+            <p className="text-slate-800">
               {cycleCount} {msg.breath_cycles_completed}
-            </h3>
-            <h3 className="text-slate-800">
+            </p>
+            <p className="text-slate-800">
               {userGameLength}{" "}
               {userGameLength > 1
                 ? msg.chillpoints_earned
                 : msg.chillpoint_earned}
-            </h3>
+            </p>
+            <p className="text-slate-800">
+              <Link href="/history">{msg.view_history}</Link>
+            </p>
           </>
         )}
       </form>

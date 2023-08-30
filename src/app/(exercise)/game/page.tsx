@@ -60,6 +60,9 @@ export default function Page() {
         "Content-Type": "application/json",
       },
     });
+
+    const data = await res.json();
+    console.log("dbSaveSessionData game id:", data.id);
   }
 
   // when the session is completed

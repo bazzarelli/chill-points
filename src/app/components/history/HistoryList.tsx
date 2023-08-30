@@ -1,8 +1,10 @@
 "use client";
 
 import RarrowIcon from "@/app/components/svg/RarrowIcon";
+import { msg } from "@/app/i18n/frog-msg";
 import { isoDateToLocale } from "@/app/utils/time";
 import { AnimatePresence, MotionConfig, motion } from "framer-motion";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import userMeasure from "react-use-measure";
 
@@ -36,6 +38,11 @@ export default function HistoryList() {
     return data;
   }
 
+  function calculateBreathRate(session: SessionData) {
+    const { gameLength, cycleCount } = session;
+    return Math.floor(cycleCount / gameLength);
+  }
+
   useEffect(() => {
     dbGetSessionData().then((data) => {
       setSessionData(data);
@@ -45,11 +52,11 @@ export default function HistoryList() {
   return (
     <MotionConfig transition={transition}>
       <div className="w-full bg-gray-400 text-left opacity-80">
-        <h2 className="p-2 text-2xl text-gray-800">Your sessions</h2>
+        <h2 className="p-2 text-2xl text-gray-800">{msg.your_sessions}</h2>
         <div className="flex bg-gray-300 font-semibold text-gray-500">
-          <div className="h-7 w-5/12 pl-2">Date</div>
-          <div className="h-7 w-3/12">rate</div>
-          <div className="h-7 w-2/12">points</div>
+          <div className="h-7 w-5/12 pl-2">{msg.date}</div>
+          <div className="h-7 w-3/12">{msg.rate}</div>
+          <div className="h-7 w-2/12">{msg.points}</div>
           <div className="h-7 w-2/12"></div>
         </div>
         <motion.div
@@ -60,23 +67,32 @@ export default function HistoryList() {
             <div ref={ref}>
               <AnimatePresence mode="sync">
                 {sessionData.map((session: SessionData) => (
-                  <div
+                  <Link
                     key={session.id}
-                    className="flex border border-b-0 border-slate-400 bg-gray-200 py-1 text-gray-500"
+                    href={`/history/session/${session.id}?data=${JSON.stringify(
+                      session,
+                    )}`}
                   >
-                    <div className="h-7 w-5/12 pl-2">
-                      {isoDateToLocale(session.createdAt)}
+                    <div
+                      key={session.id}
+                      className="flex border border-b-0 border-slate-400 bg-gray-200 py-1 text-gray-500"
+                    >
+                      <div className="h-7 w-5/12 pl-2">
+                        {isoDateToLocale(session.createdAt)}
+                      </div>
+                      <div className="h-7 w-3/12">
+                        {calculateBreathRate(session)} {msg.bpm}
+                      </div>
+                      <div className="h-7 w-2/12">{session.gameLength}</div>
+                      <div className="h-7 w-2/12 pr-2 text-right">
+                        <RarrowIcon
+                          className="inline-block"
+                          width={15}
+                          height={15}
+                        />
+                      </div>
                     </div>
-                    <div className="h-7 w-3/12">{session.cycleCount} bpm</div>
-                    <div className="h-7 w-2/12">{session.gameLength}</div>
-                    <div className="h-7 w-2/12 pr-2 text-right">
-                      <RarrowIcon
-                        className="inline-block"
-                        width={15}
-                        height={15}
-                      />
-                    </div>
-                  </div>
+                  </Link>
                 ))}
               </AnimatePresence>
             </div>
@@ -88,7 +104,7 @@ export default function HistoryList() {
           onClick={dbDeleteSessionData}
           className="btn btn-sm btn-outline btn-error"
         >
-          Delete My History
+          {msg.delete_history}
         </button>
       </div>
     </MotionConfig>

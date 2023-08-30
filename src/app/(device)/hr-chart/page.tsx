@@ -6,8 +6,6 @@ import { displayCurrentTime } from "@/app/utils/time";
 import Image from "next/image";
 import { useReducer, useRef } from "react";
 
-// import { Status } from '@/app/types';
-
 const STATUS = {
   DISCONNECTED: "disconnected",
   CONNECTED: "connected",

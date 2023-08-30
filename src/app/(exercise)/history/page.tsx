@@ -1,7 +1,7 @@
 "use client";
 
-import HistoryList from "@/app/components/game/HistoryList";
-import { msg } from "@/app/i18n/frog-msg";
+import HistoryList from "@/app/components/history/HistoryList";
+import NavArrowBackIcon from "@/app/components/svg/NavArrowBackIcon";
 import { inter } from "@/app/utils/fonts";
 import { useRouter } from "next/navigation";
 
@@ -15,9 +15,13 @@ export default function Page() {
     >
       <button
         onClick={handleBack}
-        className="my-4 ml-4 md:ml-0 btn btn-sm btn-info btn-outline"
+        className="my-2 ml-1 md:ml-0 btn btn-sm btn-link"
       >
-        {msg.back}
+        <NavArrowBackIcon
+          className="inline-block fill-info"
+          width={32}
+          height={32}
+        />
       </button>
 
       <HistoryList />
