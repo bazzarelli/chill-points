@@ -2,7 +2,7 @@
 
 import HRGraph from "@/app/components/heart/HRGraph";
 import { parseHeartRate } from "@/app/utils/parseHRData";
-import { displayCurrentTime } from "@/app/utils/time";
+import { DateTime } from "luxon";
 import Image from "next/image";
 import { useReducer, useRef } from "react";
 
@@ -104,7 +104,10 @@ export default function Page() {
     );
 
     dispatch({ type: "displayStatus", payload: "CONNECTED" });
-    dispatch({ type: "displayTimeConnected", payload: displayCurrentTime() });
+    dispatch({
+      type: "displayTimeConnected",
+      payload: DateTime.now().toLocaleString(DateTime.TIME_SIMPLE),
+    });
   };
 
   return (
