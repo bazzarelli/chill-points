@@ -2,8 +2,8 @@
 
 import RarrowIcon from "@/app/components/svg/RarrowIcon";
 import { msg } from "@/app/i18n/frog-msg";
-import { isoDateToLocale } from "@/app/utils/time";
 import { AnimatePresence, MotionConfig, motion } from "framer-motion";
+import { DateTime } from "luxon";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import userMeasure from "react-use-measure";
@@ -78,7 +78,7 @@ export default function HistoryList() {
                       className="flex border border-b-0 border-slate-400 bg-gray-200 py-1 text-gray-500"
                     >
                       <div className="h-7 w-5/12 pl-2">
-                        {isoDateToLocale(session.createdAt)}
+                        {DateTime.fromISO(session.createdAt).toLocaleString()}
                       </div>
                       <div className="h-7 w-3/12">
                         {calculateBreathRate(session)} {msg.bpm}

@@ -4,7 +4,7 @@ import BreathSessionGraph from "@/app/components/history/BreathSessionGraph";
 import NavArrowBackIcon from "@/app/components/svg/NavArrowBackIcon";
 import { msg } from "@/app/i18n/frog-msg";
 import { inter } from "@/app/utils/fonts";
-import { isoDateToLocale, isoDateToLocaleWithTime } from "@/app/utils/time";
+import { DateTime } from "luxon";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
@@ -32,8 +32,10 @@ export default function SessionDetail() {
           {parsedData.gameName} {msg.exercise}
         </h3>
         <p className="text-slate-400 text-sm">
-          {isoDateToLocale(parsedData.createdAt)} at{" "}
-          {isoDateToLocaleWithTime(parsedData.createdAt)}
+          {DateTime.fromISO(parsedData.createdAt).toLocaleString()} at{" "}
+          {DateTime.fromISO(parsedData.createdAt).toLocaleString(
+            DateTime.TIME_SIMPLE,
+          )}
         </p>
         <p className="text-slate-400 text-sm">
           {parsedData.gameLength} {msg.minute_session}
