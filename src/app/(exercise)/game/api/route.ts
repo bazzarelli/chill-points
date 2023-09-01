@@ -4,6 +4,16 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
+type User = {
+  id: string;
+  name: string | null;
+  bio: string | null;
+  age: number | null;
+  email: string | null;
+  emailVerified: Date | null;
+  image: string | null;
+};
+
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
   const currentUserEmail = session?.user?.email as string;
@@ -13,7 +23,12 @@ export async function POST(req: Request) {
 
   const currentUserId = await prisma.user
     .findUnique({ where: { email: currentUserEmail } })
-    .then((user) => user?.id!);
+    .then((user: User | null) => {
+      if (!user) {
+        throw new Error("User not found");
+      }
+      return user.id!;
+    });
 
   const gameSession = await prisma.gameSession.create({
     data: {
@@ -39,7 +54,12 @@ export async function DELETE(req: Request) {
   const currentUserEmail = session?.user?.email as string;
   const userId = await prisma.user
     .findUnique({ where: { email: currentUserEmail } })
-    .then((user) => user?.id!);
+    .then((user: User | null) => {
+      if (!user) {
+        throw new Error("User not found");
+      }
+      return user.id!;
+    });
 
   // could delete individual game sessions by id
   // const { id } = await req.json();
