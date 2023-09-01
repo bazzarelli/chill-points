@@ -6,7 +6,12 @@ import { NextResponse } from "next/server";
 
 type User = {
   id: string;
-  email: string;
+  name: string | null;
+  bio: string | null;
+  age: number | null;
+  email: string | null;
+  emailVerified: Date | null;
+  image: string | null;
 };
 
 export async function POST(req: Request) {
