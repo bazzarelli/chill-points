@@ -22,4 +22,8 @@ export const msg = {
   delete_history: "Delete history",
   exercise: "exercise",
   minute_session: "minute session",
+  game_minutes: "game minutes",
+  short: "short",
+  med: "med",
+  long: "long",
 };

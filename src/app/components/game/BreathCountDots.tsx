@@ -1,9 +1,15 @@
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 function BreathCountDots() {
-  const { cycleCount, userCycleSpeed, userGameLength } =
-    useBreathSessionStore();
+  const {
+    cycleCount,
+    userCycleSpeed,
+    userGameLength,
+    dotCountTotal,
+    setDotCountTotal,
+  } = useBreathSessionStore();
   const breathCycleDotFull = () => (
     <motion.span
       initial={{ opacity: 0 }}
@@ -17,12 +23,18 @@ function BreathCountDots() {
   const breathCycleDotEmpty = () => (
     <span className="text-base text-slate-100/30">◯</span>
   );
-  const gameLengthSecs = userGameLength * 60;
-  const finalDotCount = Math.floor(gameLengthSecs / (userCycleSpeed * 2));
+
+  useEffect(() => {
+    const gameLengthSecs = userGameLength * 60;
+    const calculatedDotCount = Math.floor(
+      gameLengthSecs / (userCycleSpeed * 2),
+    );
+    setDotCountTotal(calculatedDotCount);
+  }, [userCycleSpeed, userGameLength]);
 
   return (
     <div className="w-fit border border-slate-700/30 mx-auto pl-2 py-1 bg-slate-800/30 rounded-md shadow-lg">
-      {Array.from({ length: finalDotCount }).map((_, index) => {
+      {Array.from({ length: dotCountTotal }).map((_, index) => {
         const isFull = index < cycleCount;
         const dot = isFull ? breathCycleDotFull() : breathCycleDotEmpty();
 
