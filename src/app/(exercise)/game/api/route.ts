@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
   const currentUserId = await prisma.user
     .findUnique({ where: { email: currentUserEmail } })
-    .then((user: User) => user?.id as string)
+    .then((user: User | null) => user?.id as string)
     .catch(() => {
       throw new Error("User not found");
     });
@@ -52,7 +52,7 @@ export async function DELETE(req: Request) {
   const currentUserEmail = session?.user?.email as string;
   const userId = await prisma.user
     .findUnique({ where: { email: currentUserEmail } })
-    .then((user: User) => user?.id!)
+    .then((user: User | null) => user?.id!)
     .catch(() => {
       throw new Error("User not found");
     });
