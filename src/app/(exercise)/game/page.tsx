@@ -13,7 +13,7 @@ import { inter } from "@/app/utils/fonts";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import { motion, useAnimate } from "framer-motion";
 import Head from "next/head";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { use, useCallback, useEffect, useRef, useState } from "react";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
 import useSound from "use-sound";
 
@@ -65,15 +65,20 @@ export default function Page() {
     console.log("dbSaveSessionData game id:", data.id);
   }
 
+  useEffect(() => {
+    if (gameOver.current && cycleCount) {
+      dbSaveSessionData(); // save the session data to db
+      (window as any).game_complete_modal.showModal();
+    }
+  }, [gameOver.current]);
+
   // when the session is completed
   useEffect(() => {
-    if (isComplete) {
-      cycleCount && dbSaveSessionData(); // save the session data to db
+    if (isComplete && !gameOver.current) {
       gameOver.current = true; // set the game over reference
       setIsInProgressStatus(false); // the session is not in progress
       handleFrogAction("release");
       setBannerText(msg.finished); // set the banner text
-      cycleCount && (window as any).game_complete_modal.showModal();
     }
   }, [isComplete]);
 
@@ -81,7 +86,6 @@ export default function Page() {
     // disable long press browser defaults
     onContextMenuListener();
     handleFrogAction("reset");
-    console.log("game page mounted");
   }, []);
 
   function handleFrogAction(action: string) {

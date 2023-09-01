@@ -2,7 +2,6 @@
 
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
-import Link from "next/link";
 import { useState } from "react";
 
 export default function SettingsModal() {
@@ -52,14 +51,16 @@ export default function SettingsModal() {
             step={1}
           />
           <div className="w-full flex justify-between text-sm px-2">
-            <span>short</span>
-            <span>med</span>
-            <span>long</span>
+            <span>{msg.short}</span>
+            <span>{msg.med}</span>
+            <span>{msg.long}</span>
           </div>
         </section>
 
         <section className="pb-4">
-          <span className="mb-2 text-sm text font-semibold">Game minutes</span>
+          <span className="mb-2 text-sm text font-semibold capitalize">
+            {msg.game_minutes}
+          </span>
           <input
             onChange={handleGameLengthRangeChange}
             type="range"
@@ -76,12 +77,6 @@ export default function SettingsModal() {
             <span>4</span>
             <span>5</span>
           </div>
-        </section>
-
-        <section className="pb-4">
-          <Link href="/history">
-            <span>{msg.view_history}</span>
-          </Link>
         </section>
       </form>
       <form method="dialog" className="modal-backdrop">
