@@ -1,7 +1,7 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import inhaleTimeDiff from "@/app/utils/inhaleTimeDiff";
 import { prisma } from "@/lib/prisma";
-import { getServerSession } from "next-auth";
+import { User, getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
 
   const currentUserId = await prisma.user
     .findUnique({ where: { email: currentUserEmail } })
-    .then((user) => user?.id!);
+    .then((user: User) => user?.id!);
 
   const gameSession = await prisma.gameSession.create({
     data: {
@@ -39,7 +39,7 @@ export async function DELETE(req: Request) {
   const currentUserEmail = session?.user?.email as string;
   const userId = await prisma.user
     .findUnique({ where: { email: currentUserEmail } })
-    .then((user) => user?.id!);
+    .then((user: User) => user?.id!);
 
   // could delete individual game sessions by id
   // const { id } = await req.json();
