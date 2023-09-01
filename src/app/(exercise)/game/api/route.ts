@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
   const currentUserId = await prisma.user
     .findUnique({ where: { email: currentUserEmail } })
-    .then((user: User) => user?.id!);
+    .then((user: JSX.IntrinsicAttributes & User) => user?.id!);
 
   const gameSession = await prisma.gameSession.create({
     data: {
@@ -49,7 +49,7 @@ export async function DELETE(req: Request) {
   const currentUserEmail = session?.user?.email as string;
   const userId = await prisma.user
     .findUnique({ where: { email: currentUserEmail } })
-    .then((user: User) => user?.id!);
+    .then((user: JSX.IntrinsicAttributes & User) => user?.id!);
 
   // could delete individual game sessions by id
   // const { id } = await req.json();
