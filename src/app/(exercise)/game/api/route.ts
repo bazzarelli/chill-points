@@ -1,8 +1,13 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import inhaleTimeDiff from "@/app/utils/inhaleTimeDiff";
 import { prisma } from "@/lib/prisma";
-import { User, getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+
+type User = {
+  id: string;
+  email: string;
+};
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
