@@ -21,15 +21,32 @@ export const authOptions: NextAuthOptions = {
         ]
       : []),
     EmailProvider({
-      server: {
-        host: process.env.EMAIL_SERVER_HOST!,
-        port: Number(process.env.EMAIL_SERVER_PORT!),
-        auth: {
-          user: process.env.EMAIL_SERVER_USER!,
-          pass: process.env.EMAIL_SERVER_PASSWORD!,
-        },
+      type: "email",
+      async sendVerificationRequest({ identifier: email, url }) {
+        const response = await fetch("https://api.sendgrid.com/v3/mail/send", {
+          body: JSON.stringify({
+            personalizations: [{ to: [{ email }] }],
+            from: { email: process.env.EMAIL_FROM },
+            subject: "Chill Points - Verify Your Email",
+            content: [
+              {
+                type: "text/plain",
+                value: `Please click here to authenticate - ${url}`,
+              },
+            ],
+          }),
+          headers: {
+            Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+        });
+
+        if (!response.ok) {
+          const { errors } = await response.json();
+          throw new Error(JSON.stringify(errors));
+        }
       },
-      from: process.env.EMAIL_FROM!,
     }),
   ],
 };
