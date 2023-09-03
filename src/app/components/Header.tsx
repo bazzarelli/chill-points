@@ -3,13 +3,14 @@ import { comfortaa } from "@/app/utils/fonts";
 import { getServerSession } from "next-auth/next";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+
+// import { redirect } from "next/navigation";
 
 export default async function Header() {
   const session = await getServerSession(authOptions);
-  if (!session) {
-    redirect("/api/auth/signin?callbackUrl=/");
-  }
+  // if (!session) {
+  //   redirect("/api/auth/signin?callbackUrl=/");
+  // }
   const userImage = session?.user?.image || "/images/sample-avatar.jpg";
 
   return (

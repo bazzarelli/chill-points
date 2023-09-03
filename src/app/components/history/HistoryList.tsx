@@ -99,14 +99,14 @@ export default function HistoryList() {
           )}
         </motion.div>
       </div>
-      <div className="flex pt-5 pl-4 md:pl-0">
+      {/* <div className="flex pt-5 pl-4 md:pl-0">
         <button
           onClick={dbDeleteSessionData}
           className="btn btn-sm btn-outline btn-error"
         >
           {msg.delete_history}
         </button>
-      </div>
+      </div> */}
     </MotionConfig>
   );
 }
