@@ -11,6 +11,7 @@ import { msg } from "@/app/i18n/frog-msg";
 import BOX_ANIM, { BoxAnim } from "@/app/utils/boxAnimation";
 import { inter } from "@/app/utils/fonts";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
+import rotatingCongrats from "@/app/utils/rotatingCongrats";
 import { motion, useAnimate } from "framer-motion";
 import Head from "next/head";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -78,7 +79,7 @@ export default function Page() {
       gameOver.current = true; // set the game over reference
       setIsInProgressStatus(false); // the session is not in progress
       handleFrogAction("release");
-      setBannerText(msg.finished); // set the banner text
+      setBannerText(rotatingCongrats()); // set the banner text
     }
   }, [isComplete]);
 
@@ -171,7 +172,7 @@ export default function Page() {
       <Head>
         <title>Chill a minute: game</title>
       </Head>
-      <div className="w-full touch-none select-none bg-gradient-to-b from-slate-700 via-sky-600 via-70% to-slate-700/20">
+      <div className="w-full touch-none select-none bg-gradient-to-b from-slate-700 via-sky-600 via-70% to-slate-700/20 relative z-10">
         <div className="mx-auto md:w-1/3">
           <div className="flex">
             <button
@@ -240,7 +241,7 @@ export default function Page() {
         >
           <div
             ref={boxscope}
-            className="absolute bottom-0 left-0 right-0 h-1 bg-sky-300/50 rounded-sm"
+            className="absolute bottom-0 left-0 right-0 h-1 bg-sky-300/50 rounded-sm -z-10"
           ></div>
         </button>
       </div>

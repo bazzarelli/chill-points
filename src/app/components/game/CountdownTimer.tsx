@@ -1,5 +1,6 @@
 "use client";
 
+import CheckCompleteIcon from "@/app/components/svg/CheckCompleteIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { ReactNode } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
@@ -14,7 +15,11 @@ const ClockText = function ({ children }: { children: string | ReactNode }) {
 
 const renderTime = ({ remainingTime }: RenderTimeProps) => {
   if (remainingTime === 0) {
-    return <ClockText>done</ClockText>;
+    return (
+      <ClockText>
+        <CheckCompleteIcon className="fill-green-600" width={46} height={46} />
+      </ClockText>
+    );
   }
 
   const minutes = Math.floor(remainingTime / 60);

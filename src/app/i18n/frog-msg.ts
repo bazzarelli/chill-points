@@ -27,3 +27,17 @@ export const msg = {
   med: "med",
   long: "long",
 };
+
+export const msg_congrats = {
+  0: "Impressive!",
+  1: "I'm proud of you!",
+  2: "Well done!",
+  3: "Bravo!",
+  4: "Excellent work!",
+  5: "Superb effort!",
+  6: "Way to breath!",
+  7: "Brilliant!",
+  8: "Outstanding!",
+  9: "Frog is pleased!",
+  10: "Frog-tastic performance!",
+};

@@ -32,10 +32,10 @@ export default function GameCompleteModal() {
                 ? msg.chillpoints_earned
                 : msg.chillpoint_earned}
             </p>
-            <p className="text-slate-800">
+            {/* <p className="text-slate-800">
               {cycleCount} {msg.breath_cycles_completed}
-            </p>
-            <button className="btn btn-sm btn-outline mt-2">
+            </p> */}
+            <button className="border-slate-800/70 border-2 px-2 py-1 mt-2 rounded-lg text-sm text-slate-800 bg-sky-200/50">
               <Link href="/history">{msg.view_history}</Link>
             </button>
           </>
