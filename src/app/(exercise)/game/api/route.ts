@@ -17,7 +17,6 @@ type User = {
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
   const currentUserEmail = session?.user?.email as string;
-
   const gameSessionData = await req.json();
   const { gameName, inhaleTimes, cycleCount, gameLength } = gameSessionData;
 
@@ -29,6 +28,11 @@ export async function POST(req: Request) {
       }
       return user.id!;
     });
+
+  // check for valid currentUserId
+  if (!currentUserId) {
+    return NextResponse.error();
+  }
 
   const gameSession = await prisma.gameSession.create({
     data: {

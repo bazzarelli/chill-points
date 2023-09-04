@@ -1,6 +1,7 @@
 "use client";
 
 import RarrowIcon from "@/app/components/svg/RarrowIcon";
+import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import { AnimatePresence, MotionConfig, motion } from "framer-motion";
 import { DateTime } from "luxon";
@@ -10,17 +11,19 @@ import userMeasure from "react-use-measure";
 
 type SessionData = {
   id: number;
+  userId: string;
   gameName: string;
+  createdAt: string;
   inhaleTimes: number[];
   cycleCount: number;
   gameLength: number;
-  createdAt: string;
 };
 
 export default function HistoryList() {
   let transition = { type: "ease", duration: 0.5, ease: "easeInOut" };
   let [ref, bounds] = userMeasure();
   const [sessionData, setSessionData] = useState<SessionData[]>([]);
+  const { breathSessionData } = useBreathSessionStore();
 
   async function dbGetSessionData() {
     const res = await fetch("/game/api", {
@@ -44,9 +47,15 @@ export default function HistoryList() {
   }
 
   useEffect(() => {
-    dbGetSessionData().then((data) => {
-      setSessionData(data);
-    });
+    if (breathSessionData) {
+      console.log("breathSessionData from local storage", breathSessionData);
+      setSessionData(breathSessionData);
+    } else {
+      dbGetSessionData().then((data) => {
+        setSessionData(data);
+        console.log("data", JSON.stringify(data));
+      });
+    }
   }, []);
 
   return (
