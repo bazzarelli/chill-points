@@ -35,9 +35,9 @@ export const msg_congrats = {
   3: "Bravo!",
   4: "Excellent work!",
   5: "Superb effort!",
-  6: "Way to breath!",
+  6: "Way to breathe!",
   7: "Brilliant!",
   8: "Outstanding!",
   9: "Frog is pleased!",
-  10: "Frog-tastic performance!",
+  10: "Frog-tastic!",
 };

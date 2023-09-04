@@ -11,6 +11,21 @@ type InitialGameState = {
   gameName: string;
   userCycleSpeed: number;
   userGameLength: number;
+  breathSessionData: BreathSessionData[];
+};
+
+type BreathSessionData = {
+  id: number;
+  userId: string;
+  gameName: string;
+  createdAt: string;
+  inhaleTimes: number[];
+  cycleCount: number;
+  gameLength: number;
+};
+
+type BreathSessionDataCache = {
+  breathSessionData: BreathSessionData[];
 };
 
 type Actions = {
@@ -23,10 +38,11 @@ type Actions = {
   setIsCompleteStatus: (isComplete: boolean) => void;
   setIsCancelledStatus: (isCancelled: boolean) => void;
   setIsInProgressStatus: (isInProgress: boolean) => void;
+  setBreathSessionDataCache: (breathSessionData: BreathSessionData[]) => void;
   resetGame: () => void;
 };
 
-const initialGameState: InitialGameState = {
+const initialGameState: InitialGameState & BreathSessionDataCache = {
   cycleCount: 0,
   dotCountTotal: 10,
   inhaleTimes: [],
@@ -36,9 +52,12 @@ const initialGameState: InitialGameState = {
   gameName: "Equal Breathing",
   userCycleSpeed: 3,
   userGameLength: 1,
+  breathSessionData: [],
 };
 
-export const useBreathSessionStore = create<InitialGameState & Actions>()(
+export const useBreathSessionStore = create<
+  InitialGameState & Actions & BreathSessionDataCache
+>()(
   devtools(
     persist(
       (set, get) => ({
@@ -62,6 +81,8 @@ export const useBreathSessionStore = create<InitialGameState & Actions>()(
           set(() => ({ isCancelled: isCancelled })),
         setIsInProgressStatus: (isInProgress) =>
           set(() => ({ isInProgress: isInProgress })),
+        setBreathSessionDataCache: (breathSessionData: BreathSessionData[]) =>
+          set(() => ({ breathSessionData })),
         resetGame: () =>
           set(() => ({
             cycleCount: 0,
@@ -69,6 +90,7 @@ export const useBreathSessionStore = create<InitialGameState & Actions>()(
             isComplete: false,
             isCancelled: false,
             isInProgress: false,
+            breathSessionData: [],
           })),
       }),
       {

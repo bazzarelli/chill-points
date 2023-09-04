@@ -46,30 +46,41 @@ export default function Page() {
     setInhaleTimes,
     setIsInProgressStatus,
     setIsCancelledStatus,
+    setBreathSessionDataCache,
   } = useBreathSessionStore();
 
   async function dbSaveSessionData() {
-    const res = await fetch("/game/api", {
-      method: "POST",
-      body: JSON.stringify({
-        gameName,
-        inhaleTimes,
-        cycleCount,
-        gameLength: userGameLength,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const res = await fetch("/game/api", {
+        method: "POST",
+        body: JSON.stringify({
+          gameName,
+          inhaleTimes,
+          cycleCount,
+          gameLength: userGameLength,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    const data = await res.json();
-    console.log("dbSaveSessionData game id:", data.id);
+      if (res.status === 200) {
+        const data = await res.json();
+        setBreathSessionDataCache([data]);
+        console.log("dbSaveSessionData game id:", data.id);
+      } else {
+        console.error(`Error: ${res.status}`);
+      }
+    } catch (error) {
+      console.error(`Error: ${error}`);
+    }
   }
 
   useEffect(() => {
     if (gameOver.current && cycleCount) {
-      dbSaveSessionData(); // save the session data to db
-      (window as any).game_complete_modal.showModal();
+      dbSaveSessionData().then(() => {
+        (window as any).game_complete_modal.showModal();
+      });
     }
   }, [gameOver.current]);
 

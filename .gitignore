@@ -46,3 +46,6 @@ next-env.d.ts
 **/public/worker-*.js
 **/public/worker-*.js.map
 
+# code scraps
+.scraps
+
