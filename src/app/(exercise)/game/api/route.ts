@@ -38,6 +38,8 @@ export async function POST(req: Request) {
     data: {
       userId: currentUserId,
       gameName: gameName,
+      // when saving to db, we compact the inhaleTimes array
+      // so the postgres datatype can be regular Int[]
       inhaleTimes: inhaleTimeDiff(inhaleTimes),
       cycleCount: cycleCount,
       gameLength: gameLength,

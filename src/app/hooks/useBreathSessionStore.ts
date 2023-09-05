@@ -90,7 +90,6 @@ export const useBreathSessionStore = create<
             isComplete: false,
             isCancelled: false,
             isInProgress: false,
-            breathSessionData: [],
           })),
       }),
       {
