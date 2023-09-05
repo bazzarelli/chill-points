@@ -32,7 +32,7 @@ export default async function Header() {
           </label>
           <ul
             tabIndex={0}
-            className="dropdown-content menu rounded-md menu-sm z-10 mt-4 w-32 p-2 shadow-2xl bg-slate-600 text-slate-300"
+            className="dropdown-content menu rounded-md menu-sm z-20 mt-4 w-32 p-2 shadow-2xl bg-slate-600 text-slate-300"
           >
             <li>
               <Link href="/history">History</Link>

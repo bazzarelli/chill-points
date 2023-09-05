@@ -41,7 +41,9 @@ export default function SessionDetail() {
           {parsedData.gameLength} {msg.minute_session}
         </p>
       </section>
-      <BreathSessionGraph data={parsedData.inhaleTimes} />
+      <div className="relative -left-6">
+        <BreathSessionGraph data={parsedData.inhaleTimes} />
+      </div>
     </main>
   );
 }

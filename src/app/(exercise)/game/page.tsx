@@ -10,6 +10,7 @@ import SettingsIcon from "@/app/components/svg/SettingsIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import BOX_ANIM, { BoxAnim } from "@/app/utils/boxAnimation";
+import triggerExplosionAnimation from "@/app/utils/explosionAnimation";
 import { inter } from "@/app/utils/fonts";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import rotatingCongrats from "@/app/utils/rotatingCongrats";
@@ -32,6 +33,7 @@ export default function Page() {
     bannerText: msg.welcome,
     bannerTextColor: TXT_COLORS.BLUE,
   });
+  const [tapLocation, setTapLocation] = useState({ x: -50, y: -50 });
   const [clockKey, setClockKey] = useState(0);
   const [playAwardSound] = useSound("/sounds/retro-award.mp3", {
     volume: 0.75,
@@ -89,7 +91,7 @@ export default function Page() {
   useEffect(() => {
     if (gameOver.current && cycleCount) {
       dbSaveSessionData().then(() => {
-        //! celebrate the completion of the game
+        triggerExplosionAnimation(tapLocation);
       });
     }
   }, [gameOver.current]);
@@ -101,7 +103,7 @@ export default function Page() {
       setIsInProgressStatus(false); // the session is not in progress
       handleFrogAction("release");
       setBanner({
-        ...banner,
+        bannerTextColor: TXT_COLORS.BLUE,
         bannerText: rotatingCongrats(),
       });
     }
@@ -187,7 +189,17 @@ export default function Page() {
   );
 
   const bind = useLongPress(longPressCallback, {
-    onStart: (event) => {
+    onStart: (event: LongPressReactEvents<Element>) => {
+      if ("touches" in event && event.touches.length > 0) {
+        // This is a TouchEvent
+        setTapLocation({
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY,
+        });
+      } else if ("clientX" in event && "clientY" in event) {
+        // This is a MouseEvent
+        setTapLocation({ x: event.clientX, y: event.clientY });
+      }
       if (isComplete) return;
       isCancelled ? handleFrogAction("disable") : handleFrogAction("start");
     },
