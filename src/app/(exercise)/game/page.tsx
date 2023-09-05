@@ -2,7 +2,8 @@
 
 import BreathCountDots from "@/app/components/game/BreathCountDots";
 import CountdownTimer from "@/app/components/game/CountdownTimer";
-import GameCompleteModal from "@/app/components/game/GameCompleteModal";
+import GameBanner from "@/app/components/game/GameBanner";
+import GameComplete from "@/app/components/game/GameComplete";
 import SettingsModal from "@/app/components/game/SettingsModal";
 import ReplayIcon from "@/app/components/svg/ReplayIcon";
 import SettingsIcon from "@/app/components/svg/SettingsIcon";
@@ -12,16 +13,25 @@ import BOX_ANIM, { BoxAnim } from "@/app/utils/boxAnimation";
 import { inter } from "@/app/utils/fonts";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import rotatingCongrats from "@/app/utils/rotatingCongrats";
-import { motion, useAnimate } from "framer-motion";
+import { useAnimate } from "framer-motion";
 import Head from "next/head";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
 import useSound from "use-sound";
 
 export default function Page() {
+  const TXT_COLORS = {
+    BLUE: "text-sky-300",
+    ORANGE: "text-orange-500",
+    GREEN: "text-green-500",
+  };
+
   const HUMAN_DELAY = 0.3;
   const [boxscope, animate] = useAnimate();
-  const [bannerText, setBannerText] = useState(msg.welcome);
+  const [banner, setBanner] = useState({
+    bannerText: msg.welcome,
+    bannerTextColor: TXT_COLORS.BLUE,
+  });
   const [clockKey, setClockKey] = useState(0);
   const [playAwardSound] = useSound("/sounds/retro-award.mp3", {
     volume: 0.75,
@@ -67,7 +77,7 @@ export default function Page() {
       if (res.status === 200) {
         const data = await res.json();
         setBreathSessionDataCache([data]);
-        console.log("dbSaveSessionData game id:", data.id);
+        console.log("game id:", data.id);
       } else {
         console.error(`Error: ${res.status}`);
       }
@@ -79,7 +89,7 @@ export default function Page() {
   useEffect(() => {
     if (gameOver.current && cycleCount) {
       dbSaveSessionData().then(() => {
-        (window as any).game_complete_modal.showModal();
+        //! celebrate the completion of the game
       });
     }
   }, [gameOver.current]);
@@ -90,7 +100,10 @@ export default function Page() {
       gameOver.current = true; // set the game over reference
       setIsInProgressStatus(false); // the session is not in progress
       handleFrogAction("release");
-      setBannerText(rotatingCongrats()); // set the banner text
+      setBanner({
+        ...banner,
+        bannerText: rotatingCongrats(),
+      });
     }
   }, [isComplete]);
 
@@ -107,7 +120,10 @@ export default function Page() {
 
     switch (action) {
       case "start":
-        setBannerText(msg.inhale);
+        setBanner({
+          bannerText: msg.inhale,
+          bannerTextColor: TXT_COLORS.BLUE,
+        });
         !isInProgress && setClockKey((prevKey) => prevKey + 1);
         setIsInProgressStatus(true);
         setInhaleTimes(Date.now());
@@ -122,11 +138,18 @@ export default function Page() {
           playAwardSound();
         }
         animation(userCycleSpeed - HUMAN_DELAY, BOX_ANIM.SHRINK).then(() => {
-          !gameOver.current && setBannerText(msg.inhale);
+          !gameOver.current &&
+            setBanner({
+              bannerText: msg.inhale,
+              bannerTextColor: TXT_COLORS.BLUE,
+            });
         });
         break;
       case "cancel":
-        setBannerText(msg.cancelled);
+        setBanner({
+          bannerText: msg.cancelled,
+          bannerTextColor: TXT_COLORS.ORANGE,
+        });
         playErrorSound();
         setIsInProgressStatus(false);
         resetCycleCount();
@@ -136,7 +159,10 @@ export default function Page() {
       case "reset":
         resetGame();
         setIsCancelledStatus(false);
-        setBannerText(msg.welcome);
+        setBanner({
+          bannerText: msg.welcome,
+          bannerTextColor: TXT_COLORS.BLUE,
+        });
         setClockKey((prevKey) => prevKey + 1); // key to reset the clock
         setIsInProgressStatus(false);
         gameOver.current = false;
@@ -152,7 +178,10 @@ export default function Page() {
 
   const longPressCallback = useCallback(
     (event: LongPressReactEvents<Element>) => {
-      setBannerText(msg.exhale);
+      setBanner({
+        bannerText: msg.exhale,
+        bannerTextColor: TXT_COLORS.GREEN,
+      });
     },
     [],
   );
@@ -221,15 +250,7 @@ export default function Page() {
             />
           </div>
           {/* BANNER TEXT */}
-          <motion.h3
-            className={`mt-2 text-2xl ${
-              isCancelled ? "text-orange-500/70" : "text-sky-300/70"
-            } opacity-0`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            {bannerText}
-          </motion.h3>
+          <GameBanner banner={banner} />
           {/* COMPLETION PEARLS */}
           <div className="mt-2 h-6 w-full text-center">
             {isCancelled ? (
@@ -257,7 +278,7 @@ export default function Page() {
         </button>
       </div>
       <SettingsModal />
-      <GameCompleteModal />
+      {isComplete && <GameComplete />}
     </section>
   );
 }
