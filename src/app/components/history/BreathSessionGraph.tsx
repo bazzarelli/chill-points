@@ -67,7 +67,6 @@ export default function BreathSessionGraph({ data }: InhaleTimes) {
             scale={"band"}
             stroke="#A3D5FF"
           />
-          <Tooltip />
           <Legend iconType="circle" verticalAlign="top" width={400} />
           <Bar dataKey="inhale" barSize={12} stackId="a" fill="#A1CDF1" />
           <Bar dataKey="exhale" barSize={12} stackId="a" fill="#D991BA" />

@@ -50,7 +50,9 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
-  const gameSessions = await prisma.gameSession.findMany();
+  const gameSessions = await prisma.gameSession.findMany({
+    take: 10,
+  });
 
   return NextResponse.json(gameSessions);
 }
