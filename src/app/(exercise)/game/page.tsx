@@ -87,7 +87,7 @@ export default function Page() {
   useEffect(() => {
     if (isComplete && cycleCount) {
       setIsInProgressStatus(false);
-      handleFrogAction("release");
+      handleFrogAction("disable");
       setBanner({
         bannerTextColor: TXT_COLORS.BLUE,
         bannerText: rotatingCongrats(),
