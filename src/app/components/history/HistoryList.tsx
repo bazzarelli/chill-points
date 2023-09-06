@@ -23,7 +23,6 @@ export default function HistoryList() {
   let transition = { type: "ease", duration: 0.5, ease: "easeInOut" };
   let [ref, bounds] = userMeasure();
   const [sessionData, setSessionData] = useState<SessionData[]>([]);
-  const { breathSessionData } = useBreathSessionStore();
 
   async function dbGetSessionData() {
     const res = await fetch("/game/api", {
@@ -47,15 +46,9 @@ export default function HistoryList() {
   }
 
   useEffect(() => {
-    if (breathSessionData) {
-      console.log("breathSessionData from local storage", breathSessionData);
-      setSessionData(breathSessionData);
-    } else {
-      dbGetSessionData().then((data) => {
-        setSessionData(data);
-        console.log("data", JSON.stringify(data));
-      });
-    }
+    dbGetSessionData().then((data) => {
+      setSessionData(data);
+    });
   }, []);
 
   return (
