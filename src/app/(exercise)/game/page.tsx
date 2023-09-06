@@ -134,10 +134,12 @@ export default function Page() {
           incrementCycleCount();
           playAwardSound();
           animation(userCycleSpeed - HUMAN_DELAY, BOX_ANIM.SHRINK).then(() => {
-            setBanner({
-              bannerText: msg.inhale,
-              bannerTextColor: TXT_COLORS.BLUE,
-            });
+            if (!isComplete) {
+              setBanner({
+                bannerText: msg.inhale,
+                bannerTextColor: TXT_COLORS.BLUE,
+              });
+            }
           });
         }
         break;
