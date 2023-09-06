@@ -1,5 +1,9 @@
 "use client";
 
 export default async function Loading() {
-  return <span className="loading loading-spinner text-success"></span>;
+  return (
+    <div className="text-center p-6">
+      <span className="loading loading-spinner text-info"></span>
+    </div>
+  );
 }

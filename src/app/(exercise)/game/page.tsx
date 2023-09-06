@@ -16,7 +16,7 @@ import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import rotatingCongrats from "@/app/utils/rotatingCongrats";
 import { useAnimate } from "framer-motion";
 import Head from "next/head";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
 import useSound from "use-sound";
 
@@ -41,7 +41,6 @@ export default function Page() {
   const [playErrorSound] = useSound("/sounds/retro-error.mp3", {
     volume: 0.5,
   });
-  const gameOver = useRef(false);
 
   const {
     userCycleSpeed,
@@ -56,6 +55,7 @@ export default function Page() {
     resetGame,
     resetCycleCount,
     setInhaleTimes,
+    setIsCompleteStatus,
     setIsInProgressStatus,
     setIsCancelledStatus,
     setBreathSessionDataCache,
@@ -76,37 +76,32 @@ export default function Page() {
         },
       });
 
-      if (res.status === 200) {
-        const data = await res.json();
-        setBreathSessionDataCache([data]);
-        console.log("game id:", data.id);
-      } else {
-        console.error(`Error: ${res.status}`);
-      }
+      const data = await res.json();
+      setBreathSessionDataCache([data]);
     } catch (error) {
       console.error(`Error: ${error}`);
     }
   }
 
-  useEffect(() => {
-    if (gameOver.current && cycleCount) {
-      dbSaveSessionData().then(() => {
-        triggerExplosionAnimation(tapLocation);
-      });
-    }
-  }, [gameOver.current]);
-
   // when the session is completed
   useEffect(() => {
-    if (isComplete && !gameOver.current) {
-      gameOver.current = true; // set the game over reference
-      setIsInProgressStatus(false); // the session is not in progress
+    if (isComplete && cycleCount) {
+      setIsInProgressStatus(false);
       handleFrogAction("release");
       setBanner({
         bannerTextColor: TXT_COLORS.BLUE,
         bannerText: rotatingCongrats(),
       });
+      dbSaveSessionData().then(() => {
+        triggerExplosionAnimation(tapLocation);
+      });
     }
+
+    return () => {
+      if (isComplete) {
+        setIsCompleteStatus(false);
+      }
+    };
   }, [isComplete]);
 
   useEffect(() => {
@@ -138,14 +133,13 @@ export default function Page() {
         if (!isComplete) {
           incrementCycleCount();
           playAwardSound();
-        }
-        animation(userCycleSpeed - HUMAN_DELAY, BOX_ANIM.SHRINK).then(() => {
-          !gameOver.current &&
+          animation(userCycleSpeed - HUMAN_DELAY, BOX_ANIM.SHRINK).then(() => {
             setBanner({
               bannerText: msg.inhale,
               bannerTextColor: TXT_COLORS.BLUE,
             });
-        });
+          });
+        }
         break;
       case "cancel":
         setBanner({
@@ -167,7 +161,6 @@ export default function Page() {
         });
         setClockKey((prevKey) => prevKey + 1); // key to reset the clock
         setIsInProgressStatus(false);
-        gameOver.current = false;
         animation(1, BOX_ANIM.RESET);
         break;
       case "disable":
