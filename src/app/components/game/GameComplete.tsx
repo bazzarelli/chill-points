@@ -31,7 +31,7 @@ export default function GameCompleteModal() {
           <section className="mb-4 text-center">
             {isWorthy ? <Badge time={userGameLength} /> : <Badge time={0} />}
           </section>
-          <h2 className="text-lg">{`${gameName} ${msg.exercise_completed}`}</h2>
+          <h2 className="text-lg">{`${gameName} ${msg.exercise}`}</h2>
           <p>
             {userGameLength} {msg.badge_earned}
           </p>
