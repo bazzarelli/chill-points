@@ -25,6 +25,11 @@ const BOX_ANIM = {
     height: "0.4rem",
     opacity: 0.2,
   },
+  FINISH: {
+    backgroundColor: sky300,
+    height: "0.4rem",
+    opacity: 0.5,
+  },
 } as const;
 
 type ObjectValues<T> = T[keyof T];

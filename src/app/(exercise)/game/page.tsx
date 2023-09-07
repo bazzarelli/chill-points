@@ -36,9 +36,12 @@ export default function Page() {
   const [tapLocation, setTapLocation] = useState({ x: -50, y: -50 });
   const [clockKey, setClockKey] = useState(0);
   const [playAwardSound] = useSound("/sounds/retro-award.mp3", {
-    volume: 0.75,
+    volume: 0.65,
   });
   const [playErrorSound] = useSound("/sounds/retro-error.mp3", {
+    volume: 0.5,
+  });
+  const [playGameCompleteSound] = useSound("/sounds/gong.mp3", {
     volume: 0.5,
   });
   // used to tell in-flight/async parts of the game
@@ -91,13 +94,14 @@ export default function Page() {
     if (isComplete && cycleCount) {
       gameOver.current = true; // set the game over reference
       setIsInProgressStatus(false);
-      handleFrogAction("disable");
+      handleFrogAction("finish");
       setBanner({
         bannerTextColor: TXT_COLORS.BLUE,
         bannerText: rotatingCongrats(),
       });
       dbSaveSessionData().then(() => {
         triggerExplosionAnimation(tapLocation);
+        playGameCompleteSound();
       });
     }
 
@@ -172,6 +176,9 @@ export default function Page() {
         break;
       case "disable":
         animation(1, BOX_ANIM.CANCEL);
+        break;
+      case "finish":
+        animation(1, BOX_ANIM.FINISH);
         break;
       default:
         break;
