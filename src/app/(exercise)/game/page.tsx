@@ -16,7 +16,7 @@ import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import rotatingCongrats from "@/app/utils/rotatingCongrats";
 import { useAnimate } from "framer-motion";
 import Head from "next/head";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
 import useSound from "use-sound";
 
@@ -41,6 +41,9 @@ export default function Page() {
   const [playErrorSound] = useSound("/sounds/retro-error.mp3", {
     volume: 0.5,
   });
+  // used to tell in-flight/async parts of the game
+  // towards the final momments that the game is over
+  const gameOver = useRef(false);
 
   const {
     userCycleSpeed,
@@ -86,6 +89,7 @@ export default function Page() {
   // when the session is completed
   useEffect(() => {
     if (isComplete && cycleCount) {
+      gameOver.current = true; // set the game over reference
       setIsInProgressStatus(false);
       handleFrogAction("disable");
       setBanner({
@@ -134,7 +138,7 @@ export default function Page() {
           incrementCycleCount();
           playAwardSound();
           animation(userCycleSpeed - HUMAN_DELAY, BOX_ANIM.SHRINK).then(() => {
-            if (!isComplete) {
+            if (!gameOver.current) {
               setBanner({
                 bannerText: msg.inhale,
                 bannerTextColor: TXT_COLORS.BLUE,
@@ -163,6 +167,7 @@ export default function Page() {
         });
         setClockKey((prevKey) => prevKey + 1); // key to reset the clock
         setIsInProgressStatus(false);
+        gameOver.current = false;
         animation(1, BOX_ANIM.RESET);
         break;
       case "disable":
