@@ -49,24 +49,22 @@ export default function Page() {
         />
       </button>
       <div className="w-full bg-gray-300 text-left">
-        <h2 className="p-2 text-2xl text-gray-500">
-          {msg.your_badges} <span className="text-2xl">🏆</span>
-        </h2>
+        <h2 className="p-2 text-2xl text-gray-500">{msg.your_badges}</h2>
         {[...Array(uniqueBadgeTypeCount)].map((_, i) => (
           <div
             key={i}
             tabIndex={0}
             className="collapse collapse-arrow rounded-none"
           >
-            <div className="collapse-title bg-gray-100 text-gray-400 border border-bottom border-gray-300 rounded-none">
+            <div className="bg-gray-100 text-gray-400 text-sm border border-bottom border-gray-300 pl-2 py-1">
               {i + 1} minute breath session (
               {getBadgeCountByGameLength(i + 1).length})
             </div>
-            <div className="collapse-content p-4 bg-white">
+            <div className="p-4 bg-white">
               <div className="grid grid-cols-6 grid-flow-row gap-4">
                 {[...Array(getBadgeCountByGameLength(i + 1).length)].map(
                   (_, j) => (
-                    <div key={i * 2} className="inline-block">
+                    <div key={i * 2}>
                       <Badge time={i + 1} />
                     </div>
                   ),

@@ -22,13 +22,10 @@ function GameInstructions() {
       </ul>
       <figure className="relative mt-6 mb-3 w-[240px] mx-auto">
         <Link href="/game">
-          <Image
-            alt="Animated screen capture of the game"
-            src="/images/frog-demo.webp"
-            width="262"
-            height="210"
-            className="border border-info"
-          />
+          <video autoPlay loop muted className="border border-info">
+            <source src="/videos/frog-demo.mp4" type="video/mp4" />
+            <source src="/videos/frog-demo.webm" type="video/webm" />
+          </video>
         </Link>
       </figure>
     </div>

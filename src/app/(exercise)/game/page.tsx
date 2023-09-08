@@ -46,7 +46,7 @@ export default function Page() {
   });
   // used to tell in-flight/async parts of the game
   // towards the final momments that the game is over
-  const gameOver = useRef(false);
+  const gameOver = useRef(false); // does not trigger re-render
 
   const {
     userCycleSpeed,
@@ -89,7 +89,8 @@ export default function Page() {
     }
   }
 
-  // when the session is completed
+  // when the session `isComplete`
+  // isComplete is triggered by the countdown timer
   useEffect(() => {
     if (isComplete && cycleCount) {
       gameOver.current = true; // set the game over reference
