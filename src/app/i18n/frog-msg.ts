@@ -27,6 +27,7 @@ export const msg = {
   short: "short",
   med: "med",
   long: "long",
+  your_badges: "Your badges",
 };
 
 export const msg_congrats = {

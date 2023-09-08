@@ -23,16 +23,13 @@ function GameInstructions() {
       <figure className="relative mt-6 mb-3 w-[240px] mx-auto">
         <Link href="/game">
           <Image
-            alt="Screen capture of the game"
-            src="/images/game-screen-cap.jpg"
-            width="435"
-            height="332"
+            alt="Animated screen capture of the game"
+            src="/images/frog-demo.webp"
+            width="262"
+            height="210"
             className="border border-info"
           />
         </Link>
-        <figcaption className="text-6xl absolute left-20 bottom-0">
-          👆
-        </figcaption>
       </figure>
     </div>
   );

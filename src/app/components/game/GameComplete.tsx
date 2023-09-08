@@ -29,7 +29,15 @@ export default function GameCompleteModal() {
       {cycleCount && (
         <div className="relative bg-gradient-to-b from-slate-700 via-sky-600 via-40% to-slate-700 p-6 w-full text-slate-300 text-left">
           <section className="mb-4 text-center">
-            {isWorthy ? <Badge time={userGameLength} /> : <Badge time={0} />}
+            <Link href="/badges">
+              <button className="btn btn-sm btn-link">
+                {isWorthy ? (
+                  <Badge time={userGameLength} />
+                ) : (
+                  <Badge time={0} />
+                )}
+              </button>
+            </Link>
           </section>
           <h2 className="text-lg">{`${gameName} ${msg.exercise}`}</h2>
           <p>
