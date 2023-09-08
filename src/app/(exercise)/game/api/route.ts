@@ -51,7 +51,8 @@ export async function POST(req: Request) {
 
 export async function GET() {
   const gameSessions = await prisma.gameSession.findMany({
-    take: 10,
+    take: 20,
+    orderBy: { createdAt: "desc" },
   });
 
   return NextResponse.json(gameSessions);
