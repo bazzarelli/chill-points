@@ -38,6 +38,9 @@ export default async function Header() {
               <Link href="/history">History</Link>
             </li>
             <li>
+              <Link href="/badges">Badges</Link>
+            </li>
+            <li>
               <Link href="/profile">Profile</Link>
             </li>
             <li>

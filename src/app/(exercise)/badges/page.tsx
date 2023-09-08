@@ -1,0 +1,81 @@
+"use client";
+
+import Badge from "@/app/components/game/Badge";
+import NavArrowBackIcon from "@/app/components/svg/NavArrowBackIcon";
+import { msg } from "@/app/i18n/frog-msg";
+import { inter } from "@/app/utils/fonts";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
+type GameLengthItem = {
+  gameLength: number;
+};
+
+export default function Page() {
+  const router = useRouter();
+  const handleBack = () => router.back();
+  const uniqueBadgeTypeCount = 5;
+  const [gameLengthData, setGameLengthData] = useState<GameLengthItem[]>([]);
+
+  async function dbGetGameLengths(): Promise<GameLengthItem[]> {
+    const res = await fetch("/badges/api", {
+      method: "GET",
+    });
+    return res.json();
+  }
+
+  useEffect(() => {
+    dbGetGameLengths().then((data) => {
+      setGameLengthData(data);
+    });
+  }, []);
+
+  function getBadgeCountByGameLength(gameLength: number) {
+    return gameLengthData.filter((item) => item.gameLength === gameLength);
+  }
+
+  return (
+    <section
+      className={`${inter.className} h-screen mx-auto w-full md:w-1/2 lg:w-1/3`}
+    >
+      <button
+        onClick={handleBack}
+        className="my-2 ml-1 md:ml-0 btn btn-sm btn-link"
+      >
+        <NavArrowBackIcon
+          className="inline-block fill-info"
+          width={32}
+          height={32}
+        />
+      </button>
+      <div className="w-full bg-gray-300 text-left">
+        <h2 className="p-2 text-2xl text-gray-500">
+          {msg.your_badges} <span className="text-2xl">🏆</span>
+        </h2>
+        {[...Array(uniqueBadgeTypeCount)].map((_, i) => (
+          <div
+            key={i}
+            tabIndex={0}
+            className="collapse collapse-arrow rounded-none"
+          >
+            <div className="collapse-title bg-gray-100 text-gray-400 border border-bottom border-gray-300 rounded-none">
+              {i + 1} minute breath session (
+              {getBadgeCountByGameLength(i + 1).length})
+            </div>
+            <div className="collapse-content p-4 bg-white">
+              <div className="grid grid-cols-6 grid-flow-row gap-4">
+                {[...Array(getBadgeCountByGameLength(i + 1).length)].map(
+                  (_, j) => (
+                    <div key={i * 2} className="inline-block">
+                      <Badge time={i + 1} />
+                    </div>
+                  ),
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
