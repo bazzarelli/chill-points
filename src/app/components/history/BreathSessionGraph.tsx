@@ -3,7 +3,6 @@ import {
   ComposedChart,
   Legend,
   ResponsiveContainer,
-  Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
@@ -68,8 +67,8 @@ export default function BreathSessionGraph({ data }: InhaleTimes) {
             stroke="#A3D5FF"
           />
           <Legend iconType="circle" verticalAlign="top" width={400} />
-          <Bar dataKey="inhale" barSize={12} stackId="a" fill="#A1CDF1" />
-          <Bar dataKey="exhale" barSize={12} stackId="a" fill="#D991BA" />
+          <Bar dataKey="inhale" barSize={12} stackId="a" fill="#EA8C55" />
+          <Bar dataKey="exhale" barSize={12} stackId="a" fill="#C75146" />
         </ComposedChart>
       </ResponsiveContainer>
     </div>
