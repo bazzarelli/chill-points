@@ -1,7 +1,6 @@
 "use client";
 
 import RarrowIcon from "@/app/components/svg/RarrowIcon";
-import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import { AnimatePresence, MotionConfig, motion } from "framer-motion";
 import { DateTime } from "luxon";
@@ -22,7 +21,9 @@ type SessionData = {
 export default function HistoryList() {
   let transition = { type: "ease", duration: 0.5, ease: "easeInOut" };
   let [ref, bounds] = userMeasure();
-  const [sessionData, setSessionData] = useState<SessionData[]>([]);
+  const [sessionData, setSessionData] = useState<
+    SessionData[] | undefined | null
+  >([]);
 
   async function dbGetSessionData() {
     const res = await fetch("/game/api", {

@@ -61,15 +61,7 @@ export default function Page() {
               {getBadgeCountByGameLength(i + 1).length})
             </div>
             <div className="p-4 bg-white">
-              <div className="grid grid-cols-6 grid-flow-row gap-4">
-                {[...Array(getBadgeCountByGameLength(i + 1).length)].map(
-                  (_, j) => (
-                    <div key={i * 2}>
-                      <Badge time={i + 1} />
-                    </div>
-                  ),
-                )}
-              </div>
+              <Badge time={i + 1} />
             </div>
           </div>
         ))}
