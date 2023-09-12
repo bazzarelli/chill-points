@@ -15,13 +15,13 @@ function BreathCountDots() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1.5 }}
-      className="opacity-80"
+      className="opacity-80 text-xs"
     >
       ⚪️
     </motion.span>
   );
   const breathCycleDotEmpty = () => (
-    <span className="text-base text-slate-100/30">◯</span>
+    <span className="text-slate-100/30 text-xs">◯</span>
   );
 
   useEffect(() => {

@@ -27,7 +27,16 @@ export default function Page() {
     GREEN: "text-green-500",
   };
 
-  const HUMAN_DELAY = 0.3;
+  let HUMAN_DELAY = 0;
+  const calculateHumanDelay = () => {
+    const x1 = 1; // shortest game length
+    const y1 = 0.3; // corresponding human delay
+    const x2 = 5; // longest game length
+    const y2 = 0.06; // corresponding human delay
+    const humanDelay = y1 + ((userGameLength - x1) * (y2 - y1)) / (x2 - x1);
+    return humanDelay;
+  };
+
   const [boxscope, animate] = useAnimate();
   const [banner, setBanner] = useState({
     bannerText: msg.welcome,
@@ -117,6 +126,7 @@ export default function Page() {
     // disable long press browser defaults
     onContextMenuListener();
     handleFrogAction("reset");
+    HUMAN_DELAY = calculateHumanDelay();
   }, []);
 
   function handleFrogAction(action: string) {

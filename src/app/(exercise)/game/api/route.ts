@@ -38,7 +38,8 @@ export async function POST(req: Request) {
     data: {
       userId: currentUserId,
       gameName: gameName,
-      // when saving to db, we compact the inhaleTimes array
+      // when saving to db, we convert the inhaleTimes
+      // from unix times to the difference between them
       // so the postgres datatype can be regular Int[]
       inhaleTimes: inhaleTimeDiff(inhaleTimes),
       cycleCount: cycleCount,
