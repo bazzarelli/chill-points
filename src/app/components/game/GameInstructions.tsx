@@ -1,4 +1,4 @@
-import Image from "next/image";
+import FrogMovie from "@/app/components/game/FrogMovie";
 import Link from "next/link";
 
 function GameInstructions() {
@@ -20,15 +20,9 @@ function GameInstructions() {
           Keep your finger on the frog during inhales and off during exhales.
         </li>
       </ul>
-      <figure className="relative mt-6 mb-3 w-[240px] mx-auto">
+      <figure className="relative mt-6 mb-3 w-[240px] mx-auto border border-info">
         <Link href="/game">
-          <Image
-            alt="Animated screen capture of the game"
-            src="/images/frog-demo.webp"
-            width="262"
-            height="210"
-            className="border border-info"
-          />
+          <FrogMovie />
         </Link>
       </figure>
     </div>
