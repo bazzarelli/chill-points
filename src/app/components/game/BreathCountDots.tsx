@@ -21,7 +21,7 @@ function BreathCountDots() {
     </motion.span>
   );
   const breathCycleDotEmpty = () => (
-    <span className="text-slate-100/30 text-xs">◯</span>
+    <span className="text-slate-100/40 text-xs">◯</span>
   );
 
   useEffect(() => {
@@ -33,7 +33,7 @@ function BreathCountDots() {
   }, [userCycleSpeed, userGameLength]);
 
   return (
-    <div className="w-fit border border-slate-700/30 mx-auto pl-2 py-1 bg-slate-800/30 rounded-md shadow-lg">
+    <div className="w-fit border border-slate-700/30 mx-auto pl-2 bg-slate-800/30 rounded-md shadow-lg">
       {Array.from({ length: dotCountTotal }).map((_, index) => {
         const isFull = index < cycleCount;
         const dot = isFull ? breathCycleDotFull() : breathCycleDotEmpty();

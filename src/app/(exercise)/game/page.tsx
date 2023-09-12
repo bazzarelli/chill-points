@@ -1,5 +1,6 @@
 "use client";
 
+import BadgeMinter from "@/app/components/game/BadgeMinter";
 import BreathCountDots from "@/app/components/game/BreathCountDots";
 import CountdownTimer from "@/app/components/game/CountdownTimer";
 import GameBanner from "@/app/components/game/GameBanner";
@@ -10,7 +11,6 @@ import SettingsIcon from "@/app/components/svg/SettingsIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import BOX_ANIM, { BoxAnim } from "@/app/utils/boxAnimation";
-import triggerExplosionAnimation from "@/app/utils/explosionAnimation";
 import { inter } from "@/app/utils/fonts";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import rotatingCongrats from "@/app/utils/rotatingCongrats";
@@ -48,9 +48,6 @@ export default function Page() {
     volume: 0.65,
   });
   const [playErrorSound] = useSound("/sounds/retro-error.mp3", {
-    volume: 0.5,
-  });
-  const [playGameCompleteSound] = useSound("/sounds/gong.mp3", {
     volume: 0.5,
   });
   // used to tell in-flight/async parts of the game
@@ -109,10 +106,7 @@ export default function Page() {
         bannerTextColor: TXT_COLORS.BLUE,
         bannerText: rotatingCongrats(),
       });
-      dbSaveSessionData().then(() => {
-        triggerExplosionAnimation(tapLocation);
-        playGameCompleteSound();
-      });
+      dbSaveSessionData();
     }
 
     return () => {
@@ -273,11 +267,15 @@ export default function Page() {
           </div>
           {/* COUNTDOWN CLOCK */}
           <div className="mx-auto h-24 w-24">
-            <CountdownTimer
-              isPlaying={isInProgress}
-              duration={userGameLength * 60}
-              key={clockKey}
-            />
+            {gameOver.current ? (
+              <BadgeMinter isPlaying={gameOver.current} coords={tapLocation} />
+            ) : (
+              <CountdownTimer
+                isPlaying={isInProgress}
+                duration={userGameLength * 60}
+                key={clockKey}
+              />
+            )}
           </div>
           {/* BANNER TEXT */}
           <GameBanner banner={banner} />

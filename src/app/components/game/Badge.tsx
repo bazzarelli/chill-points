@@ -1,4 +1,5 @@
 import SnowflakeIcon from "@/app/components/svg/SnowflakeIcon";
+import { motion } from "framer-motion";
 import colors from "tailwindcss/colors";
 
 // if the tailwind classes are not in code they are purged
@@ -38,10 +39,13 @@ export default function Badge({ time }: { time: number }) {
   ];
 
   return (
-    <button
-      className={`btn btn-circle border-none bg-gradient-to-b from-${badgeColors[time]}-700 to-${badgeColors[time]}-500 shadow-lg`}
+    <motion.button
+      initial={{ opacity: 0, scale: 0.6 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6 }}
+      className={`btn btn-circle border-none bg-gradient-to-b from-${badgeColors[time]}-700 to-${badgeColors[time]}-500 shadow-slate-100/80 shadow-lg`}
     >
       <SnowflakeIcon width={36} height={36} fill={slate100} />
-    </button>
+    </motion.button>
   );
 }
