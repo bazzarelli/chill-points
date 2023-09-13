@@ -33,7 +33,7 @@ function BreathCountDots() {
   }, [userCycleSpeed, userGameLength]);
 
   return (
-    <div className="w-fit border border-slate-700/30 mx-auto pl-2 bg-slate-800/30 rounded-md shadow-lg">
+    <div className="w-fit border border-slate-700/30 mx-auto pl-2 pb-1 bg-slate-800/30 rounded-md shadow-lg">
       {Array.from({ length: dotCountTotal }).map((_, index) => {
         const isFull = index < cycleCount;
         const dot = isFull ? breathCycleDotFull() : breathCycleDotEmpty();
