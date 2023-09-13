@@ -40,9 +40,9 @@ export default function Badge({ time }: { time: number }) {
 
   return (
     <motion.button
-      initial={{ opacity: 0, scale: 0.6 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
       className={`btn btn-circle border-none bg-gradient-to-b from-${badgeColors[time]}-700 to-${badgeColors[time]}-500 shadow-slate-100/80 shadow-lg`}
     >
       <SnowflakeIcon width={36} height={36} fill={slate100} />

@@ -36,7 +36,7 @@ export default function BadgeMinter({
     if (remainingTime === 0) {
       return (
         <Link href="/badges">
-          <div className="w-20 h-20 bg-gradient-radial from-yellow-200 from-10% via-red-400 via-50% to-amber-800 to-95% rounded-full flex items-center justify-center">
+          <div className="w-20 h-20 bg-gradient-radial from-yellow-200 from-40% via-red-500 via-50% to-amber-900 to-95% rounded-full flex items-center justify-center">
             {isWorthy ? <Badge time={userGameLength} /> : <Badge time={0} />}
           </div>
         </Link>
