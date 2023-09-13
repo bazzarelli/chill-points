@@ -30,9 +30,9 @@ export default function Page() {
   let HUMAN_DELAY = 0;
   const calculateHumanDelay = () => {
     const x1 = 1; // shortest game length
-    const y1 = 0.3; // corresponding human delay
+    const y1 = 0.3; // shortest game human delay
     const x2 = 5; // longest game length
-    const y2 = 0.06; // corresponding human delay
+    const y2 = 0.06; // longest game human delay
     const humanDelay = y1 + ((userGameLength - x1) * (y2 - y1)) / (x2 - x1);
     return humanDelay;
   };
@@ -42,7 +42,7 @@ export default function Page() {
     bannerText: msg.welcome,
     bannerTextColor: TXT_COLORS.BLUE,
   });
-  const [tapLocation, setTapLocation] = useState({ x: -50, y: -50 });
+  const [clockCoords, setClockCoords] = useState({ x: -50, y: -50 });
   const [clockKey, setClockKey] = useState(0);
   const [playAwardSound] = useSound("/sounds/retro-award.mp3", {
     volume: 0.65,
@@ -53,6 +53,7 @@ export default function Page() {
   // used to tell in-flight/async parts of the game
   // towards the final momments that the game is over
   const gameOver = useRef(false); // does not trigger re-render
+  const clockRef = useRef<HTMLDivElement | null>(null);
 
   const {
     userCycleSpeed,
@@ -121,6 +122,14 @@ export default function Page() {
     onContextMenuListener();
     handleFrogAction("reset");
     HUMAN_DELAY = calculateHumanDelay();
+    const clockEl = clockRef.current;
+    if (clockEl) {
+      const clockRect = clockEl.getBoundingClientRect();
+      setClockCoords({
+        x: clockRect.left + window.scrollX,
+        y: clockRect.top + window.scrollY,
+      });
+    }
   }, []);
 
   function handleFrogAction(action: string) {
@@ -202,16 +211,6 @@ export default function Page() {
 
   const bind = useLongPress(longPressCallback, {
     onStart: (event: LongPressReactEvents<Element>) => {
-      if ("touches" in event && event.touches.length > 0) {
-        // This is a TouchEvent
-        setTapLocation({
-          x: event.touches[0].clientX,
-          y: event.touches[0].clientY,
-        });
-      } else if ("clientX" in event && "clientY" in event) {
-        // This is a MouseEvent
-        setTapLocation({ x: event.clientX, y: event.clientY });
-      }
       if (isComplete) return;
       isCancelled ? handleFrogAction("disable") : handleFrogAction("start");
     },
@@ -266,9 +265,9 @@ export default function Page() {
             </button>
           </div>
           {/* COUNTDOWN CLOCK */}
-          <div className="mx-auto h-24 w-24">
+          <div ref={clockRef} className="mx-auto h-24 w-24">
             {gameOver.current ? (
-              <BadgeMinter isPlaying={gameOver.current} coords={tapLocation} />
+              <BadgeMinter isPlaying={gameOver.current} coords={clockCoords} />
             ) : (
               <CountdownTimer
                 isPlaying={isInProgress}

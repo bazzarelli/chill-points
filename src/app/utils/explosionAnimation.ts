@@ -82,28 +82,28 @@ const explosionAnimation = () => {
 
 type Coords = { x: number; y: number };
 
-export default function triggerExplosionAnimation(tapLocation: Coords) {
-  const { x, y } = tapLocation;
+export default function triggerExplosionAnimation(clockCoords: Coords) {
+  const { x, y } = clockCoords;
   const explode = explosionAnimation();
   setTimeout(() => {
-    explode(x - 40, y - y / 2.9);
+    explode(x - 40, y - y / 2.7);
   }, 300);
   setTimeout(() => {
     explode(x + 50, y - y / 2.3);
   }, 100);
   setTimeout(() => {
-    explode(x, y - y / 3.6);
+    explode(x, y - y / 2.1);
   }, 200);
   setTimeout(() => {
-    explode(x - 45, y - y / 3.3);
+    explode(x - 45, y - y / 3);
   }, 350);
   setTimeout(() => {
-    explode(x + 80, y - y / 2.6);
+    explode(x + 80, y - y / 2.5);
   }, 200);
   setTimeout(() => {
-    explode(x + 60, y - y / 4);
+    explode(x + 60, y - y / 2.75);
   }, 400);
   setTimeout(() => {
-    explode(x + 70, y - y / 2);
+    explode(x + 70, y - y / 1.75);
   }, 500);
 }
