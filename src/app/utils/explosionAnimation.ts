@@ -86,22 +86,22 @@ export default function triggerExplosionAnimation(clockCoords: Coords) {
   const { x, y } = clockCoords;
   const explode = explosionAnimation();
   setTimeout(() => {
-    explode(x - 40, y - y / 2.7);
+    explode(x + 10, y - y / 2.25);
   }, 300);
   setTimeout(() => {
-    explode(x + 50, y - y / 2.3);
+    explode(x + 50, y - y / 2);
   }, 100);
   setTimeout(() => {
     explode(x, y - y / 2.1);
   }, 200);
   setTimeout(() => {
-    explode(x - 45, y - y / 3);
+    explode(x + 20, y - y / 1.7);
   }, 350);
   setTimeout(() => {
-    explode(x + 80, y - y / 2.5);
+    explode(x + 80, y - y / 1.55);
   }, 200);
   setTimeout(() => {
-    explode(x + 60, y - y / 2.75);
+    explode(x + 60, y - y / 2.15);
   }, 400);
   setTimeout(() => {
     explode(x + 70, y - y / 1.75);

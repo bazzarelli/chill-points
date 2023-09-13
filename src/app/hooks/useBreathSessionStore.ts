@@ -3,6 +3,7 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 type InitialGameState = {
   cycleCount: number;
+  humanDelay: number;
   dotCountTotal: number;
   inhaleTimes: number[];
   isComplete: boolean;
@@ -31,6 +32,7 @@ type BreathSessionDataCache = {
 type Actions = {
   incrementCycleCount: () => void;
   resetCycleCount: () => void;
+  setHumanDelay: (humanDelay: number) => void;
   setDotCountTotal: (dotCountTotal: number) => void;
   setUserCycleSpeed: (userCycleSpeed: number) => void;
   setUserGameLength: (userGameLength: number) => void;
@@ -44,6 +46,7 @@ type Actions = {
 
 const initialGameState: InitialGameState & BreathSessionDataCache = {
   cycleCount: 0,
+  humanDelay: 0,
   dotCountTotal: 10,
   inhaleTimes: [],
   isComplete: false,
@@ -60,7 +63,7 @@ export const useBreathSessionStore = create<
 >()(
   devtools(
     persist(
-      (set, get) => ({
+      (set) => ({
         ...initialGameState,
         incrementCycleCount: () =>
           set((state) => ({ cycleCount: state.cycleCount + 1 })),
@@ -69,6 +72,7 @@ export const useBreathSessionStore = create<
           set(() => ({
             dotCountTotal,
           })),
+        setHumanDelay: (humanDelay) => set(() => ({ humanDelay })),
         setUserCycleSpeed: (userCycleSpeed) => set(() => ({ userCycleSpeed })),
         setUserGameLength: (userGameLength) => set(() => ({ userGameLength })),
         setInhaleTimes: (inhaleTimes) =>

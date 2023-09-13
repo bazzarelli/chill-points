@@ -12,6 +12,7 @@ import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import BOX_ANIM, { BoxAnim } from "@/app/utils/boxAnimation";
 import { inter } from "@/app/utils/fonts";
+import getHumanDelay from "@/app/utils/humanDelay";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import rotatingCongrats from "@/app/utils/rotatingCongrats";
 import { useAnimate } from "framer-motion";
@@ -27,22 +28,12 @@ export default function Page() {
     GREEN: "text-green-500",
   };
 
-  let HUMAN_DELAY = 0;
-  const calculateHumanDelay = () => {
-    const x1 = 1; // shortest game length
-    const y1 = 0.3; // shortest game human delay
-    const x2 = 5; // longest game length
-    const y2 = 0.06; // longest game human delay
-    const humanDelay = y1 + ((userGameLength - x1) * (y2 - y1)) / (x2 - x1);
-    return humanDelay;
-  };
-
   const [boxscope, animate] = useAnimate();
   const [banner, setBanner] = useState({
     bannerText: msg.welcome,
     bannerTextColor: TXT_COLORS.BLUE,
   });
-  const [clockCoords, setClockCoords] = useState({ x: -50, y: -50 });
+  const [clockCoords, setClockCoords] = useState({ x: -300, y: -300 });
   const [clockKey, setClockKey] = useState(0);
   const [playAwardSound] = useSound("/sounds/retro-award.mp3", {
     volume: 0.65,
@@ -57,6 +48,7 @@ export default function Page() {
 
   const {
     userCycleSpeed,
+    humanDelay,
     userGameLength,
     isCancelled,
     isComplete,
@@ -71,6 +63,7 @@ export default function Page() {
     setIsCompleteStatus,
     setIsInProgressStatus,
     setIsCancelledStatus,
+    setHumanDelay,
     setBreathSessionDataCache,
   } = useBreathSessionStore();
 
@@ -96,7 +89,6 @@ export default function Page() {
     }
   }
 
-  // when the session `isComplete`
   // isComplete is triggered by the countdown timer
   useEffect(() => {
     if (isComplete && cycleCount) {
@@ -118,10 +110,13 @@ export default function Page() {
   }, [isComplete]);
 
   useEffect(() => {
+    setHumanDelay(getHumanDelay(userGameLength));
+  }, [userGameLength]);
+
+  useEffect(() => {
     // disable long press browser defaults
     onContextMenuListener();
     handleFrogAction("reset");
-    HUMAN_DELAY = calculateHumanDelay();
     const clockEl = clockRef.current;
     if (clockEl) {
       const clockRect = clockEl.getBoundingClientRect();
@@ -148,14 +143,14 @@ export default function Page() {
         setInhaleTimes(Date.now());
         setIsCancelledStatus(false);
         setIsInProgressStatus(true);
-        animation(userCycleSpeed - HUMAN_DELAY, BOX_ANIM.GROW);
+        animation(userCycleSpeed - humanDelay, BOX_ANIM.GROW);
         break;
       case "release":
         setInhaleTimes(Date.now());
         if (!isComplete) {
           incrementCycleCount();
           playAwardSound();
-          animation(userCycleSpeed - HUMAN_DELAY, BOX_ANIM.SHRINK).then(() => {
+          animation(userCycleSpeed - humanDelay, BOX_ANIM.SHRINK).then(() => {
             if (!gameOver.current) {
               setBanner({
                 bannerText: msg.inhale,
