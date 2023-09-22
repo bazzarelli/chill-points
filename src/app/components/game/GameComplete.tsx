@@ -1,10 +1,9 @@
 "use client";
 
+import BreathSessionGraph from "@/app/components/history/BreathSessionGraph";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import Link from "next/link";
-
-import BreathSessionGraph from "../history/BreathSessionGraph";
 
 export default function GameCompleteModal() {
   const { cycleCount, userGameLength, gameName, breathSessionData } =
@@ -30,7 +29,7 @@ export default function GameCompleteModal() {
               <progress className="progress progress-info w-56"></progress>
             </div>
           )}
-          <button className="border-slate-800/70 border-2 px-2 py-1 mt-5 rounded-lg text-sm text-slate-800 bg-sky-200/80">
+          <button className="border-slate-800/70 border-2 px-2 py-1 my-5 rounded-lg text-sm text-slate-800 bg-sky-200/80">
             <Link href="/history">{msg.view_history}</Link>
           </button>
         </div>

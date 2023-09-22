@@ -6,6 +6,7 @@ import triggerExplosionAnimation from "@/app/utils/explosionAnimation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import useSound from "use-sound";
 
 type RenderTimeProps = {
   remainingTime: number;
@@ -25,6 +26,10 @@ export default function BadgeMinter({
 }: CountdownTimerProps) {
   const { userGameLength, cycleCount, dotCountTotal } = useBreathSessionStore();
   const [isWorthy, setIsWorthy] = useState(false);
+
+  const [playGongSound] = useSound("/sounds/gong.mp3", {
+    volume: 0.65,
+  });
 
   useEffect(() => {
     if (cycleCount / dotCountTotal > 0.8) {
@@ -61,6 +66,7 @@ export default function BadgeMinter({
       trailColor={"#E2C2FF"}
       colors={"#B3001B"}
       onComplete={() => {
+        playGongSound();
         triggerExplosionAnimation(coords);
         ({ shouldRepeat: false });
       }}

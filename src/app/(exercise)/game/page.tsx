@@ -92,6 +92,7 @@ export default function Page() {
   // isComplete is triggered by the countdown timer
   useEffect(() => {
     if (isComplete && cycleCount) {
+      setInhaleTimes(Date.now());
       gameOver.current = true; // set the game over reference
       setIsInProgressStatus(false);
       handleFrogAction("finish");
