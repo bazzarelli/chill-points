@@ -40,6 +40,9 @@ export default function SessionDetail() {
         <p className="text-slate-400 text-sm">
           {parsedData.gameLength} {msg.minute_session}
         </p>
+        <p className="text-slate-400 text-sm">
+          {parsedData.cycleCount} {msg.breath_cycles_completed}
+        </p>
       </section>
       <div className="relative -left-6">
         <BreathSessionGraph data={parsedData.inhaleTimes} />
