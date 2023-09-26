@@ -48,7 +48,7 @@ const initialGameState: InitialGameState & BreathSessionDataCache = {
   cycleCount: 0,
   humanDelay: 0,
   dotCountTotal: 10,
-  inhaleTimes: [],
+  inhaleTimes: [0],
   isComplete: false,
   isCancelled: false,
   isInProgress: false,
@@ -90,7 +90,7 @@ export const useBreathSessionStore = create<
         resetGame: () =>
           set(() => ({
             cycleCount: 0,
-            inhaleTimes: [],
+            inhaleTimes: [0],
             isComplete: false,
             isCancelled: false,
             isInProgress: false,
