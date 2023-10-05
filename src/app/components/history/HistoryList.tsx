@@ -1,16 +1,14 @@
 "use client";
 
 import RarrowIcon from "@/app/components/svg/RarrowIcon";
+import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import { AnimatePresence, MotionConfig, motion } from "framer-motion";
 import { DateTime } from "luxon";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import userMeasure from "react-use-measure";
 
 type SessionData = {
-  id: number;
-  userId: string;
   gameName: string;
   createdAt: string;
   inhaleTimes: number[];
@@ -21,36 +19,13 @@ type SessionData = {
 export default function HistoryList() {
   let transition = { type: "ease", duration: 0.5, ease: "easeInOut" };
   let [ref, bounds] = userMeasure();
-  const [sessionData, setSessionData] = useState<
-    SessionData[] | undefined | null
-  >([]);
 
-  async function dbGetSessionData() {
-    const res = await fetch("/game/api", {
-      method: "GET",
-    });
-    return res.json();
-  }
-
-  async function dbDeleteSessionData() {
-    const res = await fetch("/game/api", {
-      method: "DELETE",
-    });
-    const data = await res.json();
-    setSessionData(data);
-    return data;
-  }
+  const { breathSessionData } = useBreathSessionStore();
 
   function calculateBreathRate(session: SessionData) {
     const { gameLength, cycleCount } = session;
     return Math.floor(cycleCount / gameLength);
   }
-
-  useEffect(() => {
-    dbGetSessionData().then((data) => {
-      setSessionData(data);
-    });
-  }, []);
 
   return (
     <MotionConfig transition={transition}>
@@ -59,32 +34,39 @@ export default function HistoryList() {
         <div className="flex bg-gray-300 font-semibold text-gray-500">
           <div className="h-7 w-5/12 pl-2">{msg.date}</div>
           <div className="h-7 w-3/12">{msg.rate}</div>
-          <div className="h-7 w-2/12">{msg.points}</div>
+          <div className="h-7 w-2/12">{msg.mins}</div>
           <div className="h-7 w-2/12"></div>
         </div>
         <motion.div
           animate={{ height: bounds.height > 0 ? bounds.height : 0 }}
           transition={{ type: "spring", duration: 0.6, bounce: 0.2 }}
         >
-          {sessionData && sessionData.length > 0 && (
+          {breathSessionData && breathSessionData.length > 0 && (
             <div ref={ref}>
               <AnimatePresence mode="sync">
-                {sessionData.map((session: SessionData) => (
+                {breathSessionData.map((session) => (
                   <Link
-                    key={session.id}
-                    href={`/history/session/${session.id}?data=${JSON.stringify(
-                      session,
-                    )}`}
+                    key={session.createdAt}
+                    href={`/history/session/${DateTime.fromISO(
+                      session.createdAt,
+                    )}?data=${JSON.stringify(session)}`}
                   >
                     <div
-                      key={session.id}
+                      key={session.createdAt}
                       className="flex border border-b-0 border-slate-400 bg-gray-200 py-1 text-gray-500"
                     >
                       <div className="h-7 w-5/12 pl-2">
                         {DateTime.fromISO(session.createdAt).toLocaleString()}
                       </div>
                       <div className="h-7 w-3/12">
-                        {calculateBreathRate(session)} {msg.bpm}
+                        {calculateBreathRate({
+                          gameName: session.gameName,
+                          createdAt: session.createdAt,
+                          inhaleTimes: session.inhaleTimes,
+                          cycleCount: session.cycleCount,
+                          gameLength: session.gameLength,
+                        })}{" "}
+                        {msg.bpm}
                       </div>
                       <div className="h-7 w-2/12">{session.gameLength}</div>
                       <div className="h-7 w-2/12 pr-2 text-right">

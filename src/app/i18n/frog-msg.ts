@@ -24,6 +24,7 @@ export const msg = {
   exercise: "exercise",
   minute_session: "minute session",
   game_minutes: "game minutes",
+  mins: "mins",
   short: "short",
   med: "med",
   long: "long",

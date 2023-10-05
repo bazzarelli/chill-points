@@ -31,6 +31,7 @@ export async function POST(req: Request) {
 
   // check for valid currentUserId
   if (!currentUserId) {
+    console.error("No current user found");
     return NextResponse.error();
   }
 
@@ -52,7 +53,6 @@ export async function POST(req: Request) {
 
 export async function GET() {
   const gameSessions = await prisma.gameSession.findMany({
-    take: 20,
     orderBy: { createdAt: "desc" },
   });
 
@@ -77,7 +77,9 @@ export async function DELETE(req: Request) {
     return NextResponse.error();
   }
 
-  const deletedGameSession = await prisma.gameSession.deleteMany();
+  const deletedGameSession = await prisma.gameSession.deleteMany({
+    where: { userId },
+  });
 
   return NextResponse.json(deletedGameSession);
 }

@@ -27,7 +27,7 @@ export default function BadgeMinter({
   const { userGameLength, cycleCount, dotCountTotal } = useBreathSessionStore();
   const [isWorthy, setIsWorthy] = useState(false);
 
-  const [playGongSound] = useSound("/sounds/gong.mp3", {
+  const [playBadgeSound] = useSound("/sounds/badge-minted.mp3", {
     volume: 0.65,
   });
 
@@ -66,7 +66,7 @@ export default function BadgeMinter({
       trailColor={"#E2C2FF"}
       colors={"#B3001B"}
       onComplete={() => {
-        playGongSound();
+        playBadgeSound();
         triggerExplosionAnimation(coords);
         ({ shouldRepeat: false });
       }}
