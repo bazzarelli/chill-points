@@ -2,33 +2,22 @@
 
 import Badge from "@/app/components/game/Badge";
 import NavArrowBackIcon from "@/app/components/svg/NavArrowBackIcon";
+import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import { inter } from "@/app/utils/fonts";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-
-type GameLengthItem = {
-  gameLength: number;
-};
 
 export default function Page() {
   const router = useRouter();
   const handleBack = () => router.back();
   const uniqueBadgeTypeCount = 5;
-  const [gameLengthData, setGameLengthData] = useState<GameLengthItem[]>([]);
+  const { breathSessionData } = useBreathSessionStore();
 
-  async function dbGetGameLengths(): Promise<GameLengthItem[]> {
-    const res = await fetch("/badges/api", {
-      method: "GET",
-    });
-    return res.json();
-  }
-
-  useEffect(() => {
-    dbGetGameLengths().then((data) => {
-      setGameLengthData(data);
-    });
-  }, []);
+  const gameLengthData = breathSessionData
+    .filter((session) => session.gameName === "Equal Breathing")
+    .map((session) => ({
+      gameLength: session.gameLength,
+    }));
 
   function getBadgeCountByGameLength(gameLength: number) {
     return gameLengthData.filter((item) => item.gameLength === gameLength);

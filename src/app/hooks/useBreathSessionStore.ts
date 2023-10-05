@@ -16,8 +16,6 @@ type InitialGameState = {
 };
 
 type BreathSessionData = {
-  id: number;
-  userId: string;
   gameName: string;
   createdAt: string;
   inhaleTimes: number[];
@@ -48,7 +46,7 @@ const initialGameState: InitialGameState & BreathSessionDataCache = {
   cycleCount: 0,
   humanDelay: 0,
   dotCountTotal: 10,
-  inhaleTimes: [0],
+  inhaleTimes: [],
   isComplete: false,
   isCancelled: false,
   isInProgress: false,
@@ -86,11 +84,16 @@ export const useBreathSessionStore = create<
         setIsInProgressStatus: (isInProgress) =>
           set(() => ({ isInProgress: isInProgress })),
         setBreathSessionDataCache: (breathSessionData: BreathSessionData[]) =>
-          set(() => ({ breathSessionData })),
+          set((state) => ({
+            breathSessionData: [
+              ...state.breathSessionData,
+              ...breathSessionData,
+            ],
+          })),
         resetGame: () =>
           set(() => ({
             cycleCount: 0,
-            inhaleTimes: [0],
+            inhaleTimes: [],
             isComplete: false,
             isCancelled: false,
             isInProgress: false,

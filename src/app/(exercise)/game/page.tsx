@@ -13,9 +13,11 @@ import { msg } from "@/app/i18n/frog-msg";
 import BOX_ANIM, { BoxAnim } from "@/app/utils/boxAnimation";
 import { inter } from "@/app/utils/fonts";
 import getHumanDelay from "@/app/utils/humanDelay";
+import inhaleTimeDiff from "@/app/utils/inhaleTimeDiff";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import rotatingCongrats from "@/app/utils/rotatingCongrats";
 import { useAnimate } from "framer-motion";
+import { DateTime } from "luxon";
 import Head from "next/head";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
@@ -43,7 +45,7 @@ export default function Page() {
   });
   // used to tell in-flight/async parts of the game
   // towards the final momments that the game is over
-  const gameOver = useRef(false); // does not trigger re-render
+  const gameOver = useRef(false); // when changed, does not trigger re-render
   const clockRef = useRef<HTMLDivElement | null>(null);
 
   const {
@@ -67,26 +69,16 @@ export default function Page() {
     setBreathSessionDataCache,
   } = useBreathSessionStore();
 
-  async function dbSaveSessionData() {
-    try {
-      const res = await fetch("/game/api", {
-        method: "POST",
-        body: JSON.stringify({
-          gameName,
-          inhaleTimes,
-          cycleCount,
-          gameLength: userGameLength,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await res.json();
-      setBreathSessionDataCache([data]);
-    } catch (error) {
-      console.error(`Error: ${error}`);
-    }
+  function dbSaveSessionData() {
+    setBreathSessionDataCache([
+      {
+        gameName,
+        inhaleTimes: inhaleTimeDiff(inhaleTimes),
+        cycleCount,
+        createdAt: DateTime.now().toISO()!,
+        gameLength: userGameLength,
+      },
+    ]);
   }
 
   // isComplete is triggered by the countdown timer
