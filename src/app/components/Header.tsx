@@ -1,16 +1,9 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { comfortaa } from "@/app/utils/fonts";
-import { getServerSession } from "next-auth/next";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 export default async function Header() {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    redirect("/api/auth/signin?callbackUrl=/");
-  }
-  const userImage = session?.user?.image || "/images/sample-avatar.jpg";
+  const userImage = "/images/sample-avatar.jpg";
 
   return (
     <div className="navbar bg-info px-4 pt-3 md:px-8">
@@ -39,12 +32,6 @@ export default async function Header() {
             </li>
             <li>
               <Link href="/badges">Badges</Link>
-            </li>
-            <li>
-              <Link href="/profile">Profile</Link>
-            </li>
-            <li>
-              <Link href="/api/auth/signout">Sign out</Link>
             </li>
           </ul>
         </div>
