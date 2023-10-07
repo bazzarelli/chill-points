@@ -19,6 +19,7 @@ import rotatingCongrats from "@/app/utils/rotatingCongrats";
 import { useAnimate } from "framer-motion";
 import { DateTime } from "luxon";
 import Head from "next/head";
+import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
 import useSound from "use-sound";
@@ -282,9 +283,16 @@ export default function Page() {
         {/* FROG */}
         <button
           {...bind()}
-          className="relative mt-5 mx-auto h-48 w-64 bg-[url(/images/buddha-belly-frog-sm.webp)] bg-contain bg-center bg-no-repeat"
+          className="relative mt-5 mx-auto h-48 w-64"
           id="frog-box"
         >
+          <Image
+            alt="finger print symbol"
+            width={64}
+            height={98}
+            src="/images/finger-print.webp"
+            className="mx-auto drop-shadow-md opacity-70"
+          />
           <div
             ref={boxscope}
             className="absolute bottom-0 left-0 right-0 h-1 bg-sky-300/50 rounded-sm -z-10"

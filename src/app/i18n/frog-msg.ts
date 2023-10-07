@@ -1,9 +1,9 @@
 export const msg = {
   intro_hook: "Unwind with a quick and calming breath game.",
-  welcome: "Press & hold frog to begin",
+  welcome: "Press & hold to begin",
   inhale: "Hold finger down & inhale",
   exhale: "Release finger & exhale",
-  finished: "Frog is impressed!",
+  finished: "Impressive!",
   cancelled: "Keep finger pressed during inhale",
   restart: "Start over?",
   replay: "Replay game",
@@ -41,6 +41,6 @@ export const msg_congrats = {
   6: "Way to breathe!",
   7: "Brilliant!",
   8: "Outstanding!",
-  9: "Frog is pleased!",
-  10: "Frog-tastic!",
+  9: "How pleasing!",
+  10: "Fantastic!",
 };
