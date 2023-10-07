@@ -19,7 +19,6 @@ import rotatingCongrats from "@/app/utils/rotatingCongrats";
 import { useAnimate } from "framer-motion";
 import { DateTime } from "luxon";
 import Head from "next/head";
-import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
 import useSound from "use-sound";
@@ -218,7 +217,7 @@ export default function Page() {
 
   return (
     <section
-      className={`${inter.className} flex flex-wrap text-center  text-slate-900`}
+      className={`${inter.className} flex flex-wrap text-center text-slate-900`}
     >
       <Head>
         <title>Chill a minute: game</title>
@@ -283,7 +282,9 @@ export default function Page() {
         {/* FROG */}
         <button
           {...bind()}
-          className="relative mt-5 mx-auto h-48 w-64 bg-[url(/images/finger-print.webp)] bg-auto bg-no-repeat bg-center"
+          className="relative mt-5 mx-auto h-48 w-64 
+          bg-[url(/images/finger-print-blue.webp)]    
+          bg-auto bg-no-repeat bg-center"
           id="frog-box"
         >
           <div
