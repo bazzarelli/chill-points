@@ -283,7 +283,7 @@ export default function Page() {
         {/* FROG */}
         <button
           {...bind()}
-          className="relative mt-5 mx-auto h-48 w-64 url(/images/finger-print.webp) bg-auto bg-no-repeat bg-center"
+          className="relative mt-5 mx-auto h-48 w-64 bg-[url(/images/finger-print.webp)] bg-auto bg-no-repeat bg-center"
           id="frog-box"
         >
           <div
