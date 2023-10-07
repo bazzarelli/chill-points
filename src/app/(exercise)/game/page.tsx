@@ -283,16 +283,9 @@ export default function Page() {
         {/* FROG */}
         <button
           {...bind()}
-          className="relative mt-5 mx-auto h-48 w-64"
+          className="relative mt-5 mx-auto h-48 w-64 url(/images/finger-print.webp) bg-auto bg-no-repeat bg-center"
           id="frog-box"
         >
-          <Image
-            alt="finger print symbol"
-            width={64}
-            height={98}
-            src="/images/finger-print.webp"
-            className="mx-auto drop-shadow-md opacity-70"
-          />
           <div
             ref={boxscope}
             className="absolute bottom-0 left-0 right-0 h-1 bg-sky-300/50 rounded-sm -z-10"
