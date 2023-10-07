@@ -22,7 +22,11 @@ export default function GameCompleteModal() {
           </p>
           {breathSessionData.length ? (
             <div className="relative -left-6">
-              <BreathSessionGraph data={breathSessionData[0].inhaleTimes} />
+              <BreathSessionGraph
+                data={
+                  breathSessionData[breathSessionData.length - 1].inhaleTimes
+                }
+              />
             </div>
           ) : (
             <div>

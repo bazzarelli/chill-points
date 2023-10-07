@@ -58,7 +58,7 @@ export default function BadgeMinter({
   return (
     <CountdownCircleTimer
       isPlaying={isPlaying}
-      duration={2}
+      duration={1}
       updateInterval={0}
       strokeWidth={4}
       trailStrokeWidth={4}

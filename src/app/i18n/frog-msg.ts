@@ -33,7 +33,7 @@ export const msg = {
 
 export const msg_congrats = {
   0: "Impressive!",
-  1: "I'm proud of you!",
+  1: "You did it!",
   2: "Well done!",
   3: "Bravo!",
   4: "Excellent work!",
