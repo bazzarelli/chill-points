@@ -20,7 +20,8 @@ export default function HistoryList() {
   let transition = { type: "ease", duration: 0.5, ease: "easeInOut" };
   let [ref, bounds] = userMeasure();
 
-  const { breathSessionData } = useBreathSessionStore();
+  const { breathSessionData, clearBreathSessionDataCache } =
+    useBreathSessionStore();
 
   function calculateBreathRate(session: SessionData) {
     const { gameLength, cycleCount } = session;
@@ -44,54 +45,60 @@ export default function HistoryList() {
           {breathSessionData && breathSessionData.length > 0 && (
             <div ref={ref}>
               <AnimatePresence mode="sync">
-                {breathSessionData.map((session) => (
-                  <Link
-                    key={session.createdAt}
-                    href={`/history/session/${DateTime.fromISO(
-                      session.createdAt,
-                    )}?data=${JSON.stringify(session)}`}
-                  >
-                    <div
+                {breathSessionData
+                  .sort(
+                    (a, b) =>
+                      new Date(b.createdAt).getTime() -
+                      new Date(a.createdAt).getTime(),
+                  )
+                  .map((session) => (
+                    <Link
                       key={session.createdAt}
-                      className="flex border border-b-0 border-slate-400 bg-gray-200 py-1 text-gray-500"
+                      href={`/history/session/${DateTime.fromISO(
+                        session.createdAt,
+                      )}?data=${JSON.stringify(session)}`}
                     >
-                      <div className="h-7 w-5/12 pl-2">
-                        {DateTime.fromISO(session.createdAt).toLocaleString()}
+                      <div
+                        key={session.createdAt}
+                        className="flex border border-b-0 border-slate-400 bg-gray-200 py-1 text-gray-500"
+                      >
+                        <div className="h-7 w-5/12 pl-2">
+                          {DateTime.fromISO(session.createdAt).toLocaleString()}
+                        </div>
+                        <div className="h-7 w-3/12">
+                          {calculateBreathRate({
+                            gameName: session.gameName,
+                            createdAt: session.createdAt,
+                            inhaleTimes: session.inhaleTimes,
+                            cycleCount: session.cycleCount,
+                            gameLength: session.gameLength,
+                          })}{" "}
+                          {msg.bpm}
+                        </div>
+                        <div className="h-7 w-2/12">{session.gameLength}</div>
+                        <div className="h-7 w-2/12 pr-2 text-right">
+                          <RarrowIcon
+                            className="inline-block"
+                            width={15}
+                            height={15}
+                          />
+                        </div>
                       </div>
-                      <div className="h-7 w-3/12">
-                        {calculateBreathRate({
-                          gameName: session.gameName,
-                          createdAt: session.createdAt,
-                          inhaleTimes: session.inhaleTimes,
-                          cycleCount: session.cycleCount,
-                          gameLength: session.gameLength,
-                        })}{" "}
-                        {msg.bpm}
-                      </div>
-                      <div className="h-7 w-2/12">{session.gameLength}</div>
-                      <div className="h-7 w-2/12 pr-2 text-right">
-                        <RarrowIcon
-                          className="inline-block"
-                          width={15}
-                          height={15}
-                        />
-                      </div>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  ))}
               </AnimatePresence>
             </div>
           )}
         </motion.div>
       </div>
-      {/* <div className="flex pt-5 pl-4 md:pl-0">
+      <div className="flex pt-5 pl-4 md:pl-0">
         <button
-          onClick={dbDeleteSessionData}
+          onClick={clearBreathSessionDataCache}
           className="btn btn-sm btn-outline btn-error"
         >
           {msg.delete_history}
         </button>
-      </div> */}
+      </div>
     </MotionConfig>
   );
 }

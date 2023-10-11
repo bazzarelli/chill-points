@@ -27,7 +27,7 @@ export default function BadgeMinter({
   const { userGameLength, cycleCount, dotCountTotal } = useBreathSessionStore();
   const [isWorthy, setIsWorthy] = useState(false);
 
-  const [playBadgeSound] = useSound("/sounds/badge-minted.mp3", {
+  const [playBadgeSound] = useSound("/sounds/retro-award.mp3", {
     volume: 0.65,
   });
 

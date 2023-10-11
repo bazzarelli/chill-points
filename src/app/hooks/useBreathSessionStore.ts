@@ -39,6 +39,7 @@ type Actions = {
   setIsCancelledStatus: (isCancelled: boolean) => void;
   setIsInProgressStatus: (isInProgress: boolean) => void;
   setBreathSessionDataCache: (breathSessionData: BreathSessionData[]) => void;
+  clearBreathSessionDataCache: () => void;
   resetGame: () => void;
 };
 
@@ -90,6 +91,8 @@ export const useBreathSessionStore = create<
               ...breathSessionData,
             ],
           })),
+        clearBreathSessionDataCache: () =>
+          set(() => ({ breathSessionData: [] })),
         resetGame: () =>
           set(() => ({
             cycleCount: 0,
