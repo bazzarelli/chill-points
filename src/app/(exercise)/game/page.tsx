@@ -37,7 +37,7 @@ export default function Page() {
   });
   const [clockCoords, setClockCoords] = useState({ x: -300, y: -300 });
   const [clockKey, setClockKey] = useState(0);
-  const [playAwardSound] = useSound("/sounds/badge-minted.mp3", {
+  const [playAwardSound] = useSound("/sounds/retro-award.mp3", {
     volume: 0.65,
   });
   const [playErrorSound] = useSound("/sounds/retro-error.mp3", {
@@ -222,10 +222,7 @@ export default function Page() {
       <Head>
         <title>Chill a minute: game</title>
       </Head>
-      <div
-        className="w-full touch-none select-none bg-gradient-to-b
-        from-slate-700 via-sky-600 via-70% to-slate-700/20 relative z-10"
-      >
+      <div className="w-full touch-none select-none bg-gradient-to-b from-slate-700 via-sky-600 via-70% to-slate-700/20 relative z-10">
         <div className="mx-auto md:w-1/3">
           <div className="flex">
             <button
@@ -285,16 +282,14 @@ export default function Page() {
         {/* FROG */}
         <button
           {...bind()}
-          className="relative mt-5 mx-auto h-64 w-64 
+          className="relative mt-5 mx-auto h-48 w-64 
           bg-[url(/images/finger-print-blue.webp)]    
           bg-auto bg-no-repeat bg-center"
           id="frog-box"
         >
           <div
             ref={boxscope}
-            className="absolute h-1 w-1 bg-sky-300/50 -z-10 rounded-full 
-            top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-            gradient-radial from-green-400 via-pink-500 to-sky-300"
+            className="absolute bottom-0 left-0 right-0 h-1 bg-sky-300/50 rounded-sm -z-10"
           ></div>
         </button>
       </div>
