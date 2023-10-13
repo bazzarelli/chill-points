@@ -18,7 +18,12 @@ const _possible_classes = [
   "to-slate-500",
 ];
 
-export default function Badge({ time }: { time: number }) {
+type BadgeProps = {
+  count: number;
+  time: number;
+};
+
+export default function Badge({ time, count }: BadgeProps) {
   const slate100 = colors.slate[100];
   type BadgeColor =
     | "slate"
@@ -38,10 +43,13 @@ export default function Badge({ time }: { time: number }) {
   ];
 
   return (
-    <button
-      className={`btn btn-circle border-none bg-gradient-to-b from-${badgeColors[time]}-700 to-${badgeColors[time]}-500 shadow-slate-100/80 shadow-lg`}
-    >
-      <SnowflakeIcon width={36} height={36} fill={slate100} />
-    </button>
+    <div className="indicator">
+      <span className="indicator-item badge badge-info">{count}</span>
+      <button
+        className={`btn btn-circle border-none bg-gradient-to-b from-${badgeColors[time]}-700 to-${badgeColors[time]}-500 shadow-slate-100/80 shadow-lg`}
+      >
+        <SnowflakeIcon width={36} height={36} fill={slate100} />
+      </button>
+    </div>
   );
 }
