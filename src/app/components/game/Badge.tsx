@@ -44,7 +44,9 @@ export default function Badge({ time, count }: BadgeProps) {
 
   return (
     <div className="indicator">
-      <span className="indicator-item badge badge-info">{count}</span>
+      {count ? (
+        <span className="indicator-item badge badge-info">{count}</span>
+      ) : null}
       <button
         className={`btn btn-circle border-none bg-gradient-to-b from-${badgeColors[time]}-700 to-${badgeColors[time]}-500 shadow-slate-100/80 shadow-lg`}
       >

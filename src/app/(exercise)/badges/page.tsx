@@ -41,13 +41,13 @@ export default function Page() {
         <h2 className="p-2 text-2xl text-gray-500">{msg.your_badges}</h2>
         <div className="flex flex-row flex-wrap bg-white justify-between">
           {[...Array(uniqueBadgeTypeCount)].map((_, i) => (
-            <div key={i} className="w-24 p-4">
+            <div key={i} className="w-24 p-4 text-center">
               <Badge
                 time={i + 1}
                 count={getBadgeCountByGameLength(i + 1).length}
               />
               <span className="text-gray-400 text-sm inline-block">
-                {i + 1} minute
+                {i + 1} min
               </span>
             </div>
           ))}
