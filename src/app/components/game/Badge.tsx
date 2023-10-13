@@ -19,8 +19,8 @@ const _possible_classes = [
 ];
 
 type BadgeProps = {
-  count: number;
   time: number;
+  count?: number;
 };
 
 export default function Badge({ time, count }: BadgeProps) {
