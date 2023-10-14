@@ -14,36 +14,32 @@ type Props = {
 };
 
 export default function UserCard({ user }: Props) {
-  console.log(user);
-
   const userImage = user?.image ? (
     <Image
       className="border-4 border-black dark:border-slate-500 rounded-full mx-auto mt-8"
       src={user?.image}
-      width={200}
-      height={200}
+      width={150}
+      height={150}
       alt={user?.name ?? "Profile Pic"}
       priority={true}
     />
   ) : null;
 
   const nameDisplay = user?.name ? (
-    <div className="flex flex-col items-center mt-2 font-bold text-xl text-slate-400">
-      {user?.name}
-    </div>
+    <div className="flex flex-col mt-2 font-semibold text-lg">{user?.name}</div>
   ) : null;
 
   const emailDisplay = user?.email ? (
-    <div className="flex flex-col items-center text-lg text-slate-400">
-      {user?.email}
-    </div>
+    <div className="flex flex-col">{user?.email}</div>
   ) : null;
 
   return (
-    <section className="flex flex-col gap-2">
-      {userImage}
-      {nameDisplay}
-      {emailDisplay}
+    <section className="flex flex-row pl-4 pb-6 text-slate-300 border-b-2 border-slate-700">
+      <div>{userImage}</div>
+      <div className="flex flex-col justify-center text-left pl-4">
+        {nameDisplay}
+        {emailDisplay}
+      </div>
     </section>
   );
 }
