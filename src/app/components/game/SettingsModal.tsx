@@ -38,7 +38,7 @@ export default function SettingsModal() {
         <h3 className="font-bold text-lg">Game settings</h3>
 
         <section className="py-4">
-          <span className="mb-2 text-sm font-semibold">
+          <span className="mb-2 text-sm">
             Breath cycle speed (inhale/exhale)
           </span>
           <input
@@ -58,7 +58,7 @@ export default function SettingsModal() {
         </section>
 
         <section className="pb-4">
-          <span className="mb-2 text-sm text font-semibold capitalize">
+          <span className="mb-2 text-sm text capitalize">
             {msg.game_minutes}
           </span>
           <input

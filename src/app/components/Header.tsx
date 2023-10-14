@@ -1,9 +1,12 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { comfortaa } from "@/app/utils/fonts";
+import { getServerSession } from "next-auth/next";
 import Image from "next/image";
 import Link from "next/link";
 
 export default async function Header() {
-  const userImage = "/images/sample-avatar.jpg";
+  const session = await getServerSession(authOptions);
+  const userImage = session?.user?.image || "/images/sample-avatar.jpg";
 
   return (
     <div className="navbar bg-info px-4 pt-3 md:px-8">
@@ -33,6 +36,16 @@ export default async function Header() {
             <li>
               <Link href="/badges">Badges</Link>
             </li>
+            {session && (
+              <>
+                <li>
+                  <Link href="/profile">Profile</Link>
+                </li>
+                <li>
+                  <Link href="/api/auth/signout">Sign out</Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
