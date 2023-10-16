@@ -12,7 +12,7 @@ import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import BOX_ANIM, { BoxAnim } from "@/app/utils/boxAnimation";
 import { inter } from "@/app/utils/fonts";
-import getHumanDelay from "@/app/utils/humanDelay";
+import calculateHumanDelay from "@/app/utils/humanDelay";
 import inhaleTimeDiff from "@/app/utils/inhaleTimeDiff";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import rotatingCongrats from "@/app/utils/rotatingCongrats";
@@ -102,7 +102,7 @@ export default function Page() {
   }, [isComplete]);
 
   useEffect(() => {
-    setHumanDelay(getHumanDelay(userGameLength));
+    setHumanDelay(calculateHumanDelay(userGameLength));
   }, [userGameLength]);
 
   useEffect(() => {
@@ -282,9 +282,9 @@ export default function Page() {
         {/* FROG */}
         <button
           {...bind()}
-          className="relative mt-5 mx-auto h-48 w-64 
-          bg-[url(/images/finger-print-blue.webp)]    
-          bg-auto bg-no-repeat bg-center"
+          className="finger-print relative mt-5 mx-auto h-48 w-64
+          bg-[url(/images/finger-print-blue.webp)]
+          bg-no-repeat bg-center"
           id="frog-box"
         >
           <div
