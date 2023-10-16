@@ -16,3 +16,7 @@ body {
   -webkit-user-select: none;
   user-select: none;
 }
+
+.finger-print {
+  background-size: 15%;
+}
