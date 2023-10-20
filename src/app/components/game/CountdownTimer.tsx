@@ -41,7 +41,7 @@ export default function CountdownTimer({
   duration,
   isPlaying,
 }: CountdownTimerProps) {
-  const { setIsCompleteStatus } = useBreathSessionStore();
+  const { setIsCompleteStatus, setInhaleTimes } = useBreathSessionStore();
   return (
     <CountdownCircleTimer
       isPlaying={isPlaying}
@@ -53,6 +53,7 @@ export default function CountdownTimer({
       trailColor={"#1b2533"}
       colors={"#4eacd5"}
       onComplete={() => {
+        setInhaleTimes(Date.now());
         setIsCompleteStatus(true); // set state
         ({ shouldRepeat: false });
       }}
