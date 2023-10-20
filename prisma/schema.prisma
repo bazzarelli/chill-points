@@ -1,15 +1,12 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider          = "postgresql"
-  url               = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl         = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
-  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
+  url               = env("POSTGRES_PRISMA_URL")
+  directUrl         = env("POSTGRES_URL_NON_POOLING")
+  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model Account {
@@ -18,16 +15,15 @@ model Account {
   type                     String
   provider                 String
   providerAccountId        String
-  refresh_token            String? @db.Text
-  access_token             String? @db.Text
+  refresh_token            String?
+  access_token             String?
   expires_at               Int?
   refresh_token_expires_in Int?
   token_type               String?
   scope                    String?
-  id_token                 String? @db.Text
+  id_token                 String?
   session_state            String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -43,34 +39,45 @@ model Session {
 model User {
   id            String               @id @default(cuid())
   name          String?
-  bio           String?              @db.Text
+  bio           String?
   age           Int?
   email         String?              @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
-  sessions      Session[]
   games         GameSession[]
+  sessions      Session[]
   preferences   UserGamePreference[]
 }
 
 model UserGamePreference {
   id             Int    @id @default(autoincrement())
   userId         String
-  user           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userCycleSpeed Int
   userGameLength Int
+  user           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model GameSession {
   id          Int      @id @default(autoincrement())
   userId      String
-  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   gameName    String
   createdAt   DateTime @default(now())
   inhaleTimes Int[]
   cycleCount  Int
   gameLength  Int
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model FeedbackSurvey {
+  id                  Int @id @default(autoincrement())
+  createdAt           DateTime @default(now())
+  surveyName          String
+  dailyHabit          String
+  dailyNotification   String
+  finishedGame        String
+  gameRating          String
+  additionalFeedback  String
 }
 
 model VerificationToken {

@@ -5,7 +5,7 @@ import Link from 'next/link';
 export default function Page() {
 
     return (
-        <section className={`${inter.className} grid grid-cols-3 grid-flow-row grid-rows-3 gap-6 mx-auto mt-12 text-slate-200`}>
+        <section className={`${inter.className} grid md:grid-cols-3 grid-flow-row md:grid-rows-3 gap-6 mx-auto mt-12 text-slate-200`}>
             <div className="card w-96 bg-secondary text-primary-content">
                 <div className="card-body">
                     <h2 className={`card-title ${comfortaa.className}`}>4-7-8 Breathing</h2>

@@ -64,6 +64,20 @@ CREATE TABLE "GameSession" (
 );
 
 -- CreateTable
+CREATE TABLE "FeedbackSurvey" (
+    "id" SERIAL NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "surveyName" TEXT NOT NULL,
+    "dailyHabit" TEXT NOT NULL,
+    "dailyNotification" TEXT NOT NULL,
+    "finishedGame" TEXT NOT NULL,
+    "gameRating" TEXT NOT NULL,
+    "additionalFeedback" TEXT NOT NULL,
+
+    CONSTRAINT "FeedbackSurvey_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "VerificationToken" (
     "identifier" TEXT NOT NULL,
     "token" TEXT NOT NULL,

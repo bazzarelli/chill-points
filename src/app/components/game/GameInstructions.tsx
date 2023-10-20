@@ -1,7 +1,6 @@
 function GameInstructions() {
   return (
     <div className="border border-sky-800 p-4 rounded-md mt-6 bg-slate-800">
-      <h2 className="text-lg pb-2">Game Instructions</h2>
       <p className="text-lg">
         The game begins when you press and hold the finger print icon.
       </p>
