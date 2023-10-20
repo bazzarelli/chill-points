@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import inhaleTimeDiff from "@/app/utils/inhaleTimeDiff";
+import calculateInhaleTimeDiff from "@/app/utils/calculateInhaleTimeDiff";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     data: {
       userId: currentUserId,
       gameName: gameName,
-      inhaleTimes: inhaleTimeDiff(inhaleTimes),
+      inhaleTimes: calculateInhaleTimeDiff(inhaleTimes),
       cycleCount: cycleCount,
       gameLength: gameLength,
     },

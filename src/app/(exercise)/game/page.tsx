@@ -11,9 +11,9 @@ import SettingsIcon from "@/app/components/svg/SettingsIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import BOX_ANIM, { BoxAnim } from "@/app/utils/boxAnimation";
+import calculateInhaleTimeDiff from "@/app/utils/calculateInhaleTimeDiff";
 import { inter } from "@/app/utils/fonts";
 import calculateHumanDelay from "@/app/utils/humanDelay";
-import inhaleTimeDiff from "@/app/utils/inhaleTimeDiff";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import rotatingCongrats from "@/app/utils/rotatingCongrats";
 import { useAnimate } from "framer-motion";
@@ -73,7 +73,7 @@ export default function Page() {
     setBreathSessionDataCache([
       {
         gameName,
-        inhaleTimes: inhaleTimeDiff(inhaleTimes),
+        inhaleTimes: calculateInhaleTimeDiff(inhaleTimes),
         cycleCount,
         createdAt: DateTime.now().toISO()!,
         gameLength: userGameLength,

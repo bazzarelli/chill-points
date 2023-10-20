@@ -1,5 +1,4 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import inhaleTimeDiff from "@/app/utils/inhaleTimeDiff";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
@@ -39,10 +38,7 @@ export async function POST(req: Request) {
     data: {
       userId: currentUserId,
       gameName: gameName,
-      // when saving to db, we convert the inhaleTimes
-      // from unix times to the difference between them
-      // so the postgres datatype can be regular Int[]
-      inhaleTimes: inhaleTimeDiff(inhaleTimes),
+      inhaleTimes: inhaleTimes,
       cycleCount: cycleCount,
       gameLength: gameLength,
     },
