@@ -24,17 +24,24 @@ import { LongPressReactEvents, useLongPress } from "use-long-press";
 import useSound from "use-sound";
 
 export default function Page() {
-  const TXT_COLORS = {
+  const TXT_COLOR = {
     BLUE: "text-sky-300",
     ORANGE: "text-orange-500",
-    GREEN: "text-green-500",
+    FUCHSIA: "text-fuchsia-300",
+  };
+
+  const BOX_BG_COLOR = {
+    BLUE: "bg-sky-300",
+    FUCHSIA: "bg-fuchsia-300",
+    ORANGE: "bg-orange-500",
   };
 
   const [boxscope, animate] = useAnimate();
   const [banner, setBanner] = useState({
     bannerText: msg.welcome,
-    bannerTextColor: TXT_COLORS.BLUE,
+    bannerTextColor: TXT_COLOR.BLUE,
   });
+  const [boxBg, setBoxBg] = useState(BOX_BG_COLOR.BLUE);
   const [clockCoords, setClockCoords] = useState({ x: -300, y: -300 });
   const [clockKey, setClockKey] = useState(0);
   const [playAwardSound] = useSound("/sounds/retro-award.mp3", {
@@ -86,9 +93,9 @@ export default function Page() {
     if (isComplete && cycleCount) {
       gameOver.current = true; // set the game over reference
       setIsInProgressStatus(false);
-      handleFrogAction("finish");
+      handleAction("finish");
       setBanner({
-        bannerTextColor: TXT_COLORS.BLUE,
+        bannerTextColor: TXT_COLOR.BLUE,
         bannerText: rotatingCongrats(),
       });
       dbSaveSessionData();
@@ -108,7 +115,7 @@ export default function Page() {
   useEffect(() => {
     // disable long press browser defaults
     onContextMenuListener();
-    handleFrogAction("reset");
+    handleAction("reset");
     const clockEl = clockRef.current;
     if (clockEl) {
       const clockRect = clockEl.getBoundingClientRect();
@@ -119,7 +126,7 @@ export default function Page() {
     }
   }, []);
 
-  function handleFrogAction(action: string) {
+  function handleAction(action: string) {
     const animation = (duration: number, boxAnim: BoxAnim) => {
       return animate(boxscope.current, { ...boxAnim }, { duration: duration });
     };
@@ -128,13 +135,14 @@ export default function Page() {
       case "start":
         setBanner({
           bannerText: msg.inhale,
-          bannerTextColor: TXT_COLORS.BLUE,
+          bannerTextColor: TXT_COLOR.BLUE,
         });
         !isInProgress && setClockKey((prevKey) => prevKey + 1);
         setIsInProgressStatus(true);
         setInhaleTimes(Date.now());
         setIsCancelledStatus(false);
         setIsInProgressStatus(true);
+        setBoxBg(BOX_BG_COLOR.BLUE);
         animation(userCycleSpeed - humanDelay, BOX_ANIM.GROW);
         break;
       case "release":
@@ -142,11 +150,12 @@ export default function Page() {
         if (!isComplete) {
           incrementCycleCount();
           playAwardSound();
+          setBoxBg(BOX_BG_COLOR.FUCHSIA);
           animation(userCycleSpeed - humanDelay, BOX_ANIM.SHRINK).then(() => {
             if (!gameOver.current) {
               setBanner({
                 bannerText: msg.inhale,
-                bannerTextColor: TXT_COLORS.BLUE,
+                bannerTextColor: TXT_COLOR.BLUE,
               });
             }
           });
@@ -155,7 +164,7 @@ export default function Page() {
       case "cancel":
         setBanner({
           bannerText: msg.cancelled,
-          bannerTextColor: TXT_COLORS.ORANGE,
+          bannerTextColor: TXT_COLOR.ORANGE,
         });
         playErrorSound();
         setIsInProgressStatus(false);
@@ -168,7 +177,7 @@ export default function Page() {
         setIsCancelledStatus(false);
         setBanner({
           bannerText: msg.welcome,
-          bannerTextColor: TXT_COLORS.BLUE,
+          bannerTextColor: TXT_COLOR.BLUE,
         });
         setClockKey((prevKey) => prevKey + 1); // key to reset the clock
         setIsInProgressStatus(false);
@@ -190,8 +199,9 @@ export default function Page() {
     (event: LongPressReactEvents<Element>) => {
       setBanner({
         bannerText: msg.exhale,
-        bannerTextColor: TXT_COLORS.GREEN,
+        bannerTextColor: TXT_COLOR.FUCHSIA,
       });
+      setBoxBg(BOX_BG_COLOR.FUCHSIA);
     },
     [],
   );
@@ -199,15 +209,15 @@ export default function Page() {
   const bind = useLongPress(longPressCallback, {
     onStart: (event: LongPressReactEvents<Element>) => {
       if (isComplete) return;
-      isCancelled ? handleFrogAction("disable") : handleFrogAction("start");
+      isCancelled ? handleAction("disable") : handleAction("start");
     },
     onFinish: (event) => {
       if (isComplete) return;
-      handleFrogAction("release");
+      handleAction("release");
     },
     onCancel: (event) => {
       if (isComplete) return;
-      handleFrogAction("cancel");
+      handleAction("cancel");
     },
     filterEvents: (event) => true, // All events can potentially trigger long press
     threshold: userCycleSpeed * 1000, // Time threshold before long press callback is fired
@@ -228,7 +238,7 @@ export default function Page() {
             <button
               className="w-1/2 text-left pt-2"
               onClick={() => {
-                handleFrogAction("reset");
+                handleAction("reset");
               }}
             >
               <ReplayIcon
@@ -240,7 +250,7 @@ export default function Page() {
             <button
               className="w-1/2 text-right pt-2"
               onClick={() => {
-                handleFrogAction("reset");
+                handleAction("reset");
                 (window as any).settings_modal.showModal();
               }}
             >
@@ -269,8 +279,9 @@ export default function Page() {
           <div className="mt-2 h-6 w-full text-center">
             {isCancelled ? (
               <button
-                onClick={() => handleFrogAction("reset")}
-                className="text-xl text-sky-300/80"
+                onClick={() => handleAction("reset")}
+                className="text-md border-slate-100/30 border-2 px-3 py-1 rounded-lg 
+                text-sky-300"
               >
                 {msg.restart}
               </button>
@@ -289,7 +300,7 @@ export default function Page() {
         >
           <div
             ref={boxscope}
-            className="absolute bottom-0 left-0 right-0 h-1 bg-sky-300/50 rounded-sm -z-10"
+            className={`absolute bottom-0 left-0 right-0 h-1 rounded-sm -z-10 ${boxBg}`}
           ></div>
         </button>
       </div>
