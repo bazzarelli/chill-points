@@ -5,7 +5,7 @@ export const msg = {
   exhale: "Release finger & exhale",
   finished: "Impressive!",
   cancelled: "Keep finger pressed during inhale",
-  restart: "Start over?",
+  restart: "start over",
   replay: "Replay game",
   view_history: "View my history",
   view_details: "View exercise details",
@@ -44,6 +44,6 @@ export const msg_congrats = {
   6: "Way to breathe!",
   7: "Brilliant!",
   8: "Outstanding!",
-  9: "How pleasing!",
+  9: "That's right!",
   10: "Fantastic!",
 };

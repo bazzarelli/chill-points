@@ -16,7 +16,7 @@ type Props = {
 export default function UserCard({ user }: Props) {
   const userImage = user?.image ? (
     <Image
-      className="border-4 border-black dark:border-slate-500 rounded-full mx-auto mt-8"
+      className="border-4 border-black dark:border-slate-500 rounded-full mt-8"
       src={user?.image}
       width={150}
       height={150}
@@ -26,20 +26,20 @@ export default function UserCard({ user }: Props) {
   ) : null;
 
   const nameDisplay = user?.name ? (
-    <div className="flex flex-col mt-2 font-semibold text-lg">{user?.name}</div>
+    <div className="mt-2 font-semibold text-lg">{user?.name}</div>
   ) : null;
 
   const emailDisplay = user?.email ? (
-    <div className="flex flex-col">{user?.email}</div>
+    <div className="mt-1">{user?.email}</div>
   ) : null;
 
   return (
-    <section className="flex flex-row pl-4 pb-6 text-slate-300 border-b-2 border-slate-700">
-      <div>{userImage}</div>
-      <div className="flex flex-col justify-center text-left pl-4">
+    <section className="pl-4 pb-6 grid grid-cols-2 text-slate-300 border-b-2 border-slate-700">
+      <div className="flex flex-col justify-center">
         {nameDisplay}
         {emailDisplay}
       </div>
+      <div className="pl-4">{userImage}</div>
     </section>
   );
 }
