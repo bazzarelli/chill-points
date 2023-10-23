@@ -14,8 +14,10 @@ type User = {
 };
 
 export async function POST(req: Request) {
+  const anonUserId = "anonymous";
+  const anonUserEmail = "anonymous@example.com";
   const session = await getServerSession(authOptions);
-  const currentUserEmail = session?.user?.email as string;
+  const currentUserEmail = (session?.user?.email as string) || anonUserEmail;
   const gameSessionData = await req.json();
   const { gameName, inhaleTimes, cycleCount, gameLength } = gameSessionData;
 
@@ -28,15 +30,9 @@ export async function POST(req: Request) {
       return user.id!;
     });
 
-  // check for valid currentUserId
-  if (!currentUserId) {
-    console.error("No current user found");
-    return NextResponse.error();
-  }
-
   const gameSession = await prisma.gameSession.create({
     data: {
-      userId: currentUserId,
+      userId: currentUserId ? currentUserId : anonUserId,
       gameName: gameName,
       inhaleTimes: inhaleTimes,
       cycleCount: cycleCount,
@@ -48,7 +44,23 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
+  const session = await getServerSession(authOptions);
+  const currentUserEmail = session?.user?.email as string;
+  const userId = await prisma.user
+    .findUnique({ where: { email: currentUserEmail } })
+    .then((user: User | null) => {
+      if (!user) {
+        throw new Error("User not found");
+      }
+      return user.id!;
+    });
+
+  if (!userId) {
+    return NextResponse.error();
+  }
+
   const gameSessions = await prisma.gameSession.findMany({
+    where: { userId },
     orderBy: { createdAt: "desc" },
   });
 

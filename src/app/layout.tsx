@@ -18,7 +18,13 @@ export default function RootLayout({ children }: Props) {
       <link rel="manifest" href="/manifest.json" />
       <body className={inter.className}>
         <AuthProvider>
-          <main className="flex min-h-screen flex-col">{children}</main>
+          <main
+            className="flex min-h-screen flex-col 
+            bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] 
+            from-sky-600 to-slate-700/20"
+          >
+            {children}
+          </main>
         </AuthProvider>
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-V7MV6G44ZC" />
         <Script id="google-analytics">

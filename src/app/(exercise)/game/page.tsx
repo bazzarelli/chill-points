@@ -76,16 +76,23 @@ export default function Page() {
     setBreathSessionDataCache,
   } = useBreathSessionStore();
 
-  function dbSaveSessionData() {
-    setBreathSessionDataCache([
-      {
+  async function dbSaveSessionData() {
+    const res = await fetch("/game/api", {
+      method: "POST",
+      body: JSON.stringify({
         gameName,
         inhaleTimes: calculateInhaleTimeDiff(inhaleTimes),
         cycleCount,
-        createdAt: DateTime.now().toISO()!,
         gameLength: userGameLength,
+      }),
+      headers: {
+        "Content-Type": "application/json",
       },
-    ]);
+    });
+
+    // after saving to db save to local storage
+    const data = await res.json();
+    setBreathSessionDataCache([data]);
   }
 
   // isComplete is triggered by the countdown timer
@@ -149,7 +156,6 @@ export default function Page() {
         setInhaleTimes(Date.now());
         if (!isComplete) {
           incrementCycleCount();
-          playAwardSound();
           setBoxBg(BOX_BG_COLOR.FUCHSIA);
           animation(userCycleSpeed - humanDelay, BOX_ANIM.SHRINK).then(() => {
             if (!gameOver.current) {
@@ -202,6 +208,7 @@ export default function Page() {
         bannerTextColor: TXT_COLOR.FUCHSIA,
       });
       setBoxBg(BOX_BG_COLOR.FUCHSIA);
+      playAwardSound();
     },
     [],
   );
@@ -232,7 +239,10 @@ export default function Page() {
       <Head>
         <title>Chill a minute: game</title>
       </Head>
-      <div className="w-full touch-none select-none bg-gradient-to-b from-slate-700 via-sky-600 via-70% to-slate-700/20 relative z-10">
+      <div
+        className="w-full touch-none select-none bg-gradient-to-b 
+        from-slate-700 via-sky-600 via-80% to-slate-700/20 relative z-10"
+      >
         <div className="mx-auto md:w-1/3">
           <div className="flex">
             <button

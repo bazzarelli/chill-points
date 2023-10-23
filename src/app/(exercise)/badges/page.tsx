@@ -59,21 +59,32 @@ export default function Page() {
       </button>
       <div className="w-full bg-gray-300">
         <h2 className="p-2 text-2xl text-gray-500">{msg.your_badges}</h2>
-        <div className="flex flex-row flex-wrap bg-white justify-start">
-          {[...Array(NUM_BADGE_TYPES)].map((_, i) => (
-            <>
-              {badgeCountData[i + 1] && (
-                <div key={i} className="w-24 p-4 text-center">
-                  <Badge time={i + 1} count={badgeCountData[i + 1]} />
-                  <span className="text-gray-400 text-sm inline-block">
-                    {i + 1} min
-                  </span>
+        {badgeCountData[1] ? (
+          <>
+            <div className="flex flex-row flex-wrap bg-white justify-start">
+              {[...Array(NUM_BADGE_TYPES)].map((_, i) => (
+                <div key={i}>
+                  {badgeCountData[i + 1] && (
+                    <div className="w-24 p-4 text-center">
+                      <Badge time={i + 1} count={badgeCountData[i + 1]} />
+                      <span className="text-gray-400 text-sm inline-block">
+                        {i + 1} min
+                      </span>
+                    </div>
+                  )}
                 </div>
-              )}
-            </>
-          ))}
-        </div>
-        {status === "authenticated" && (
+              ))}
+            </div>
+            <div className="p-2 text-sm text-gray-500">
+              Total Chill Points: {gameLengthTotal}
+            </div>
+          </>
+        ) : (
+          <h4 className="p-2 text-xl text-gray-700">No badges yet</h4>
+        )}
+
+        {/* TODO hook this up to weekly goals in profile */}
+        {status === "authenticated" && false && (
           <>
             <h2 className="py-1 pl-2 text-gray-500">
               {msg.badge_goal_progress}
