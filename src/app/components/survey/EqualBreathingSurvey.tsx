@@ -24,7 +24,6 @@ export default function EqualBreathingSurvey() {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<TSurveySchema>({
@@ -74,7 +73,9 @@ export default function EqualBreathingSurvey() {
         />
         {/* Question finished-game */}
         <section className="form-control border-2 border-slate-100 bg-slate-200 rounded-md p-2 mt-4">
-          <h3 className="text-md">Did you make it to the end of the game?</h3>
+          <h3 className="text-md">
+            Did you make it to the end of the game on the first try?
+          </h3>
           <div className="flex flex-row justify-start gap-4">
             <label className="label cursor-pointer flex flex-row gap-0 justify-start">
               <input
@@ -127,7 +128,7 @@ export default function EqualBreathingSurvey() {
         {/* Question daily-notification */}
         <section className="form-control border-2 border-slate-100 bg-slate-200 rounded-md p-2 mt-4">
           <h3 className="text-md">
-            Would you find it helpful to get notifications/reminders?
+            Would you find it helpful to get daily notifications/reminders?
           </h3>
           <div className="flex flex-row justify-start gap-4">
             <label className="label cursor-pointer flex flex-row gap-0 justify-start">

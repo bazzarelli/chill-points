@@ -38,9 +38,7 @@ export default function SettingsModal() {
         <h3 className="font-bold text-lg">Game settings</h3>
 
         <section className="py-4">
-          <span className="mb-2 text-sm">
-            Breath cycle speed (inhale/exhale)
-          </span>
+          <span className="mb-2 text-sm">Breath cycle (inhale/exhale)</span>
           <input
             onChange={handleBreathCycleRangeChange}
             type="range"

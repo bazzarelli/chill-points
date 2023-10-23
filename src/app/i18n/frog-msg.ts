@@ -1,5 +1,5 @@
 export const msg = {
-  intro_hook: "Unwind with a quick and calming breath game.",
+  intro_hook: "Practice equal breathing with a brief and relaxing game.",
   welcome: "Press & hold to begin",
   inhale: "Hold finger down & inhale",
   exhale: "Release finger & exhale",
@@ -28,7 +28,7 @@ export const msg = {
   short: "short",
   med: "med",
   long: "long",
-  your_badges: "Your badges",
+  your_badges: "Chill Point badges",
   badge_goal_progress: "Progress towards your weekly goal",
   minutes_per_day: "Mindful minutes per day",
   my_goal: "My goal for this week",
