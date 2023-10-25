@@ -1,4 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import AvatarIcon from "@/app/components/svg/AvatarIcon";
 import { comfortaa } from "@/app/utils/fonts";
 import { getServerSession } from "next-auth/next";
 import Image from "next/image";
@@ -6,7 +7,7 @@ import Link from "next/link";
 
 export default async function Header() {
   const session = await getServerSession(authOptions);
-  const userImage = session?.user?.image || "/images/sample-avatar.jpg";
+  const userImage = session?.user?.image || "";
 
   return (
     <div className="navbar bg-info px-4 pt-3 md:px-8">
@@ -23,7 +24,16 @@ export default async function Header() {
         <div className="dropdown-end dropdown">
           <label tabIndex={0} className="btn-ghost btn-circle avatar btn">
             <div className="w-10 rounded-full">
-              <Image alt="user avatar" width="40" height="40" src={userImage} />
+              {userImage ? (
+                <Image
+                  alt="user avatar"
+                  width="40"
+                  height="40"
+                  src={userImage}
+                />
+              ) : (
+                <AvatarIcon fill="rgb(7 89 133 / 0.8)" />
+              )}
             </div>
           </label>
           <ul

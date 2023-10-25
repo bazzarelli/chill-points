@@ -17,7 +17,6 @@ import calculateHumanDelay from "@/app/utils/humanDelay";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import rotatingCongrats from "@/app/utils/rotatingCongrats";
 import { useAnimate } from "framer-motion";
-import { DateTime } from "luxon";
 import Head from "next/head";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
@@ -154,6 +153,7 @@ export default function Page() {
         break;
       case "release":
         setInhaleTimes(Date.now());
+        playAwardSound();
         if (!isComplete) {
           incrementCycleCount();
           setBoxBg(BOX_BG_COLOR.FUCHSIA);
@@ -208,7 +208,7 @@ export default function Page() {
         bannerTextColor: TXT_COLOR.FUCHSIA,
       });
       setBoxBg(BOX_BG_COLOR.FUCHSIA);
-      playAwardSound();
+      // playAwardSound();
     },
     [],
   );
@@ -285,7 +285,7 @@ export default function Page() {
           </div>
           {/* BANNER TEXT */}
           <GameBanner banner={banner} />
-          {/* COMPLETION PEARLS */}
+          {/* COMPLETION DOTS */}
           <div className="mt-2 h-6 w-full text-center">
             {isCancelled ? (
               <button

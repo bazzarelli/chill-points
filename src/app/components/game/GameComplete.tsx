@@ -37,7 +37,7 @@ export default function GameCompleteModal() {
             {/* <button className="border-slate-800/70 border-2 px-2 py-1 my-5 rounded-lg text-sm text-slate-800 bg-sky-200/80">
               <Link href="/history">{msg.view_history}</Link>
             </button> */}
-            <button className="border-slate-800/70 border-2 px-2 py-1 my-5 rounded-lg text-sm text-slate-800 bg-fuchsia-200/80">
+            <button className="border-orange-400/80 border-2 px-2 py-1 my-5 rounded-lg text-sm text-slate-800 bg-fuchsia-200/80">
               <Link href="/survey">Feedback</Link>
             </button>
           </div>
