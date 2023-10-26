@@ -16,6 +16,7 @@ import { inter } from "@/app/utils/fonts";
 import calculateHumanDelay from "@/app/utils/humanDelay";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import rotatingCongrats from "@/app/utils/rotatingCongrats";
+import * as ga from "@/lib/ga";
 import { useAnimate } from "framer-motion";
 import Head from "next/head";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -105,6 +106,13 @@ export default function Page() {
         bannerText: rotatingCongrats(),
       });
       dbSaveSessionData();
+      ga.event({
+        action: "game_complete",
+        params: {
+          event_length: userGameLength,
+          event_cycles: cycleCount,
+        },
+      });
     }
 
     return () => {
@@ -208,7 +216,6 @@ export default function Page() {
         bannerTextColor: TXT_COLOR.FUCHSIA,
       });
       setBoxBg(BOX_BG_COLOR.FUCHSIA);
-      // playAwardSound();
     },
     [],
   );

@@ -13,7 +13,7 @@ export default function Home() {
 
       <Link href="/game">
         <div className="text-right pr-4">
-          <button className="btn btn-sm btn-info drop-shadow-md">
+          <button className="btn btn-sm bg-sky-300 text-slate-700 drop-shadow-md">
             {msg.start}
           </button>
         </div>

@@ -4,8 +4,8 @@ import { inter } from "@/app/utils/fonts";
 import Script from "next/script";
 
 export const metadata = {
-  title: "Chill a minute: home",
-  description: "Learn to chill to optimize your health.",
+  title: "Chill Points: home",
+  description: "Breath to optimize your health.",
 };
 
 type Props = {
@@ -33,7 +33,7 @@ export default function RootLayout({ children }: Props) {
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
  
-          gtag('config', 'G-V7MV6G44ZC');
+          gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
         `}
         </Script>
       </body>

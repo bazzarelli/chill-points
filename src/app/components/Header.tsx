@@ -10,7 +10,7 @@ export default async function Header() {
   const userImage = session?.user?.image || "";
 
   return (
-    <div className="navbar bg-info px-4 pt-3 md:px-8">
+    <div className="navbar bg-sky-300 px-4 pt-3 md:px-8">
       <div className="flex-1">
         <Link href="/">
           <span
