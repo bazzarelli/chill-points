@@ -1,3 +1,5 @@
+"use client";
+
 import AuthProvider from "@/app/context/AuthProvider";
 import "@/app/globals.css";
 import { inter } from "@/app/utils/fonts";
