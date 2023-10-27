@@ -16,7 +16,7 @@ export default function UserProfile() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect("/api/auth/signin?callbackUrl=/profile");
+      redirect("/api/auth/signin?callbackUrl=/");
     },
   });
 

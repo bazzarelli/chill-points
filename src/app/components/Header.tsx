@@ -10,8 +10,8 @@ export default async function Header() {
   const userImage = session?.user?.image || "";
 
   return (
-    <div className="navbar bg-sky-300 px-4 pt-3 md:px-8">
-      <div className="flex-1">
+    <div className="navbar justify-between bg-sky-300">
+      <div>
         <Link href="/">
           <span
             className={`text-3xl md:text-4xl text-sky-800/80 ${comfortaa.className}`}
@@ -20,7 +20,7 @@ export default async function Header() {
           </span>
         </Link>
       </div>
-      <div className="flex-none gap-2">
+      <div>
         <div className="dropdown-end dropdown">
           <label tabIndex={0} className="btn-ghost btn-circle avatar btn">
             <div className="w-10 rounded-full">

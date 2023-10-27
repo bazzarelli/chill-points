@@ -109,6 +109,8 @@ export default function Page() {
       ga.event({
         action: "game_complete",
         params: {
+          event_category: "game",
+          event_label: gameName,
           event_length: userGameLength,
           event_cycles: cycleCount,
         },
@@ -250,7 +252,7 @@ export default function Page() {
         className="w-full touch-none select-none bg-gradient-to-b 
         from-slate-700 via-sky-600 via-80% to-slate-700/20 relative z-10"
       >
-        <div className="mx-auto md:w-1/3">
+        <div className="mx-auto">
           <div className="flex">
             <button
               className="w-1/2 text-left pt-2"
