@@ -6,7 +6,7 @@ export default async function ServerPage() {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    redirect("/api/auth/signin?callbackUrl=/server");
+    redirect("/api/auth/signin?callbackUrl=/");
   }
 
   return (

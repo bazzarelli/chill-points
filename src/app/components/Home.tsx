@@ -6,13 +6,15 @@ import GameInstructions from "./game/GameInstructions";
 
 export default function Home() {
   return (
-    <main className={`${inter.className} w-96 mx-auto text-slate-400 px-4`}>
-      <h1 className="text-2xl text-sky-300 ml-0 m-4 pt-4 border-sky-300 border-t-[10px] text-right">
+    <main
+      className={`${inter.className} text-slate-400 px-2 border-sky-300 border-t-[10px]`}
+    >
+      <h1 className="text-2xl text-sky-300 py-4 text-right">
         {msg.intro_hook}
       </h1>
 
       <Link href="/game">
-        <div className="text-right pr-4">
+        <div className="text-right">
           <button className="btn btn-sm bg-sky-300 text-slate-700 drop-shadow-md">
             {msg.start}
           </button>

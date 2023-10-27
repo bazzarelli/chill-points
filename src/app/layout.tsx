@@ -21,7 +21,7 @@ export default function RootLayout({ children }: Props) {
           <main
             className="flex min-h-screen flex-col 
             bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] 
-            from-sky-600 to-slate-700/20"
+            from-sky-600 to-slate-700/20 max-w-lg mx-auto"
           >
             {children}
           </main>
