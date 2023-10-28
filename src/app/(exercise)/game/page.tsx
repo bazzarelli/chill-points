@@ -160,6 +160,15 @@ export default function Page() {
         setIsInProgressStatus(true);
         setBoxBg(BOX_BG_COLOR.BLUE);
         animation(userCycleSpeed - humanDelay, BOX_ANIM.GROW);
+        ga.event({
+          action: "game_start",
+          params: {
+            event_category: "game",
+            event_label: gameName,
+            event_length: userGameLength,
+            event_cycles: cycleCount,
+          },
+        });
         break;
       case "release":
         setInhaleTimes(Date.now());
@@ -187,6 +196,15 @@ export default function Page() {
         resetCycleCount();
         setIsCancelledStatus(true);
         animation(1, BOX_ANIM.CANCEL);
+        ga.event({
+          action: "game_cancel",
+          params: {
+            event_category: "game",
+            event_label: gameName,
+            event_length: userGameLength,
+            event_cycles: cycleCount,
+          },
+        });
         break;
       case "reset":
         resetGame();
@@ -199,6 +217,15 @@ export default function Page() {
         setIsInProgressStatus(false);
         gameOver.current = false;
         animation(1, BOX_ANIM.RESET);
+        ga.event({
+          action: "game_reset",
+          params: {
+            event_category: "game",
+            event_label: gameName,
+            event_length: userGameLength,
+            event_cycles: cycleCount,
+          },
+        });
         break;
       case "disable":
         animation(1, BOX_ANIM.CANCEL);
