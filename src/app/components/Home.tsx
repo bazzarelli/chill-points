@@ -9,19 +9,21 @@ export default function Home() {
     <main
       className={`${inter.className} text-slate-400 px-2 border-sky-300 border-t-[10px]`}
     >
-      <h1 className="text-2xl text-sky-300 py-4 text-right">
-        {msg.intro_hook}
-      </h1>
+      <div className="px-4">
+        <h1 className="text-2xl text-sky-300 py-4 text-right">
+          {msg.intro_hook}
+        </h1>
 
-      <Link href="/game">
-        <div className="text-right">
-          <button className="btn btn-sm bg-sky-300 text-slate-700 drop-shadow-md">
-            {msg.start}
-          </button>
-        </div>
-      </Link>
+        <Link href="/game">
+          <div className="text-right">
+            <button className="btn btn-sm bg-sky-300 text-slate-700 drop-shadow-md">
+              {msg.start}
+            </button>
+          </div>
+        </Link>
 
-      <GameInstructions />
+        <GameInstructions />
+      </div>
     </main>
   );
 }
