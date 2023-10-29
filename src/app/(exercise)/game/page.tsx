@@ -16,7 +16,7 @@ import { inter } from "@/app/utils/fonts";
 import calculateHumanDelay from "@/app/utils/humanDelay";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import rotatingCongrats from "@/app/utils/rotatingCongrats";
-// import * as ga from "@/lib/ga";
+import * as ga from "@/lib/gtag";
 import { useAnimate } from "framer-motion";
 import Head from "next/head";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -106,15 +106,15 @@ export default function Page() {
         bannerText: rotatingCongrats(),
       });
       dbSaveSessionData();
-      // ga.event({
-      //   action: "game_complete",
-      //   params: {
-      //     event_category: "game",
-      //     event_label: gameName,
-      //     event_length: userGameLength,
-      //     event_cycles: cycleCount,
-      //   },
-      // });
+      ga.event({
+        action: "game_complete",
+        params: {
+          event_category: "game",
+          event_label: gameName,
+          event_length: userGameLength,
+          event_cycles: cycleCount,
+        },
+      });
     }
 
     return () => {
@@ -160,15 +160,15 @@ export default function Page() {
         setIsInProgressStatus(true);
         setBoxBg(BOX_BG_COLOR.BLUE);
         animation(userCycleSpeed - humanDelay, BOX_ANIM.GROW);
-        // ga.event({
-        //   action: "game_start",
-        //   params: {
-        //     event_category: "game",
-        //     event_label: gameName,
-        //     event_length: userGameLength,
-        //     event_cycles: cycleCount,
-        //   },
-        // });
+        ga.event({
+          action: "game_start",
+          params: {
+            event_category: "game",
+            event_label: gameName,
+            event_length: userGameLength,
+            event_cycles: cycleCount,
+          },
+        });
         break;
       case "release":
         setInhaleTimes(Date.now());
@@ -196,15 +196,15 @@ export default function Page() {
         resetCycleCount();
         setIsCancelledStatus(true);
         animation(1, BOX_ANIM.CANCEL);
-        // ga.event({
-        //   action: "game_cancel",
-        //   params: {
-        //     event_category: "game",
-        //     event_label: gameName,
-        //     event_length: userGameLength,
-        //     event_cycles: cycleCount,
-        //   },
-        // });
+        ga.event({
+          action: "game_cancel",
+          params: {
+            event_category: "game",
+            event_label: gameName,
+            event_length: userGameLength,
+            event_cycles: cycleCount,
+          },
+        });
         break;
       case "reset":
         resetGame();
@@ -217,15 +217,15 @@ export default function Page() {
         setIsInProgressStatus(false);
         gameOver.current = false;
         animation(1, BOX_ANIM.RESET);
-        // ga.event({
-        //   action: "game_reset",
-        //   params: {
-        //     event_category: "game",
-        //     event_label: gameName,
-        //     event_length: userGameLength,
-        //     event_cycles: cycleCount,
-        //   },
-        // });
+        ga.event({
+          action: "game_reset",
+          params: {
+            event_category: "game",
+            event_label: gameName,
+            event_length: userGameLength,
+            event_cycles: cycleCount,
+          },
+        });
         break;
       case "disable":
         animation(1, BOX_ANIM.CANCEL);
