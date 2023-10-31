@@ -1,6 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import AvatarIcon from "@/app/components/svg/AvatarIcon";
-import { comfortaa } from "@/app/utils/fonts";
+import { inter } from "@/app/utils/fonts";
 import { getServerSession } from "next-auth/next";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,11 +13,11 @@ export default async function Header() {
     <div className="navbar justify-between bg-sky-300">
       <div>
         <Link href="/">
-          <span
-            className={`text-3xl md:text-4xl text-sky-800/80 ${comfortaa.className}`}
+          <h1
+            className={`text-3xl md:text-4xl text-sky-800/80 tracking-tight ${inter.className}`}
           >
             Chill Points
-          </span>
+          </h1>
         </Link>
       </div>
       <div>
