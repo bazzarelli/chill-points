@@ -294,6 +294,7 @@ export default function Page() {
               />
             </button>
             <button
+              data-testid="settingsButton"
               className="w-1/2 text-right pt-2"
               onClick={() => {
                 handleAction("reset");
