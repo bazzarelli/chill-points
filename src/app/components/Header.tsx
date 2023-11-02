@@ -3,7 +3,7 @@ import AvatarIcon from "@/app/components/svg/AvatarIcon";
 import { inter } from "@/app/utils/fonts";
 import { getServerSession } from "next-auth/next";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "nextjs13-progress";
 
 export default async function Header() {
   const session = await getServerSession(authOptions);
