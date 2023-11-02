@@ -17,9 +17,7 @@ export default function SessionDetail() {
   if (data) parsedData = JSON.parse(data);
 
   return (
-    <main
-      className={`${inter.className} h-screen mx-auto w-full md:w-1/2 lg:w-1/3`}
-    >
+    <main className={`${inter.className} h-screen mx-auto w-full`}>
       <button onClick={handleBack} className="my-2 md:ml-0 btn btn-sm btn-link">
         <NavArrowBackIcon
           className="inline-block fill-info"

@@ -40,11 +40,11 @@ export default async function Header() {
             tabIndex={0}
             className="dropdown-content menu rounded-md menu-sm z-20 mt-4 w-32 p-2 shadow-2xl bg-slate-600 text-slate-300"
           >
-            <li>
-              <Link href="/badges">Badges</Link>
-            </li>
-            {session && (
+            {session ? (
               <>
+                <li>
+                  <Link href="/badges">Badges</Link>
+                </li>
                 <li>
                   <Link href="/history">History</Link>
                 </li>
@@ -53,6 +53,15 @@ export default async function Header() {
                 </li>
                 <li>
                   <Link href="/api/auth/signout">Sign out</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link href="/badges">Badges</Link>
+                </li>
+                <li>
+                  <Link href="/profile">Create Profile</Link>
                 </li>
               </>
             )}

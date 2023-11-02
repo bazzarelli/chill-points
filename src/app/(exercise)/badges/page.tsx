@@ -44,9 +44,7 @@ export default function Page() {
   );
 
   return (
-    <section
-      className={`${inter.className} h-screen mx-auto w-full md:w-1/2 lg:w-1/3`}
-    >
+    <section className={`${inter.className} h-screen mx-auto w-full`}>
       <button
         onClick={handleBack}
         className="my-2 ml-1 md:ml-0 btn btn-sm btn-link"
