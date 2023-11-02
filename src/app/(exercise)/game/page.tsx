@@ -273,7 +273,7 @@ export default function Page() {
       className={`${inter.className} flex flex-wrap text-center text-slate-900`}
     >
       <Head>
-        <title>Chill a minute: game</title>
+        <title>Chill Points: game</title>
       </Head>
       <div
         className="w-full touch-none select-none bg-gradient-to-b 

@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Chill Points: game",
+  title: "Chill Points: survey",
   description: "Play the game and learn breath control.",
   appleMobileWebAppCapable: "yes",
   appleMobileWebAppStatusBarStyle: "black",

@@ -1,6 +1,6 @@
 import { msg } from "@/app/i18n/frog-msg";
 import { inter } from "@/app/utils/fonts";
-import Link from "next/link";
+import { Link } from "nextjs13-progress";
 
 import GameInstructions from "./game/GameInstructions";
 

@@ -32,6 +32,9 @@ dependencies:
   next-pwa:
     specifier: 5.6.0
     version: 5.6.0(@babel/core@7.22.11)(next@13.4.9)(webpack@5.88.2)
+  nextjs13-progress:
+    specifier: ^1.1.45
+    version: 1.1.45(next@13.4.9)(react@18.2.0)
   nodemailer:
     specifier: ^6.9.4
     version: 6.9.4
@@ -2283,6 +2286,10 @@ packages:
 
   /@types/node@20.2.5:
     resolution: {integrity: sha512-JJulVEQXmiY9Px5axXHeYGLSjhkZEnD+MDPDGbCbIAbMslkKwmygtZFy1X6s/075Yo94sf8GuSlFfPzysQrWZQ==}
+
+  /@types/nprogress@0.2.2:
+    resolution: {integrity: sha512-2wLrSJXLztGmr7wXwM0hA/wuIOY9DznVdd+ZFofHOiXcj9JnVt+2ZeLRJ7v5ZVlmheSkUOSg3Q3O4Ce7yji79A==}
+    dev: false
 
   /@types/pg@8.6.6:
     resolution: {integrity: sha512-O2xNmXebtwVekJDD+02udOncjVcMZQuTEQEMpKJ0ZRf5E7/9JJX3izhKUcUifBkyKpljyUM6BTgy2trmviKlpw==}
@@ -6424,6 +6431,19 @@ packages:
       - babel-plugin-macros
     dev: false
 
+  /nextjs13-progress@1.1.45(next@13.4.9)(react@18.2.0):
+    resolution: {integrity: sha512-cgXTS7g5pt5hyR61ShA9arV5J07qhD7wkoBn8YRADbYF6ced3w7x6d8kZqCykyUVFL0qG7mBQA6xY2s7+pqucA==}
+    peerDependencies:
+      next: '>=13.4'
+      react: '>=17.0.0'
+    dependencies:
+      '@types/nprogress': 0.2.2
+      next: 13.4.9(@babel/core@7.22.11)(react-dom@18.2.0)(react@18.2.0)
+      nprogress: 0.2.0
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
   /node-gyp-build@4.6.1:
     resolution: {integrity: sha512-24vnklJmyRS8ViBNI8KbtK/r/DmXQMRiOMXTNz2nrTnAYUwjmEEbnnpB/+kt+yWRv73bPsSPRFddrcIbAxSiMQ==}
     hasBin: true
@@ -6464,6 +6484,10 @@ packages:
     dependencies:
       path-key: 4.0.0
     dev: true
+
+  /nprogress@0.2.0:
+    resolution: {integrity: sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==}
+    dev: false
 
   /nwsapi@2.2.7:
     resolution: {integrity: sha512-ub5E4+FBPKwAZx0UwIQOjYWGHTEq5sPqHQNRN8Z9e4A7u3Tj1weLJsL59yH9vmvqEtBHaOmT6cYQKIZOxp35FQ==}

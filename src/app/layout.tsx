@@ -2,6 +2,7 @@ import GoogleAnalytics from "@/app/components/GoogleAnalytics";
 import AuthProvider from "@/app/context/AuthProvider";
 import "@/app/globals.css";
 import { inter } from "@/app/utils/fonts";
+import { Next13NProgress } from "nextjs13-progress";
 
 export const metadata = {
   title: "Chill Points: home",
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: Props) {
             <GoogleAnalytics />
             {children}
           </main>
+          <Next13NProgress color="red" height={5} />
         </AuthProvider>
       </body>
     </html>
