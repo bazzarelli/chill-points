@@ -46,6 +46,7 @@ CREATE TABLE "UserGamePreference" (
     "userId" TEXT NOT NULL,
     "userCycleSpeed" INTEGER NOT NULL,
     "userGameLength" INTEGER NOT NULL,
+    "userMinutesGoal" INTEGER NOT NULL,
 
     CONSTRAINT "UserGamePreference_pkey" PRIMARY KEY ("id")
 );
@@ -110,3 +111,4 @@ ALTER TABLE "UserGamePreference" ADD CONSTRAINT "UserGamePreference_userId_fkey"
 
 -- AddForeignKey
 ALTER TABLE "GameSession" ADD CONSTRAINT "GameSession_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+

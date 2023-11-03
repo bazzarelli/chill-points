@@ -55,6 +55,7 @@ model UserGamePreference {
   userId         String
   userCycleSpeed Int
   userGameLength Int
+  userMinutesGoal Int
   user           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -70,14 +71,14 @@ model GameSession {
 }
 
 model FeedbackSurvey {
-  id                  Int @id @default(autoincrement())
-  createdAt           DateTime @default(now())
-  surveyName          String
-  dailyHabit          String
-  dailyNotification   String
-  finishedGame        String
-  gameRating          String
-  additionalFeedback  String
+  id                 Int      @id @default(autoincrement())
+  createdAt          DateTime @default(now())
+  surveyName         String
+  dailyHabit         String
+  dailyNotification  String
+  finishedGame       String
+  gameRating         String
+  additionalFeedback String
 }
 
 model VerificationToken {
