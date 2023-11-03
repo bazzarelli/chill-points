@@ -7,6 +7,7 @@ import { msg } from "@/app/i18n/frog-msg";
 import { inter } from "@/app/utils/fonts";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import WeeklyGoal from "@/app/components/history/WeeklyGoal";
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -55,6 +56,7 @@ export default function Page() {
           height={32}
         />
       </button>
+      <WeeklyGoal userMinutesGoal={3} gameLengthTotal={gameLengthTotal}/>
       <div className="w-full bg-gray-300">
         <h2 className="p-2 text-2xl text-gray-500">{msg.your_badges}</h2>
         {badgeCountData[1] ? (
