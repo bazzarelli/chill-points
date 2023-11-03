@@ -4,6 +4,8 @@ import { DAYS_IN_WEEK, getWeekDateString } from "@/app/utils/date";
 type WeeklyGoalProps = {
   userMinutesGoal: number;
   gameLengthTotal: number;
+  // handleMinutesGoalChange is optional.  If no handler is passed in 
+  // then the input to change the goal will not be displayed.
   handleMinutesGoalChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
