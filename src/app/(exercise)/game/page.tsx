@@ -282,6 +282,7 @@ export default function Page() {
         <div className="mx-auto">
           <div className="flex">
             <button
+              aria-label="Reset game"
               className="w-1/2 text-left pt-2"
               onClick={() => {
                 handleAction("reset");
@@ -294,6 +295,7 @@ export default function Page() {
               />
             </button>
             <button
+              aria-label="Game settings"
               data-testid="settingsButton"
               className="w-1/2 text-right pt-2"
               onClick={() => {
@@ -326,6 +328,7 @@ export default function Page() {
           <div className="mt-2 h-6 w-full text-center">
             {isCancelled ? (
               <button
+                aria-label="Reset game"
                 onClick={() => handleAction("reset")}
                 className="text-md border-slate-100/30 border-2 px-3 py-1 rounded-lg 
                 text-sky-300"
@@ -340,6 +343,7 @@ export default function Page() {
         {/* FROG */}
         <button
           {...bind()}
+          aria-label="Finger print breath button"
           className="finger-print relative mt-5 mx-auto h-48 w-64
           bg-[url(/images/finger-print-blue.webp)]
           bg-no-repeat bg-center"
