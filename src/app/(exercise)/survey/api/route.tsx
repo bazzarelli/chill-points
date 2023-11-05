@@ -1,11 +1,12 @@
-import { TSurveySchema, surveySchema } from "@/app/types";
+import { surveySchema } from "@/app/types";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const surveyData: TSurveySchema = await req.json();
+  const surveyData = await req.json();
   const result = surveySchema.safeParse(surveyData);
   let zodErrors = {};
+
   if (!result.success) {
     result.error.issues.forEach((issue) => {
       zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };
