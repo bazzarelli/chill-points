@@ -1,8 +1,17 @@
+import { TSurveySchema, surveySchema } from "@/app/types";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const surveyData = await req.json();
+  const surveyData: TSurveySchema = await req.json();
+  const result = surveySchema.safeParse(surveyData);
+  let zodErrors = {};
+  if (!result.success) {
+    result.error.issues.forEach((issue) => {
+      zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };
+    });
+  }
+
   const {
     surveyName,
     dailyHabit,
@@ -14,14 +23,18 @@ export async function POST(req: Request) {
 
   const surveyResults = await prisma.feedbackSurvey.create({
     data: {
-      surveyName: surveyName,
-      dailyHabit: dailyHabit,
-      dailyNotification: dailyNotification,
-      finishedGame: finishedGame,
-      gameRating: gameRating,
-      additionalFeedback: additionalFeedback,
+      surveyName,
+      dailyHabit,
+      dailyNotification,
+      finishedGame,
+      gameRating,
+      additionalFeedback,
     },
   });
 
-  return NextResponse.json(surveyResults);
+  return NextResponse.json(
+    Object.keys(zodErrors).length > 0
+      ? { errors: zodErrors }
+      : { success: true, result: surveyResults },
+  );
 }

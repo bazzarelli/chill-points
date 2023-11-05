@@ -1,22 +1,9 @@
 "use client";
 
+import { TSurveySchema, surveySchema } from "@/app/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-const MAX_FEEDBACK_LENGTH = 2500;
-
-const surveySchema = z.object({
-  surveyName: z.string(),
-  dailyHabit: z.string(),
-  dailyNotification: z.string(),
-  finishedGame: z.string(),
-  gameRating: z.string(),
-  additionalFeedback: z.string().max(MAX_FEEDBACK_LENGTH),
-});
-
-type TSurveySchema = z.infer<typeof surveySchema>;
 
 export default function EqualBreathingSurvey() {
   const router = useRouter();
@@ -24,7 +11,6 @@ export default function EqualBreathingSurvey() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
   } = useForm<TSurveySchema>({
     resolver: zodResolver(surveySchema),
@@ -32,8 +18,6 @@ export default function EqualBreathingSurvey() {
   });
 
   const onSubmit = async (data: TSurveySchema) => {
-    console.log("survey form data", data);
-
     try {
       const res = await fetch("/survey/api", {
         method: "POST",
@@ -43,11 +27,8 @@ export default function EqualBreathingSurvey() {
         },
       });
 
-      console.log(res.status);
-
       if (res.status === 200) {
-        const data = await res.json();
-        console.log("saved data:", data);
+        await res.json();
       } else {
         console.error(`Error: ${res.status}`);
       }
@@ -55,7 +36,6 @@ export default function EqualBreathingSurvey() {
       console.error(`Error: ${error}`);
     }
 
-    reset();
     router.back();
   };
 
@@ -195,7 +175,7 @@ export default function EqualBreathingSurvey() {
           <h3 className="text-md pb-2">What could be improved?</h3>
           {errors.additionalFeedback && (
             <span className="text-red-700 text-sm">
-              maximum length {MAX_FEEDBACK_LENGTH} characters
+              {errors.additionalFeedback?.message}
             </span>
           )}
           <textarea
@@ -207,7 +187,8 @@ export default function EqualBreathingSurvey() {
         <button
           disabled={isSubmitting}
           type="submit"
-          className="btn btn-square w-1/2 px-4 my-4 bg-fuchsia-400/80 text-slate-800"
+          className="btn btn-square w-1/2 px-4 my-4 bg-fuchsia-400/80 
+            hover:bg-fuchsia-400 text-slate-800"
         >
           Submit feedback
         </button>
