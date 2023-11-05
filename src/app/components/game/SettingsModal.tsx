@@ -47,6 +47,7 @@ export default function SettingsModal() {
             value={breathCycleRange}
             className="range range-xs range-info"
             step={1}
+            aria-labelledby="Breath cycle range picker"
           />
           <div className="w-full flex justify-between text-sm px-2">
             <span>{msg.short}</span>
@@ -67,6 +68,7 @@ export default function SettingsModal() {
             value={gameLengthRange}
             className="range range-xs range-info"
             step={1}
+            aria-labelledby="Game length range picker"
           />
           <div className="w-full flex justify-between text-sm px-2">
             <span>1</span>

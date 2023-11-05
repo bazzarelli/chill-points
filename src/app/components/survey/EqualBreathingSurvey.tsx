@@ -40,7 +40,7 @@ export default function EqualBreathingSurvey() {
   };
 
   return (
-    <section className="w-full bg-gray-300 text-left p-4">
+    <section className="w-[98%] bg-gray-300 text-left p-4">
       <h2 className="text-2xl text-gray-800">What do you think?</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
