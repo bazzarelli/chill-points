@@ -2,21 +2,20 @@
 
 import UserCard from "@/app/components/user/UserCard";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
-import { msg } from "@/app/i18n/frog-msg";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+
 import WeeklyGoal from "../components/history/WeeklyGoal";
 
 export default function UserProfile() {
   const { breathSessionData, userMinutesGoal, setUserMinutesGoal } =
     useBreathSessionStore();
-  const DAYS_IN_WEEK = 7;
 
   // Check if visitor is logged in
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect("/api/auth/signin?callbackUrl=/");
+      redirect("/api/auth/signin?callbackUrl=/game");
     },
   });
 
@@ -45,7 +44,11 @@ export default function UserProfile() {
         <UserCard user={session?.user} />
       </section>
 
-      <WeeklyGoal handleMinutesGoalChange={handleMinutesGoalChange} gameLengthTotal={gameLengthTotal} userMinutesGoal={userMinutesGoal}/>
+      <WeeklyGoal
+        handleMinutesGoalChange={handleMinutesGoalChange}
+        gameLengthTotal={gameLengthTotal}
+        userMinutesGoal={userMinutesGoal}
+      />
     </>
   );
 }
