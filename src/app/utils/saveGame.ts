@@ -7,7 +7,7 @@ export default function useSaveGameSession() {
 
   return async function dbSaveSessionData() {
     try {
-      const res = await fetch("/game/api", {
+      await fetch("/game/api", {
         method: "POST",
         body: JSON.stringify({
           gameName,
@@ -19,13 +19,6 @@ export default function useSaveGameSession() {
           "Content-Type": "application/json",
         },
       });
-
-      if (res.status === 200) {
-        const data = await res.json();
-        console.log("db game id: ", data.id);
-      } else {
-        console.error(`Error: ${res.status}`);
-      }
     } catch (error) {
       console.error(`Error: ${error}`);
     }

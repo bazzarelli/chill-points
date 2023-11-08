@@ -40,7 +40,6 @@ export default function Page() {
     bannerText: msg.welcome,
     bannerTextColor: TXT_COLOR.BLUE,
   });
-  const [dataSaved, setDataSaved] = useState(false);
   const [boxBg, setBoxBg] = useState(BOX_BG_COLOR.BLUE);
   const [clockCoords, setClockCoords] = useState({ x: -300, y: -300 });
   const [clockKey, setClockKey] = useState(0);
@@ -72,8 +71,8 @@ export default function Page() {
     setIsCompleteStatus,
     setIsInProgressStatus,
     setIsCancelledStatus,
-    setHumanDelay,
     setBreathSessionData,
+    setHumanDelay,
   } = useBreathSessionStore();
 
   async function dbSaveSessionData() {
@@ -93,7 +92,6 @@ export default function Page() {
     // after saving to db save to local storage
     const data = await res.json();
     setBreathSessionData([data]);
-    setDataSaved(true);
   }
 
   // isComplete is triggered by the countdown timer
@@ -355,7 +353,7 @@ export default function Page() {
         </button>
       </div>
       <SettingsModal />
-      {isComplete && dataSaved && <GameComplete />}
+      {isComplete && <GameComplete />}
     </section>
   );
 }
