@@ -22,7 +22,7 @@ export default function useSaveGameSession() {
 
       if (res.status === 200) {
         const data = await res.json();
-        console.log("game id:", data.id);
+        console.log("db game id: ", data.id);
       } else {
         console.error(`Error: ${res.status}`);
       }
