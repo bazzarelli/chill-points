@@ -1,6 +1,7 @@
 "use client";
 
 import Badge from "@/app/components/game/Badge";
+import WeeklyGoal from "@/app/components/history/WeeklyGoal";
 import NavArrowBackIcon from "@/app/components/svg/NavArrowBackIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
@@ -13,7 +14,6 @@ export default function Page() {
   const router = useRouter();
   const handleBack = () => router.back();
   const NUM_BADGE_TYPES = 5;
-  const DAYS_IN_WEEK = 7;
   const { breathSessionData, userMinutesGoal } = useBreathSessionStore();
 
   /**
@@ -44,7 +44,11 @@ export default function Page() {
   );
 
   return (
-    <section className={`${inter.className} h-screen mx-auto w-full`}>
+    <section
+      className={`${inter.className} h-screen mx-auto w-full
+        bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] 
+      from-sky-600 to-slate-700/20`}
+    >
       <button
         onClick={handleBack}
         className="my-2 ml-1 md:ml-0 btn btn-sm btn-link"
@@ -80,24 +84,14 @@ export default function Page() {
         ) : (
           <h4 className="p-2 text-xl text-gray-700">No badges yet</h4>
         )}
-
+      </div>
+      <div>
         {/* TODO hook this up to weekly goals in profile */}
-        {status === "authenticated" && false && (
-          <>
-            <h2 className="py-1 pl-2 text-gray-500">
-              {msg.badge_goal_progress}
-            </h2>
-            <div className="bg-white pl-2 py-3">
-              <progress
-                className="progress progress-primary w-56"
-                value={gameLengthTotal}
-                max={userMinutesGoal * DAYS_IN_WEEK}
-              ></progress>
-              <span className="text-gray-500 pl-4">
-                {gameLengthTotal} of {userMinutesGoal * DAYS_IN_WEEK}
-              </span>
-            </div>
-          </>
+        {status === "authenticated" && (
+          <WeeklyGoal
+            userMinutesGoal={userMinutesGoal}
+            gameLengthTotal={gameLengthTotal}
+          />
         )}
       </div>
     </section>
