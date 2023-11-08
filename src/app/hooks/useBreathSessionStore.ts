@@ -83,8 +83,11 @@ export const useBreathSessionStore = create<InitialGameState & Actions>()(
         setIsInProgressStatus: (isInProgress) =>
           set(() => ({ isInProgress: isInProgress })),
         setBreathSessionData: (breathSessionData: BreathSessionData[]) =>
-          set(() => ({
-            breathSessionData: breathSessionData,
+          set((state) => ({
+            breathSessionData: [
+              ...state.breathSessionData,
+              ...breathSessionData,
+            ],
           })),
         resetGame: () =>
           set(() => ({

@@ -73,11 +73,10 @@ export default function Page() {
     setIsInProgressStatus,
     setIsCancelledStatus,
     setHumanDelay,
-    setBreathSessionData,
   } = useBreathSessionStore();
 
   async function dbSaveSessionData() {
-    const res = await fetch("/game/api", {
+    await fetch("/game/api", {
       method: "POST",
       body: JSON.stringify({
         gameName,
@@ -90,9 +89,6 @@ export default function Page() {
       },
     });
 
-    // after saving to db save to local storage
-    const data = await res.json();
-    setBreathSessionData([data]);
     setDataSaved(true);
   }
 
