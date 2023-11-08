@@ -27,7 +27,12 @@ export default function RootLayout({ children }: Props) {
             <GoogleAnalytics />
             {children}
           </main>
-          <Next13NProgress color="#f0abfc" height={3} />
+          <Next13NProgress
+            color="#f0abfc"
+            height={3}
+            startPosition={0.3}
+            stopDelayMs={200}
+          />
         </AuthProvider>
       </body>
     </html>

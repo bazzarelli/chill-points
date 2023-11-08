@@ -2,7 +2,6 @@
 
 import HistoryList from "@/app/components/history/HistoryList";
 import NavArrowBackIcon from "@/app/components/svg/NavArrowBackIcon";
-import { inter } from "@/app/utils/fonts";
 import { useRouter } from "next/navigation";
 
 export default function Page() {
@@ -10,7 +9,7 @@ export default function Page() {
   const handleBack = () => router.back();
 
   return (
-    <section className={`${inter.className} h-screen mx-auto w-full`}>
+    <section className="h-screen mx-auto w-full">
       <button
         onClick={handleBack}
         className="my-2 ml-1 md:ml-0 btn btn-sm btn-link"

@@ -12,7 +12,6 @@ import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import BOX_ANIM, { BoxAnim } from "@/app/utils/boxAnimation";
 import calculateInhaleTimeDiff from "@/app/utils/calculateInhaleTimeDiff";
-import { inter } from "@/app/utils/fonts";
 import calculateHumanDelay from "@/app/utils/humanDelay";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import rotatingCongrats from "@/app/utils/rotatingCongrats";
@@ -41,14 +40,15 @@ export default function Page() {
     bannerText: msg.welcome,
     bannerTextColor: TXT_COLOR.BLUE,
   });
+  const [dataSaved, setDataSaved] = useState(false);
   const [boxBg, setBoxBg] = useState(BOX_BG_COLOR.BLUE);
   const [clockCoords, setClockCoords] = useState({ x: -300, y: -300 });
   const [clockKey, setClockKey] = useState(0);
   const [playAwardSound] = useSound("/sounds/retro-award.mp3", {
-    volume: 0.65,
+    volume: 0.4,
   });
   const [playErrorSound] = useSound("/sounds/retro-error.mp3", {
-    volume: 0.5,
+    volume: 0.4,
   });
   // used to tell in-flight/async parts of the game
   // towards the final momments that the game is over
@@ -73,7 +73,7 @@ export default function Page() {
     setIsInProgressStatus,
     setIsCancelledStatus,
     setHumanDelay,
-    setBreathSessionDataCache,
+    setBreathSessionData,
   } = useBreathSessionStore();
 
   async function dbSaveSessionData() {
@@ -92,7 +92,8 @@ export default function Page() {
 
     // after saving to db save to local storage
     const data = await res.json();
-    setBreathSessionDataCache([data]);
+    setBreathSessionData([data]);
+    setDataSaved(true);
   }
 
   // isComplete is triggered by the countdown timer
@@ -269,9 +270,7 @@ export default function Page() {
   });
 
   return (
-    <section
-      className={`${inter.className} flex flex-wrap text-center text-slate-900`}
-    >
+    <section className="flex flex-wrap text-center text-slate-900">
       <Head>
         <title>Chill Points: game</title>
       </Head>
@@ -356,7 +355,7 @@ export default function Page() {
         </button>
       </div>
       <SettingsModal />
-      {isComplete && <GameComplete />}
+      {isComplete && dataSaved && <GameComplete />}
     </section>
   );
 }

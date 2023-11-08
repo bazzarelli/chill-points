@@ -24,10 +24,6 @@ type BreathSessionData = {
   gameLength: number;
 };
 
-type BreathSessionDataCache = {
-  breathSessionData: BreathSessionData[];
-};
-
 type Actions = {
   incrementCycleCount: () => void;
   resetCycleCount: () => void;
@@ -40,12 +36,11 @@ type Actions = {
   setIsCompleteStatus: (isComplete: boolean) => void;
   setIsCancelledStatus: (isCancelled: boolean) => void;
   setIsInProgressStatus: (isInProgress: boolean) => void;
-  setBreathSessionDataCache: (breathSessionData: BreathSessionData[]) => void;
-  clearBreathSessionDataCache: () => void;
+  setBreathSessionData: (breathSessionData: BreathSessionData[]) => void;
   resetGame: () => void;
 };
 
-const initialGameState: InitialGameState & BreathSessionDataCache = {
+const initialGameState: InitialGameState = {
   cycleCount: 0,
   humanDelay: 0,
   dotCountTotal: 10,
@@ -60,9 +55,7 @@ const initialGameState: InitialGameState & BreathSessionDataCache = {
   breathSessionData: [],
 };
 
-export const useBreathSessionStore = create<
-  InitialGameState & Actions & BreathSessionDataCache
->()(
+export const useBreathSessionStore = create<InitialGameState & Actions>()(
   devtools(
     persist(
       (set) => ({
@@ -89,15 +82,10 @@ export const useBreathSessionStore = create<
           set(() => ({ isCancelled: isCancelled })),
         setIsInProgressStatus: (isInProgress) =>
           set(() => ({ isInProgress: isInProgress })),
-        setBreathSessionDataCache: (breathSessionData: BreathSessionData[]) =>
-          set((state) => ({
-            breathSessionData: [
-              ...state.breathSessionData,
-              ...breathSessionData,
-            ],
+        setBreathSessionData: (breathSessionData: BreathSessionData[]) =>
+          set(() => ({
+            breathSessionData: breathSessionData,
           })),
-        clearBreathSessionDataCache: () =>
-          set(() => ({ breathSessionData: [] })),
         resetGame: () =>
           set(() => ({
             cycleCount: 0,

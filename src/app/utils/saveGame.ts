@@ -1,15 +1,9 @@
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
-import { cache } from "react";
 import "server-only";
 
 export default function useSaveGameSession() {
-  const {
-    userGameLength,
-    gameName,
-    inhaleTimes,
-    cycleCount,
-    setBreathSessionDataCache,
-  } = useBreathSessionStore();
+  const { userGameLength, gameName, inhaleTimes, cycleCount } =
+    useBreathSessionStore();
 
   return async function dbSaveSessionData() {
     try {
@@ -28,7 +22,6 @@ export default function useSaveGameSession() {
 
       if (res.status === 200) {
         const data = await res.json();
-        setBreathSessionDataCache([data]);
         console.log("game id:", data.id);
       } else {
         console.error(`Error: ${res.status}`);
