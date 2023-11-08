@@ -3,7 +3,6 @@
 import BreathSessionGraph from "@/app/components/history/BreathSessionGraph";
 import NavArrowBackIcon from "@/app/components/svg/NavArrowBackIcon";
 import { msg } from "@/app/i18n/frog-msg";
-import { inter } from "@/app/utils/fonts";
 import { DateTime } from "luxon";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -17,7 +16,7 @@ export default function SessionDetail() {
   if (data) parsedData = JSON.parse(data);
 
   return (
-    <main className={`${inter.className} h-screen mx-auto w-full`}>
+    <main className="h-screen mx-auto w-full">
       <button onClick={handleBack} className="my-2 md:ml-0 btn btn-sm btn-link">
         <NavArrowBackIcon
           className="inline-block fill-info"

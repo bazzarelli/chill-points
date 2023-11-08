@@ -20,8 +20,8 @@ export default function HistoryList() {
   let transition = { type: "ease", duration: 0.5, ease: "easeInOut" };
   let [ref, bounds] = userMeasure();
 
-  const { breathSessionData, clearBreathSessionDataCache } =
-    useBreathSessionStore();
+  //TODO: using local storage, replace with db call and pagination
+  const { breathSessionData } = useBreathSessionStore();
 
   function calculateBreathRate(session: SessionData) {
     const { gameLength, cycleCount } = session;
@@ -91,14 +91,14 @@ export default function HistoryList() {
           )}
         </motion.div>
       </div>
-      <div className="flex pt-5 pl-4 md:pl-0">
+      {/* <div className="flex pt-5 pl-4 md:pl-0">
         <button
-          onClick={clearBreathSessionDataCache}
+          onClick={}
           className="btn btn-sm btn-outline btn-error"
         >
           {msg.delete_history}
         </button>
-      </div>
+      </div> */}
     </MotionConfig>
   );
 }

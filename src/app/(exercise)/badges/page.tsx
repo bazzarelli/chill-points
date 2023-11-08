@@ -5,7 +5,6 @@ import WeeklyGoal from "@/app/components/history/WeeklyGoal";
 import NavArrowBackIcon from "@/app/components/svg/NavArrowBackIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
-import { inter } from "@/app/utils/fonts";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -45,9 +44,9 @@ export default function Page() {
 
   return (
     <section
-      className={`${inter.className} h-screen mx-auto w-full
+      className="h-screen mx-auto w-full
         bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] 
-      from-sky-600 to-slate-700/20`}
+      from-sky-600 to-slate-700/20"
     >
       <button
         onClick={handleBack}
