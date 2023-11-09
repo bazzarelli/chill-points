@@ -10,10 +10,7 @@ export default function Page() {
 
   return (
     <section className="h-screen mx-auto w-full">
-      <button
-        onClick={handleBack}
-        className="my-2 ml-1 md:ml-0 btn btn-sm btn-link"
-      >
+      <button onClick={handleBack} className="my-2 btn btn-sm btn-link">
         <NavArrowBackIcon
           className="inline-block fill-info"
           width={32}

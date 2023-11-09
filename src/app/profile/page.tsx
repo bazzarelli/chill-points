@@ -1,13 +1,18 @@
 "use client";
 
+import NavArrowBackIcon from "@/app/components/svg/NavArrowBackIcon";
 import UserCard from "@/app/components/user/UserCard";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import WeeklyGoal from "../components/history/WeeklyGoal";
 
 export default function UserProfile() {
+  const router = useRouter();
+  const handleBack = () => router.back();
+
   const { breathSessionData, userMinutesGoal, setUserMinutesGoal } =
     useBreathSessionStore();
 
@@ -40,7 +45,14 @@ export default function UserProfile() {
 
   return (
     <>
-      <section className="flex flex-col gap-6">
+      <button onClick={handleBack} className="my-2 btn btn-sm btn-link">
+        <NavArrowBackIcon
+          className="inline-block fill-info"
+          width={32}
+          height={32}
+        />
+      </button>
+      <section className="flex flex-col gap-6 bg-sky-300/80">
         <UserCard user={session?.user} />
       </section>
 
