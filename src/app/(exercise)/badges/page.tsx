@@ -48,10 +48,7 @@ export default function Page() {
         bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] 
       from-sky-600 to-slate-700/20"
     >
-      <button
-        onClick={handleBack}
-        className="my-2 ml-1 md:ml-0 btn btn-sm btn-link"
-      >
+      <button onClick={handleBack} className="my-2 btn btn-sm btn-link">
         <NavArrowBackIcon
           className="inline-block fill-info"
           width={32}

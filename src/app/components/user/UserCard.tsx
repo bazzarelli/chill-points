@@ -35,7 +35,7 @@ export default function UserCard({ user }: UserProps) {
   ) : null;
 
   return (
-    <section className="pl-4 pb-6 grid grid-cols-2 text-slate-300 border-b-2 border-sky-300/60">
+    <section className="pl-4 pb-6 grid grid-cols-2 text-slate-900">
       <div className="flex flex-col justify-center">
         {nameDisplay}
         {emailDisplay}

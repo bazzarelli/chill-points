@@ -12,7 +12,7 @@ export default async function Header() {
     <div className="navbar justify-between bg-sky-300">
       <div>
         <Link href="/">
-          <h1 className="text-3xl md:text-4xl text-sky-800/80 tracking-tight">
+          <h1 className="text-3xl md:text-4xl text-sky-800/60 tracking-tight font-semibold">
             Chill Points
           </h1>
         </Link>
@@ -54,9 +54,6 @@ export default async function Header() {
               </>
             ) : (
               <>
-                <li>
-                  <Link href="/badges">Badges</Link>
-                </li>
                 <li>
                   <Link href="/profile">Create Profile</Link>
                 </li>

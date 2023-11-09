@@ -20,7 +20,7 @@ function WeeklyGoal({
         {msg.my_goal} ({getWeekDateString})
       </h3>
 
-      <div className="bg-sky-300/50 pl-2 py-3">
+      <div className="bg-sky-300/80 pl-2 py-3">
         <progress
           className="progress progress-primary w-56"
           value={gameLengthTotal}

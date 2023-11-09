@@ -1,12 +1,12 @@
 {
-  "theme_color": "#23252e",
-  "background_color": "#7be5fa",
+  "theme_color": "#6ccef8",
+  "background_color": "#ffffff",
   "display": "standalone",
   "scope": "/",
   "orientation": "portrait",
     "start_url": "/",
     "name": "Chill Points",
-    "short_name": "Chill Frog",
+    "short_name": "Chill Points",
     "icons": [
         {
             "src": "/icon-192x192.png",
