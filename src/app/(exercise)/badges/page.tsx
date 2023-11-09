@@ -56,7 +56,7 @@ export default function Page() {
         />
       </button>
       <div className="w-full bg-gray-300">
-        <h2 className="p-2 text-2xl text-gray-500">{msg.your_badges}</h2>
+        <h2 className="p-2 text-xl text-gray-500">{msg.your_badges}</h2>
         {badgeCountData[1] ? (
           <>
             <div className="flex flex-row flex-wrap bg-white justify-start">
