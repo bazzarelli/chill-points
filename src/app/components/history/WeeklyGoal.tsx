@@ -22,11 +22,11 @@ function WeeklyGoal({
 
       <div className="bg-sky-300/80 pl-2 py-3">
         <progress
-          className="progress progress-primary w-56"
+          className="progress w-56"
           value={gameLengthTotal}
           max={userMinutesGoal * DAYS_IN_WEEK}
         ></progress>
-        <span className="text-slate-200 text-xs pl-4">
+        <span className="text-slate-900 text-xs pl-4">
           {gameLengthTotal} of {userMinutesGoal * DAYS_IN_WEEK} completed
         </span>
       </div>
