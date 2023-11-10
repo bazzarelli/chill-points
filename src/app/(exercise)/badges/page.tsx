@@ -7,6 +7,7 @@ import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Link } from "nextjs13-progress";
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -57,7 +58,7 @@ export default function Page() {
       </button>
       <div className="w-full bg-gray-300">
         <h2 className="p-2 text-xl text-gray-500">{msg.your_badges}</h2>
-        {badgeCountData[1] ? (
+        {badgeCountData && Object.keys(badgeCountData).length > 0 ? (
           <>
             <div className="flex flex-row flex-wrap bg-white justify-start">
               {[...Array(NUM_BADGE_TYPES)].map((_, i) => (
@@ -78,16 +79,22 @@ export default function Page() {
             </div>
           </>
         ) : (
-          <h4 className="p-2 text-xl text-gray-700">No badges yet</h4>
+          <h4 className="text-gray-700 font-semibold p-2">No badges yet</h4>
         )}
       </div>
       <div>
-        {/* TODO hook this up to weekly goals in profile */}
-        {status === "authenticated" && (
+        {status === "authenticated" ? (
           <WeeklyGoal
             userMinutesGoal={userMinutesGoal}
             gameLengthTotal={gameLengthTotal}
           />
+        ) : (
+          <p className="p-2 text-slate-700">
+            Create a profile to set goals and see your history.
+            <button className="btn btn-sm my-2 block">
+              <Link href="/profile">GO ➤</Link>
+            </button>
+          </p>
         )}
       </div>
     </section>
