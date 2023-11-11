@@ -13,3 +13,11 @@ export const surveySchema = z.object({
 });
 
 export type TSurveySchema = z.infer<typeof surveySchema>;
+
+export type BreathSessionData = {
+  createdAt: string;
+  gameName: string;
+  inhaleTimes: number[];
+  cycleCount: number;
+  gameLength: number;
+};

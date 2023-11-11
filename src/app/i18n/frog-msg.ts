@@ -30,7 +30,7 @@ export const msg = {
   long: "long",
   your_badges: "Chill Point badges",
   badge_goal_progress: "Progress towards your weekly goal",
-  minutes_per_day: "Set your goal of mindful minutes per day",
+  minutes_per_day: "Set your minutes per day goal",
   my_goal: "Goal progress this week",
 };
 
