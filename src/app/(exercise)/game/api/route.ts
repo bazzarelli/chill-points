@@ -1,4 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
@@ -33,10 +34,10 @@ export async function POST(req: Request) {
   const gameSession = await prisma.gameSession.create({
     data: {
       userId: currentUserId ? currentUserId : anonUserId,
-      gameName: gameName,
-      inhaleTimes: inhaleTimes,
-      cycleCount: cycleCount,
-      gameLength: gameLength,
+      gameName,
+      inhaleTimes,
+      cycleCount,
+      gameLength,
     },
   });
 
@@ -60,6 +61,7 @@ export async function GET() {
   }
 
   const gameSessions = await prisma.gameSession.findMany({
+    // take: 10,
     where: { userId },
     orderBy: { createdAt: "desc" },
   });

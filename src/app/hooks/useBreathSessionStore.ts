@@ -13,15 +13,6 @@ type InitialGameState = {
   userCycleSpeed: number;
   userGameLength: number;
   userMinutesGoal: number;
-  breathSessionData: BreathSessionData[];
-};
-
-type BreathSessionData = {
-  gameName: string;
-  createdAt: string;
-  inhaleTimes: number[];
-  cycleCount: number;
-  gameLength: number;
 };
 
 type Actions = {
@@ -36,7 +27,6 @@ type Actions = {
   setIsCompleteStatus: (isComplete: boolean) => void;
   setIsCancelledStatus: (isCancelled: boolean) => void;
   setIsInProgressStatus: (isInProgress: boolean) => void;
-  setBreathSessionData: (breathSessionData: BreathSessionData[]) => void;
   resetGame: () => void;
 };
 
@@ -52,7 +42,6 @@ const initialGameState: InitialGameState = {
   userCycleSpeed: 3,
   userGameLength: 1,
   userMinutesGoal: 2,
-  breathSessionData: [],
 };
 
 export const useBreathSessionStore = create<InitialGameState & Actions>()(
@@ -82,13 +71,6 @@ export const useBreathSessionStore = create<InitialGameState & Actions>()(
           set(() => ({ isCancelled: isCancelled })),
         setIsInProgressStatus: (isInProgress) =>
           set(() => ({ isInProgress: isInProgress })),
-        setBreathSessionData: (breathSessionData: BreathSessionData[]) =>
-          set((state) => ({
-            breathSessionData: [
-              ...state.breathSessionData,
-              ...breathSessionData,
-            ],
-          })),
         resetGame: () =>
           set(() => ({
             cycleCount: 0,

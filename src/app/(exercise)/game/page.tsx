@@ -71,12 +71,11 @@ export default function Page() {
     setIsCompleteStatus,
     setIsInProgressStatus,
     setIsCancelledStatus,
-    setBreathSessionData,
     setHumanDelay,
   } = useBreathSessionStore();
 
   async function dbSaveSessionData() {
-    const res = await fetch("/game/api", {
+    await fetch("/game/api", {
       method: "POST",
       body: JSON.stringify({
         gameName,
@@ -88,10 +87,6 @@ export default function Page() {
         "Content-Type": "application/json",
       },
     });
-
-    // after saving to db save to local storage
-    const data = await res.json();
-    setBreathSessionData([data]);
   }
 
   // isComplete is triggered by the countdown timer
@@ -342,7 +337,7 @@ export default function Page() {
           {...bind()}
           aria-label="Finger print breath button"
           className="finger-print relative mt-5 mx-auto h-48 w-64
-          bg-[url(/images/finger-print-blue.webp)]
+          bg-[url(/images/thumb-print-blue.webp)]
           bg-no-repeat bg-center"
           id="frog-box"
         >

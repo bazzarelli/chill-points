@@ -1,32 +1,54 @@
 "use client";
 
 import RarrowIcon from "@/app/components/svg/RarrowIcon";
-import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
+import { BreathSessionData } from "@/app/types";
 import { AnimatePresence, MotionConfig, motion } from "framer-motion";
 import { DateTime } from "luxon";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
 import userMeasure from "react-use-measure";
 
-type SessionData = {
-  gameName: string;
-  createdAt: string;
-  inhaleTimes: number[];
-  cycleCount: number;
-  gameLength: number;
-};
+async function dbGetSessionData() {
+  const res = await fetch("/game/api");
+  return res.json();
+}
 
 export default function HistoryList() {
   let transition = { type: "ease", duration: 0.5, ease: "easeInOut" };
   let [ref, bounds] = userMeasure();
 
-  //TODO: using local storage, replace with db call and pagination
-  const { breathSessionData } = useBreathSessionStore();
+  // Check if visitor is logged in
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect("/api/auth/signin?callbackUrl=/");
+    },
+  });
 
-  function calculateBreathRate(session: SessionData) {
+  const [breathSessionData, setBreathSessionData] = useState<
+    BreathSessionData[]
+  >([]);
+
+  function calculateBreathRate(session: BreathSessionData) {
     const { gameLength, cycleCount } = session;
     return Math.floor(cycleCount / gameLength);
   }
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    dbGetSessionData().then((data) => {
+      if (isCancelled) return;
+      setBreathSessionData(data);
+    });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
 
   return (
     <MotionConfig transition={transition}>

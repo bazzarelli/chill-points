@@ -3,31 +3,38 @@
 import NavArrowBackIcon from "@/app/components/svg/NavArrowBackIcon";
 import UserCard from "@/app/components/user/UserCard";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
+import { BreathSessionData } from "@/app/types";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import WeeklyGoal from "../components/history/WeeklyGoal";
+
+async function dbGetSessionData() {
+  const res = await fetch("/game/api");
+  return res.json();
+}
 
 export default function UserProfile() {
   const router = useRouter();
   const handleBack = () => router.back();
 
-  const { breathSessionData, userMinutesGoal, setUserMinutesGoal } =
-    useBreathSessionStore();
+  const { userMinutesGoal, setUserMinutesGoal } = useBreathSessionStore();
 
   // Check if visitor is logged in
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect("/api/auth/signin?callbackUrl=/game");
+      redirect("/api/auth/signin?callbackUrl=/profile");
     },
   });
 
-  /**
-   * Returns array of gameLength objs
-   * [{gameLength: 2},{gameLength: 1}]
-   */
+  const [breathSessionData, setBreathSessionData] = useState<
+    BreathSessionData[]
+  >([]);
+
+  // return array of gameLength objs [{gameLength: 2},{gameLength: 1}]
   const gameLengthData: { gameLength: number }[] = breathSessionData
     .filter((session) => session.gameName === "Equal Breathing")
     .map((session) => ({
@@ -43,6 +50,19 @@ export default function UserProfile() {
     setUserMinutesGoal(goalLength);
   }
 
+  useEffect(() => {
+    let isCancelled = false;
+
+    dbGetSessionData().then((data) => {
+      if (isCancelled) return;
+      setBreathSessionData(data);
+    });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
   return (
     <>
       <button onClick={handleBack} className="my-2 btn btn-sm btn-link">
@@ -52,6 +72,7 @@ export default function UserProfile() {
           height={32}
         />
       </button>
+
       <section className="flex flex-col gap-6 bg-sky-300/80">
         <UserCard user={session?.user} />
       </section>
