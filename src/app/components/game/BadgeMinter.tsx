@@ -29,8 +29,8 @@ export default function BadgeMinter({
   const { userGameLength, cycleCount, dotCountTotal } = useBreathSessionStore();
   const [isWorthy, setIsWorthy] = useState(false);
 
-  const [playBadgeSound] = useSound("/sounds/crash-cymbal.mp3", {
-    volume: 0.4,
+  const [playBadgeSound] = useSound("/sounds/magic-wand.mp3", {
+    volume: 0.6,
   });
 
   useEffect(() => {

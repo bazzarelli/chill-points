@@ -42,7 +42,7 @@ export default function Page() {
   useEffect(() => {
     let isCancelled = false;
 
-    if (status === "unauthenticated") return;
+    if (status === "unauthenticated" || status === "loading") return;
 
     dbGetSessionData().then((data) => {
       if (isCancelled) return;
