@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import AvatarIcon from "@/app/components/svg/AvatarIcon";
+import ProfileIcon from "@/app/components/svg/ProfileIcon";
 import { getServerSession } from "next-auth/next";
 import Image from "next/image";
 import { Link } from "nextjs13-progress";
@@ -9,15 +9,22 @@ export default async function Header() {
   const userImage = session?.user?.image || "";
 
   return (
-    <div className="navbar justify-between bg-sky-300">
-      <div>
+    <div className="flex h-[4rem] p-3 pb-4 items-center flex-row bg-sky-300">
+      <div className="basis-1/4">
+        <span className="block">&nbsp;</span>
+      </div>
+      <div className="basis-1/2">
         <Link href="/">
-          <h1 className="text-3xl md:text-4xl text-sky-800/80 tracking-tight font-semibold">
-            Chill Points
-          </h1>
+          <Image
+            alt="Logo type"
+            width="186"
+            height="29"
+            src="/images/ChillPointsLogoType.png"
+            className="mx-auto"
+          />
         </Link>
       </div>
-      <div>
+      <div className="basis-1/4 text-right">
         <div className="dropdown-end dropdown">
           <label tabIndex={0} className="btn-ghost btn-circle avatar btn">
             <div className="w-10 rounded-full">
@@ -29,7 +36,7 @@ export default async function Header() {
                   src={userImage}
                 />
               ) : (
-                <AvatarIcon fill="rgb(7 89 133 / 0.8)" />
+                <ProfileIcon fill="rgb(7 89 133 / 0.8)" />
               )}
             </div>
           </label>
