@@ -1,4 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import LogoType from "@/app/components/svg/LogoType";
 import ProfileIcon from "@/app/components/svg/ProfileIcon";
 import { getServerSession } from "next-auth/next";
 import Image from "next/image";
@@ -9,19 +10,13 @@ export default async function Header() {
   const userImage = session?.user?.image || "";
 
   return (
-    <div className="flex h-[4rem] p-3 pb-4 items-center flex-row bg-sky-300">
+    <div className="flex h-[4rem] p-2 items-center flex-row bg-sky-300">
       <div className="basis-1/4">
         <span className="block">&nbsp;</span>
       </div>
       <div className="basis-1/2">
         <Link href="/">
-          <Image
-            alt="Logo type"
-            width="186"
-            height="29"
-            src="/images/ChillPointsLogoType.png"
-            className="mx-auto"
-          />
+          <LogoType fill="rgb(7 89 133 / 0.8)" className="mx-auto" />
         </Link>
       </div>
       <div className="basis-1/4 text-right">
