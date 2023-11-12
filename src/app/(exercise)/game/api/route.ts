@@ -1,5 +1,4 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";

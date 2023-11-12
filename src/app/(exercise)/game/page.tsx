@@ -55,9 +55,10 @@ export default function Page() {
   const clockRef = useRef<HTMLDivElement | null>(null);
 
   const {
+    userMinutesGoal,
     userCycleSpeed,
-    humanDelay,
     userGameLength,
+    humanDelay,
     isCancelled,
     isComplete,
     isInProgress,
@@ -82,6 +83,20 @@ export default function Page() {
         inhaleTimes: calculateInhaleTimeDiff(inhaleTimes),
         cycleCount,
         gameLength: userGameLength,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  async function dbSaveUserPreferencesData() {
+    await fetch("/profile/api", {
+      method: "POST",
+      body: JSON.stringify({
+        userMinutesGoal,
+        userCycleSpeed,
+        userGameLength,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -120,7 +135,8 @@ export default function Page() {
 
   useEffect(() => {
     setHumanDelay(calculateHumanDelay(userGameLength));
-  }, [userGameLength]);
+    dbSaveUserPreferencesData();
+  }, [userGameLength, userCycleSpeed, userMinutesGoal]);
 
   useEffect(() => {
     // disable long press browser defaults
