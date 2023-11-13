@@ -3,24 +3,26 @@
 import NavArrowBackIcon from "@/app/components/svg/NavArrowBackIcon";
 import UserCard from "@/app/components/user/UserCard";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
-import { BreathSessionData } from "@/app/types";
+import { GameLengthData } from "@/app/types";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import WeeklyGoal from "../components/history/WeeklyGoal";
 
 async function dbGetSessionData() {
-  const res = await fetch("/game/api");
+  const res = await fetch("/profile/api");
   return res.json();
 }
 
 export default function UserProfile() {
   const router = useRouter();
   const handleBack = () => router.back();
-
+  const isCancelledRef = useRef(false);
   const { userMinutesGoal, setUserMinutesGoal } = useBreathSessionStore();
+  const [gameLengthTotalForWeek, setGameLengthTotalForWeek] =
+    useState<GameLengthData>({ gameLength: 0 });
 
   // Check if visitor is logged in
   const { data: session } = useSession({
@@ -30,36 +32,23 @@ export default function UserProfile() {
     },
   });
 
-  const [breathSessionData, setBreathSessionData] = useState<
-    BreathSessionData[]
-  >([]);
-
-  // return array of gameLength objs [{gameLength: 2},{gameLength: 1}]
-  const gameLengthData: { gameLength: number }[] = breathSessionData
-    .filter((session) => session.gameName === "Equal Breathing")
-    .map((session) => ({
-      gameLength: session.gameLength,
-    }));
-
-  const gameLengthTotal = gameLengthData.reduce((acc, cur) => {
-    return cur.gameLength + acc;
-  }, 0);
-
   function handleMinutesGoalChange(event: React.ChangeEvent<HTMLInputElement>) {
     const goalLength = parseInt(event.target.value, 10);
     setUserMinutesGoal(goalLength);
   }
 
   useEffect(() => {
-    let isCancelled = false;
+    const fetchData = async () => {
+      const data = await dbGetSessionData();
+      if (!isCancelledRef.current) {
+        setGameLengthTotalForWeek(data);
+      }
+    };
 
-    dbGetSessionData().then((data) => {
-      if (isCancelled) return;
-      setBreathSessionData(data);
-    });
+    fetchData();
 
     return () => {
-      isCancelled = true;
+      isCancelledRef.current = true;
     };
   }, []);
 
@@ -79,7 +68,7 @@ export default function UserProfile() {
 
       <WeeklyGoal
         handleMinutesGoalChange={handleMinutesGoalChange}
-        gameLengthTotal={gameLengthTotal}
+        gameLengthTotal={gameLengthTotalForWeek.gameLength}
         userMinutesGoal={userMinutesGoal}
       />
     </>

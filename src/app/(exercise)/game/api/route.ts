@@ -60,7 +60,6 @@ export async function GET() {
   }
 
   const gameSessions = await prisma.gameSession.findMany({
-    // take: 10,
     where: { userId },
     orderBy: { createdAt: "desc" },
   });
