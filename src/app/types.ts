@@ -21,3 +21,7 @@ export type BreathSessionData = {
   cycleCount: number;
   gameLength: number;
 };
+
+export type GameLengthData = {
+  gameLength: number;
+};
