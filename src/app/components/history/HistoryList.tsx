@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import userMeasure from "react-use-measure";
 
 async function dbGetSessionData() {
-  const res = await fetch("/game/api");
+  const res = await fetch("/history/api");
   return res.json();
 }
 

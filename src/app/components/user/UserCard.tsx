@@ -17,7 +17,7 @@ type UserProps = {
 export default function UserCard({ user }: UserProps) {
   const userImage = user?.image ? (
     <Image
-      className="border-4 border-black dark:border-slate-500 rounded-full mt-8"
+      className="border-4 border-black dark:border-slate-500 rounded-full"
       src={user?.image}
       width={150}
       height={150}
@@ -27,17 +27,17 @@ export default function UserCard({ user }: UserProps) {
   ) : null;
 
   const nameDisplay = user?.name ? (
-    <div className="mt-2 font-semibold text-lg">{user?.name}</div>
+    <div className="font-semibold">{user?.name}</div>
   ) : null;
 
   const emailDisplay = user?.email ? (
-    <div className="mt-1">{user?.email}</div>
+    <div className="text-sm">{user?.email}</div>
   ) : null;
 
   return (
-    <section className="px-4 pb-6 grid grid-cols-2 text-slate-900">
-      <div className="">{userImage}</div>
-      <div className="flex flex-col justify-stretch text-right">
+    <section className="text-slate-900">
+      <div className="float-left mx-6 my-4">{userImage}</div>
+      <div className="mt-6">
         {nameDisplay}
         {emailDisplay}
       </div>

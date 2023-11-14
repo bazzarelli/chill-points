@@ -25,3 +25,13 @@ export type BreathSessionData = {
 export type GameLengthData = {
   gameLength: number;
 };
+
+export type User = {
+  id: string;
+  name: string | null;
+  bio: string | null;
+  age: number | null;
+  email: string | null;
+  emailVerified: Date | null;
+  image: string | null;
+};

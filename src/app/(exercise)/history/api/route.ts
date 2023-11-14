@@ -13,36 +13,6 @@ type User = {
   image: string | null;
 };
 
-export async function POST(req: Request) {
-  const anonUserId = "anonymous";
-  const anonUserEmail = "anonymous@example.com";
-  const session = await getServerSession(authOptions);
-  const currentUserEmail = (session?.user?.email as string) || anonUserEmail;
-  const gameSessionData = await req.json();
-  const { gameName, inhaleTimes, cycleCount, gameLength } = gameSessionData;
-
-  const currentUserId = await prisma.user
-    .findUnique({ where: { email: currentUserEmail } })
-    .then((user: User | null) => {
-      if (!user) {
-        throw new Error("User not found");
-      }
-      return user.id!;
-    });
-
-  const gameSession = await prisma.gameSession.create({
-    data: {
-      userId: currentUserId ? currentUserId : anonUserId,
-      gameName,
-      inhaleTimes,
-      cycleCount,
-      gameLength,
-    },
-  });
-
-  return NextResponse.json(gameSession);
-}
-
 // GET FULL GAME SESSION HISTORY
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -61,6 +31,7 @@ export async function GET() {
   }
 
   const gameSessions = await prisma.gameSession.findMany({
+    take: 10,
     where: { userId },
     orderBy: { createdAt: "desc" },
   });
@@ -80,8 +51,6 @@ export async function DELETE(req: Request) {
       return user.id!;
     });
 
-  // could delete individual game sessions by id
-  // const { id } = await req.json();
   if (!userId) {
     return NextResponse.error();
   }
