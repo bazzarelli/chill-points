@@ -22,15 +22,18 @@ export default function Page() {
   const [breathSessionData, setBreathSessionData] = useState<
     BreathSessionData[]
   >([]);
+
   // return array of gameLength objs [{gameLength: 2},{gameLength: 1}]
   const gameLengthData = breathSessionData
     .filter((session) => session.gameName === "Equal Breathing")
     .map((session) => ({
       gameLength: session.gameLength,
     }));
+
   const gameLengthTotal = gameLengthData.reduce((acc, cur) => {
     return cur.gameLength + acc;
   }, 0);
+
   const badgeCountData: { [key: number]: number } = gameLengthData.reduce(
     (acc: { [key: number]: number }, cur) => {
       acc[cur.gameLength] = (acc[cur.gameLength] || 0) + 1;

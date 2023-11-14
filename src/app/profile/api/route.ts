@@ -1,18 +1,9 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { User } from "@/app/types";
 import { endOfWeekUTCToISO, startOfWeekUTCToISO } from "@/app/utils/date";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-
-type User = {
-  id: string;
-  name: string | null;
-  bio: string | null;
-  age: number | null;
-  email: string | null;
-  emailVerified: Date | null;
-  image: string | null;
-};
 
 // SAVE USER GAME PREFERENCES
 export async function POST(req: Request) {

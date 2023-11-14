@@ -3,28 +3,19 @@
 import NavArrowBackIcon from "@/app/components/svg/NavArrowBackIcon";
 import UserCard from "@/app/components/user/UserCard";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
-import { GameLengthData } from "@/app/types";
+import useFetchProfileData from "@/app/hooks/useFetchProfileData";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
 
 import WeeklyGoal from "../components/history/WeeklyGoal";
-
-async function dbGetSessionData() {
-  const res = await fetch("/profile/api");
-  return res.json();
-}
 
 export default function UserProfile() {
   const router = useRouter();
   const handleBack = () => router.back();
-  const isCancelledRef = useRef(false);
   const { userMinutesGoal, setUserMinutesGoal } = useBreathSessionStore();
-  const [gameLengthTotalForWeek, setGameLengthTotalForWeek] =
-    useState<GameLengthData>({ gameLength: 0 });
+  const { gameLengthCount, isLoading, error } = useFetchProfileData();
 
-  // Check if visitor is logged in
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -36,21 +27,6 @@ export default function UserProfile() {
     const goalLength = parseInt(event.target.value, 10);
     setUserMinutesGoal(goalLength);
   }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await dbGetSessionData();
-      if (!isCancelledRef.current) {
-        setGameLengthTotalForWeek(data);
-      }
-    };
-
-    fetchData();
-
-    return () => {
-      isCancelledRef.current = true;
-    };
-  }, []);
 
   return (
     <>
@@ -66,11 +42,35 @@ export default function UserProfile() {
         <UserCard user={session?.user} />
       </section>
 
-      <WeeklyGoal
-        handleMinutesGoalChange={handleMinutesGoalChange}
-        gameLengthTotal={gameLengthTotalForWeek.gameLength}
-        userMinutesGoal={userMinutesGoal}
-      />
+      {error && (
+        <div className="alert alert-error mt-3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span>{`Error: ${error}`}</span>
+        </div>
+      )}
+      {isLoading ? (
+        <div className="pl-3 pt-6 text-center">
+          <span className="loading text-info loading-spinner loading-lg"></span>
+        </div>
+      ) : (
+        <WeeklyGoal
+          handleMinutesGoalChange={handleMinutesGoalChange}
+          gameLengthTotal={gameLengthCount.gameLength}
+          userMinutesGoal={userMinutesGoal}
+        />
+      )}
     </>
   );
 }
