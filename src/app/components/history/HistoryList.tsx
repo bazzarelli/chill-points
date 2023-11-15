@@ -1,7 +1,6 @@
 "use client";
 
 import RarrowIcon from "@/app/components/svg/RarrowIcon";
-// import useFetchHistoryData from "@/app/hooks/useFetchHistoryData";
 import { msg } from "@/app/i18n/frog-msg";
 import { BreathSessionData } from "@/app/types";
 import { DateTime } from "luxon";
