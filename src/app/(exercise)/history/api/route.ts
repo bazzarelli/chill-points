@@ -1,20 +1,24 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { User } from "@/app/types";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-type User = {
-  id: string;
-  name: string | null;
-  bio: string | null;
-  age: number | null;
-  email: string | null;
-  emailVerified: Date | null;
-  image: string | null;
-};
+/**
+ * Exampe usage in a component
+ * 
+  const { gameHistory, isLoading, error } = useFetchHistoryData({
+    skip: skip,
+    take: take,
+  });
+ * 
+ */
 
 // GET FULL GAME SESSION HISTORY
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const take = Number(searchParams.get("take"));
+  const skip = Number(searchParams.get("skip"));
   const session = await getServerSession(authOptions);
   const currentUserEmail = session?.user?.email as string;
   const userId = await prisma.user
@@ -31,7 +35,8 @@ export async function GET() {
   }
 
   const gameSessions = await prisma.gameSession.findMany({
-    take: 10,
+    skip,
+    take,
     where: { userId },
     orderBy: { createdAt: "desc" },
   });
