@@ -279,7 +279,7 @@ export default function Page() {
   });
 
   return (
-    <section className="flex flex-wrap text-center text-slate-900">
+    <section className="flex flex-wrap text-center bg-slate-800">
       <Head>
         <title>Chill Points: game</title>
       </Head>

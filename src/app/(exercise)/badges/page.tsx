@@ -2,26 +2,18 @@
 
 import Badge from "@/app/components/game/Badge";
 import NavArrowBackIcon from "@/app/components/svg/NavArrowBackIcon";
+import useFetchAllGamesData from "@/app/hooks/useFetchAllGamesData";
 import { msg } from "@/app/i18n/frog-msg";
-import { BreathSessionData } from "@/app/types";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Link } from "nextjs13-progress";
-import { useEffect, useState } from "react";
-
-async function dbGetSessionData() {
-  const res = await fetch("/game/api");
-  return res.json();
-}
 
 export default function Page() {
   const NUM_BADGE_TYPES = 5;
   const { data: session, status } = useSession();
   const router = useRouter();
   const handleBack = () => router.back();
-  const [breathSessionData, setBreathSessionData] = useState<
-    BreathSessionData[]
-  >([]);
+  const { breathSessionData, isLoading, error } = useFetchAllGamesData();
 
   // return array of gameLength objs [{gameLength: 2},{gameLength: 1}]
   const gameLengthData = breathSessionData
@@ -42,21 +34,6 @@ export default function Page() {
     {},
   );
 
-  useEffect(() => {
-    let isCancelled = false;
-
-    if (status === "unauthenticated" || status === "loading") return;
-
-    dbGetSessionData().then((data) => {
-      if (isCancelled) return;
-      setBreathSessionData(data);
-    });
-
-    return () => {
-      isCancelled = true;
-    };
-  }, []);
-
   return (
     <section
       className="h-screen mx-auto w-full
@@ -65,15 +42,15 @@ export default function Page() {
     >
       <button onClick={handleBack} className="my-2 btn btn-sm btn-link">
         <NavArrowBackIcon
-          className="inline-block fill-info"
+          className="inline-block fill-sky-300"
           width={32}
           height={32}
         />
       </button>
       <div>
-        {status === "loading" && (
+        {isLoading && (
           <div className="pl-3 pt-6 text-center">
-            <span className="loading text-info loading-spinner loading-lg"></span>
+            <span className="loading text-sky-300 loading-spinner"></span>
           </div>
         )}
         {status === "authenticated" &&

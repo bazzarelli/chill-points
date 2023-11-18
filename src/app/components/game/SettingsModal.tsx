@@ -17,7 +17,6 @@ export default function SettingsModal() {
   function handleBreathCycleRangeChange(
     event: React.ChangeEvent<HTMLInputElement>,
   ) {
-    console.log(event.target.value);
     const cycleSpeed = parseInt(event.target.value, 10);
     setBreathCycleRange(cycleSpeed); // update the UI
     setUserCycleSpeed(cycleSpeed); // update the state
@@ -34,7 +33,10 @@ export default function SettingsModal() {
 
   return (
     <dialog id="settings_modal" className="modal text-left">
-      <form method="dialog" className="modal-box">
+      <form
+        method="dialog"
+        className="modal-box w-[90%] border-2 border-sky-600/60"
+      >
         <h3 className="font-bold text-lg">Game settings</h3>
 
         <section className="py-4">

@@ -1,10 +1,10 @@
-import { GameLengthData } from "@/app/types";
+import { BreathSessionData } from "@/app/types";
 import { useEffect, useState } from "react";
 
-export default function useFetchProfileData() {
-  const [gameLengthCount, setGameLengthCount] = useState<GameLengthData>(
-    {} as GameLengthData,
-  );
+export default function useFetchAllGamesData() {
+  const [breathSessionData, setBreathSessionData] = useState<
+    BreathSessionData[]
+  >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<null | unknown>(null);
 
@@ -12,9 +12,9 @@ export default function useFetchProfileData() {
     async function fetchProfileData() {
       setIsLoading(true);
       try {
-        const response = await fetch("/profile/api");
+        const response = await fetch("/badges/api");
         const data = await response.json();
-        setGameLengthCount(data);
+        setBreathSessionData(data);
       } catch (error) {
         setError(error);
       } finally {
@@ -25,5 +25,5 @@ export default function useFetchProfileData() {
     fetchProfileData();
   }, []);
 
-  return { gameLengthCount, isLoading, error };
+  return { breathSessionData, isLoading, error };
 }

@@ -32,7 +32,7 @@ export default function UserProfile() {
     <>
       <button onClick={handleBack} className="my-2 btn btn-sm btn-link">
         <NavArrowBackIcon
-          className="inline-block fill-info"
+          className="inline-block fill-sky-300"
           width={32}
           height={32}
         />
@@ -62,7 +62,7 @@ export default function UserProfile() {
       )}
       {isLoading ? (
         <div className="pl-3 pt-6 text-center">
-          <span className="loading text-info loading-spinner loading-lg"></span>
+          <span className="loading text-info loading-spinner"></span>
         </div>
       ) : (
         <WeeklyGoal
