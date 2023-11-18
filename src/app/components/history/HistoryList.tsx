@@ -116,7 +116,7 @@ export default function HistoryList() {
         )}
       </div>
       {gameHistory && gameHistory.length === 20 && (
-        <div className="pt-2 text-center">
+        <div className="py-2 text-center">
           <div className="join">
             <button
               onClick={() => setCurrentPage(currentPage - 1)}

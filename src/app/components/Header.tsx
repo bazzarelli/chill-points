@@ -37,7 +37,8 @@ export default async function Header() {
           </label>
           <ul
             tabIndex={0}
-            className="dropdown-content menu rounded-md menu-sm z-20 mt-4 w-32 p-2 shadow-2xl bg-slate-600 text-slate-300"
+            className="dropdown-content menu menu-md rounded-md z-20 mt-4 w-40 
+              p-2 shadow-2xl text-slate-200 bg-neutral border-2 border-sky-600/60"
           >
             {session ? (
               <>
