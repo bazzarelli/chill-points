@@ -13,12 +13,6 @@ export const metadata = {
         width: 800,
         height: 600,
       },
-      {
-        url: "https://chillpoints.app/og.png",
-        width: 1800,
-        height: 1600,
-        alt: "My custom alt",
-      },
     ],
     locale: "en_US",
     type: "website",
