@@ -10,9 +10,9 @@ import { Link } from "nextjs13-progress";
 
 export default function Page() {
   const NUM_BADGE_TYPES = 5;
-  const { data: session, status } = useSession();
   const router = useRouter();
   const handleBack = () => router.back();
+  const { data: session, status } = useSession();
   const { breathSessionData, isLoading, error } = useFetchAllGamesData();
 
   // return array of gameLength objs [{gameLength: 2},{gameLength: 1}]
