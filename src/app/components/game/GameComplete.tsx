@@ -4,18 +4,18 @@ import BreathSessionGraph from "@/app/components/history/BreathSessionGraph";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import calculateInhaleTimeDiff from "@/app/utils/calculateInhaleTimeDiff";
-// import { useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function GameCompleteModal() {
-  // const { data: session, status } = useSession();
   const { cycleCount, userGameLength, gameName, inhaleTimes } =
     useBreathSessionStore();
+    const { data: session, status } = useSession();
 
   return (
     <>
       {cycleCount && (
-        <div className="relative bg-gradient-to-b from-slate-700 via-sky-600 via-40% to-slate-700 p-6 w-full text-slate-300 text-left">
+        <div className="relative bg-gradient-to-b p-4 w-full text-slate-300 text-left">
           <h2 className="text-lg">{`${gameName} ${msg.exercise}`}</h2>
           <p>
             {userGameLength} {msg.badge_earned}
@@ -23,27 +23,30 @@ export default function GameCompleteModal() {
           <p>
             {cycleCount} {msg.breath_cycles_completed}
           </p>
-          {inhaleTimes ? (
+          {status === "authenticated" && inhaleTimes ? (
             <div className="relative -left-6">
               <BreathSessionGraph data={calculateInhaleTimeDiff(inhaleTimes)} />
             </div>
           ) : (
-            <div>
-              <progress className="progress progress-info w-56"></progress>
-            </div>
-          )}
-          <div className="flex justify-between">
-            <button className="border-orange-400/80 border-2 px-2 py-1 my-5 rounded-lg text-sm text-slate-800 bg-fuchsia-200/80">
-              <Link href="/survey">Feedback</Link>
+            <p className="mt-2">
+            <p>Track your progress with an account.</p>
+            <ul className="list-disc ml-6 mt-2 text-sm">
+              <li>Set Weekly Goals</li>
+              <li>Collect Chill Point Badges</li>
+              <li>View History</li>
+            </ul>
+            <button className="border-sky-500 border-2 px-2 py-1 mt-5 rounded-lg text-sm text-slate-800 bg-sky-200/80">
+              <Link href="/profile">Create Account</Link>
             </button>
-            {/* {status === "authenticated" && (
-              <button className="border-slate-800/70 border-2 px-2 py-1 my-5 rounded-lg text-sm text-slate-800 bg-sky-200/80">
-                <Link href="/history">{msg.view_history}</Link>
-              </button>
-            )} */}
-          </div>
+          </p>
+          )}
         </div>
       )}
+      <div className="pl-4">
+        <button className="border-orange-400/80 border-2 px-2 py-1 my-5 rounded-lg text-sm text-slate-800 bg-fuchsia-200/80">
+          <Link href="/survey">Provide Feedback</Link>
+        </button>
+      </div>
     </>
   );
 }
