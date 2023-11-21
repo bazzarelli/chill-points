@@ -7,6 +7,21 @@ import { Next13NProgress } from "nextjs13-progress";
 export const metadata = {
   title: "Chill Points: home",
   description: "Breath to optimize your health.",
+  openGraph: {
+    title: "Chill Points",
+    description: "Play the game and learn breath control.",
+    url: "https://chillpoints.app/game",
+    siteName: "Chill Points",
+    images: [
+      {
+        url: "https://chillpoints.app/og.png",
+        width: 800,
+        height: 600,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 type Props = {
@@ -20,8 +35,8 @@ export default function RootLayout({ children }: Props) {
       <body className={inter.className}>
         <AuthProvider>
           <main
-            className="flex min-h-screen flex-col 
-            bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] 
+            className="flex min-h-screen flex-col
+            bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))]
             from-sky-600 to-slate-700/20 max-w-lg mx-auto"
           >
             <GoogleAnalytics />
