@@ -15,7 +15,7 @@ export default async function Header() {
         <span className="block">&nbsp;</span>
       </div>
       <div className="basis-1/2">
-        <Link href="/">
+        <Link href="/game">
           <LogoType fill="rgb(7 89 133 / 0.8)" className="mx-auto" />
         </Link>
       </div>
@@ -37,7 +37,7 @@ export default async function Header() {
           </label>
           <ul
             tabIndex={0}
-            className="dropdown-content menu menu-md rounded-md z-20 mt-4 w-40 
+            className="dropdown-content menu menu-md rounded-md z-20 mt-4 w-40
               p-2 shadow-2xl text-slate-200 bg-neutral border-2 border-sky-600/60"
           >
             {session ? (
