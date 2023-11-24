@@ -17,7 +17,7 @@ type UserProps = {
 export default function UserCard({ user }: UserProps) {
   const userImage = user?.image ? (
     <Image
-      className="border-4 border-black dark:border-slate-500 rounded-full"
+      className="border-2 border-black dark:border-slate-800 rounded-full"
       src={user?.image}
       width={150}
       height={150}

@@ -21,7 +21,11 @@ export default async function Header() {
       </div>
       <div className="basis-1/4 text-right">
         <div className="dropdown-end dropdown">
-          <label tabIndex={0} className="btn-ghost btn-circle avatar btn">
+          <label
+            tabIndex={0}
+            className="btn-circle avatar btn
+              border-2 border-black dark:border-slate-800"
+          >
             <div className="w-10 rounded-full">
               {userImage ? (
                 <Image

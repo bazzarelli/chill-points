@@ -8,6 +8,7 @@ import GameComplete from "@/app/components/game/GameComplete";
 import SettingsModal from "@/app/components/game/SettingsModal";
 import ReplayIcon from "@/app/components/svg/ReplayIcon";
 import SettingsIcon from "@/app/components/svg/SettingsIcon";
+import ShareIcon from "@/app/components/svg/ShareIcon";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import BOX_ANIM, { BoxAnim } from "@/app/utils/boxAnimation";
@@ -19,6 +20,7 @@ import * as ga from "@/lib/gtag";
 import { useAnimate } from "framer-motion";
 import Head from "next/head";
 import { useCallback, useEffect, useRef, useState } from "react";
+import useWebShare from "react-use-web-share";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
 import useSound from "use-sound";
 
@@ -35,6 +37,13 @@ export default function Page() {
     ORANGE: "bg-orange-500",
   };
 
+  const gamePageShareInfo = {
+    title: "Chill Points",
+    text: "Play the game and learn breath control.",
+    url: "https://chillpoints.app/game",
+  };
+
+  const { isSupported, loading, share } = useWebShare();
   const [boxscope, animate] = useAnimate();
   const [banner, setBanner] = useState({
     bannerText: msg.welcome,
@@ -289,19 +298,35 @@ export default function Page() {
       >
         <div className="mx-auto">
           <div className="flex">
-            <button
-              aria-label="Reset game"
-              className="w-1/2 text-left pt-2"
-              onClick={() => {
-                handleAction("reset");
-              }}
-            >
-              <ReplayIcon
-                className="ml-4 mt-3 inline-block fill-sky-300/80"
-                width={28}
-                height={28}
-              />
-            </button>
+            {!loading && isSupported ? (
+              <button
+                aria-label="Social Share"
+                className="w-1/2 text-left pt-2"
+                onClick={() => {
+                  share(gamePageShareInfo);
+                }}
+              >
+                <ShareIcon
+                  className="ml-4 mt-3 inline-block fill-sky-300/80"
+                  width={28}
+                  height={28}
+                />
+              </button>
+            ) : (
+              <button
+                aria-label="Reset game"
+                className="w-1/2 text-left pt-2"
+                onClick={() => {
+                  handleAction("reset");
+                }}
+              >
+                <ReplayIcon
+                  className="ml-4 mt-3 inline-block fill-sky-300/80"
+                  width={28}
+                  height={28}
+                />
+              </button>
+            )}
             <button
               aria-label="Game settings"
               data-testid="settingsButton"
