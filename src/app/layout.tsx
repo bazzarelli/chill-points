@@ -43,7 +43,7 @@ export default function RootLayout({ children }: Props) {
             {children}
           </main>
           <Next13NProgress
-            color="#2563eb"
+            color="#f0abfc"
             height={3}
             startPosition={0.3}
             stopDelayMs={200}
