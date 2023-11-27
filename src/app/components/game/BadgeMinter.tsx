@@ -42,7 +42,7 @@ export default function BadgeMinter({
   const badgeAward = ({ remainingTime }: RenderTimeProps) => {
     if (remainingTime === 0) {
       return (
-        <Link href={`${status === "authenticated" ? "/badges" : "#"}`}>
+        <Link href={`${status === "authenticated" ? "/badges" : "/game"}`}>
           <div className="w-20 h-20 bg-gradient-radial from-yellow-200 from-40% via-red-500 via-50% to-amber-900 to-95% rounded-full flex items-center justify-center">
             {isWorthy ? <Badge time={userGameLength} /> : <Badge time={0} />}
           </div>

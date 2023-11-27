@@ -32,21 +32,21 @@ export default function GameCompleteModal() {
               <p>Track your progress with an account.</p>
               <ul className="list-disc ml-6 mt-2 text-sm">
                 <li>Set Weekly Goals</li>
-                <li>Collect Badges</li>
+                <li>Collect Chill Point Badges</li>
                 <li>View History</li>
               </ul>
-              <button className="border-sky-500 border-2 px-2 py-1 mt-5 rounded-lg text-sm text-slate-800 bg-sky-200/80">
+              <button className="btn btn-primary mt-5">
                 <Link href="/profile">Create Account</Link>
               </button>
             </p>
           )}
         </div>
       )}
-      <div className="pl-4">
+      {/* <div className="pl-4">
         <button className="border-orange-400/80 border-2 px-2 py-1 my-5 rounded-lg text-sm text-slate-800 bg-fuchsia-200/80">
           <Link href="/survey">Feedback</Link>
         </button>
-      </div>
+      </div> */}
     </>
   );
 }
