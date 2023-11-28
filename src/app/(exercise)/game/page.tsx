@@ -378,7 +378,7 @@ export default function Page() {
           {...bind()}
           aria-label="Finger print breath button"
           className="finger-print relative mt-5 mx-auto h-48 w-64
-          bg-[url(/images/thumb-print-blue.webp)]
+          bg-[url(/images/thumb-print-dk-blue.svg)]
           bg-no-repeat bg-center"
           id="frog-box"
         >
