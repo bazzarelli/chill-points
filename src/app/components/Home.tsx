@@ -13,12 +13,7 @@ export default function Home() {
 
         <Link href="/game">
           <div className="text-right">
-            <button
-              className="btn btn-sm bg-sky-300 hover:bg-sky-400 
-              active:bg-sky-300/70 text-slate-700 drop-shadow-md"
-            >
-              {msg.start}
-            </button>
+            <button className="btn btn-sm btn-primary">{msg.start}</button>
           </div>
         </Link>
 

@@ -1,18 +1,17 @@
 "use client";
 
 import RarrowIcon from "@/app/components/svg/RarrowIcon";
+import useFetchHistoryData from "@/app/hooks/useFetchHistoryData";
 import { msg } from "@/app/i18n/frog-msg";
 import { BreathSessionData } from "@/app/types";
 import { DateTime } from "luxon";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function HistoryList() {
-  const [gameHistory, setGameHistory] = useState<BreathSessionData[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const take = 20;
+  const [take, setTake] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const skip = (currentPage - 1) * take;
   // Check if visitor is logged in
@@ -23,22 +22,7 @@ export default function HistoryList() {
     },
   });
 
-  useEffect(() => {
-    async function fetchHistoryData() {
-      setIsLoading(true);
-      try {
-        const response = await fetch(`/history/api?skip=${skip}&take=${take}`);
-        const data = await response.json();
-        setGameHistory(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchHistoryData();
-  }, [skip]);
+  const { gameHistory, isLoading, error } = useFetchHistoryData({ skip, take });
 
   function calculateBreathRate(session: BreathSessionData) {
     const { gameLength, cycleCount } = session;
@@ -115,7 +99,7 @@ export default function HistoryList() {
           </>
         )}
       </div>
-      {gameHistory && gameHistory.length === 20 && (
+      {gameHistory && gameHistory.length === take ? (
         <div className="py-2 text-center">
           <div className="join">
             <button
@@ -136,7 +120,22 @@ export default function HistoryList() {
             </button>
           </div>
         </div>
-      )}
+      ) : gameHistory && gameHistory.length < take ? (
+        <div className="py-2 text-center">
+          <div className="join">
+            <button
+              onClick={() => setCurrentPage(currentPage - 1)}
+              className="join-item btn btn-outline btn-sm"
+            >
+              ←
+            </button>
+            <button className="join-item btn btn-outline btn-sm lowercase">
+              page {currentPage}
+            </button>
+            <button className="join-item btn btn-disabled btn-sm">→</button>
+          </div>
+        </div>
+      ) : null}
     </>
   );
 }
