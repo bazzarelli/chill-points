@@ -26,7 +26,7 @@ export default function useFetchHistoryData({ skip, take }: PaginationParams) {
     }
 
     fetchHistoryData();
-  }, []);
+  }, [skip, take]);
 
   return { gameHistory, isLoading, error };
 }

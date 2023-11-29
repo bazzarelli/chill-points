@@ -35,9 +35,9 @@ export default function GameCompleteModal() {
                 <li>Collect Chill Point Badges</li>
                 <li>View History</li>
               </ul>
-              <button className="btn btn-primary mt-5">
-                <Link href="/profile">Create Account</Link>
-              </button>
+              <Link href="/profile">
+                <button className="btn btn-primary mt-5">Create Account</button>
+              </Link>
             </p>
           )}
         </div>
