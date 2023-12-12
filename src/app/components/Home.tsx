@@ -13,7 +13,7 @@ export default function Home() {
 
         <Link href="/game">
           <div className="text-right">
-            <button className="btn btn-sm btn-primary">{msg.start}</button>
+            <button className="btn btn-primary">{msg.start}</button>
           </div>
         </Link>
 
