@@ -33,10 +33,12 @@ export default function GameCompleteModal() {
               <ul className="list-disc ml-6 mt-2 text-sm">
                 <li>Set Weekly Goals</li>
                 <li>Collect Chill Point Badges</li>
-                <li>View History</li>
+                <li>View History with visual breath charts</li>
               </ul>
               <Link href="/profile">
-                <button className="btn btn-primary mt-5">Create Account</button>
+                <button className="btn btn-primary mt-5 w-full">
+                  Create Account
+                </button>
               </Link>
             </p>
           )}
