@@ -25,6 +25,7 @@ export async function POST(req: Request) {
       return user.id!;
     });
 
+    //! This is a bug
   const gamePreferences = await prisma.userGamePreference.upsert({
     where: { id: 1 },
     create: {
