@@ -30,6 +30,7 @@
     "react-countdown-circle-timer": "^3.0.2",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.47.0",
+    "react-responsive": "^10.0.0",
     "react-use-measure": "^2.1.1",
     "react-use-web-share": "^1.0.2",
     "recharts": "^2.6.2",

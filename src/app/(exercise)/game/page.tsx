@@ -152,6 +152,7 @@ export default function Page() {
     onContextMenuListener();
     handleAction("reset");
     const clockEl = clockRef.current;
+
     if (clockEl) {
       const clockRect = clockEl.getBoundingClientRect();
       setClockCoords({
@@ -288,14 +289,11 @@ export default function Page() {
   });
 
   return (
-    <section className="flex flex-wrap text-center bg-slate-800">
+    <section className="text-center">
       <Head>
         <title>Chill Points: game</title>
       </Head>
-      <div
-        className="w-full touch-none select-none bg-gradient-to-b 
-        from-slate-700 via-sky-600 via-80% to-slate-700/20 relative z-10"
-      >
+      <div className="w-full touch-none select-none relative z-10">
         <div className="mx-auto">
           <div className="flex">
             {!loading && isSupported ? (
@@ -363,7 +361,7 @@ export default function Page() {
               <button
                 aria-label="Reset game"
                 onClick={() => handleAction("reset")}
-                className="text-md border-slate-100/30 border-2 px-3 py-1 rounded-lg 
+                className="text-md border-slate-100/30 border-2 px-3 py-1 rounded-lg
                 text-sky-300"
               >
                 {msg.restart}
