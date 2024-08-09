@@ -23,7 +23,11 @@ export default function GameCompleteModal() {
           <p>
             {cycleCount} {msg.breath_cycles_completed}
           </p>
-          {status === "authenticated" && inhaleTimes ? (
+          <div className="relative -left-6">
+            <BreathSessionGraph data={calculateInhaleTimeDiff(inhaleTimes)} />
+          </div>
+
+          {/* {status === "authenticated" && inhaleTimes ? (
             <div className="relative -left-6">
               <BreathSessionGraph data={calculateInhaleTimeDiff(inhaleTimes)} />
             </div>
@@ -41,14 +45,14 @@ export default function GameCompleteModal() {
                 </button>
               </Link>
             </p>
-          )}
+          )} */}
         </div>
       )}
-      {/* <div className="pl-4">
+      <div className="pl-4">
         <button className="border-orange-400/80 border-2 px-2 py-1 my-5 rounded-lg text-sm text-slate-800 bg-fuchsia-200/80">
           <Link href="/survey">Feedback</Link>
         </button>
-      </div> */}
+      </div>
     </>
   );
 }
