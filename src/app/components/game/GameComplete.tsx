@@ -4,13 +4,13 @@ import BreathSessionGraph from "@/app/components/history/BreathSessionGraph";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
 import calculateInhaleTimeDiff from "@/app/utils/calculateInhaleTimeDiff";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function GameCompleteModal() {
   const { cycleCount, userGameLength, gameName, inhaleTimes } =
     useBreathSessionStore();
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
 
   return (
     <>

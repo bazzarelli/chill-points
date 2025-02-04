@@ -4,11 +4,38 @@ import Badge from "@/app/components/game/Badge";
 import { msg } from "@/app/i18n/frog-msg";
 import Image from "next/image";
 import { Link } from "nextjs13-progress";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 export default function Home() {
+  const [totalTime, setTotalTime] = useState(0);
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const isTabletOrAbove = useMediaQuery({ minWidth: 769 });
+
+  useEffect(() => {
+    const fetchTotalTime = async () => {
+      try {
+        // Try to get from localStorage first
+        const storedTotal = localStorage.getItem("totalGameLength");
+        if (storedTotal) {
+          setTotalTime(parseInt(storedTotal));
+        }
+
+        // Fetch latest from API
+        const response = await fetch("/api/total-game-length");
+        const data = await response.json();
+
+        // Update state and localStorage
+        setTotalTime(data.totalGameLength);
+        // localStorage.setItem('totalGameLength', data.totalGameLength.toString());
+      } catch (error) {
+        console.error("Error fetching total time:", error);
+        // If API fails, we'll still have localStorage value
+      }
+    };
+
+    fetchTotalTime();
+  }, []);
 
   return (
     <>
@@ -24,7 +51,9 @@ export default function Home() {
               {msg.points_intro_1}
             </h1>
             <div className="text-center">
-              <Badge time={1} count={1} shadow={false} />
+              {/* add dynamic badge based on total points calculated by
+              summing up points from each gameLength */}
+              <Badge time={totalTime} count={totalTime} shadow={false} />
             </div>
             <h2 className="text-md text-sky-300 pt-4 text-center">
               {msg.points_intro_2}
@@ -59,7 +88,7 @@ export default function Home() {
                   {msg.points_intro_1}
                 </h1>
                 <div className="text-center">
-                  <Badge time={1} count={1} shadow={false} />
+                  <Badge time={totalTime} count={totalTime} shadow={false} />
                 </div>
                 <h2 className="text-md text-sky-300 pt-4 text-center">
                   {msg.points_intro_2}
