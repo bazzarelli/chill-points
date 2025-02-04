@@ -11,9 +11,12 @@ export default function SessionDetail() {
   const router = useRouter();
   const handleBack = () => router.back();
   const searchParams = useSearchParams();
-  const data: string | null = searchParams.get("data");
+  const data = searchParams ? searchParams.get("data") : null;
   let parsedData;
-  if (data) parsedData = JSON.parse(data);
+  if (!data) {
+    return <div>No session data found</div>;
+  }
+  parsedData = JSON.parse(data);
 
   return (
     <main className="h-screen mx-auto w-full">
