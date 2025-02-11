@@ -40,11 +40,16 @@ export default function Home() {
   return (
     <>
       {isMobile && (
+        // <div
+        //   className="text-slate-400 border-sky-300
+        //       border-t-[10px] min-h-screen
+        //       bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))]
+        //     from-sky-600 to-slate-700/20"
+        // >
         <div
           className="text-slate-400 border-sky-300
               border-t-[10px] min-h-screen
-              bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))]
-            from-sky-600 to-slate-700/20"
+              bg-[#004e7d]"
         >
           <div>
             <h1 className="text-2xl text-sky-300 py-4 md:pb-4 md:pt-0 text-center">
@@ -70,19 +75,21 @@ export default function Home() {
               poster="/images/buddha-belly-frog-sm.webp"
               autoPlay
               loop
-              src="/videos/combined_breathing.mp4"
               playsInline
               muted
-              className="w-full mt-8"
+              className="w-full"
             >
-              <source src="combined_breathing.webm" type="video/webm" />
               <source
-                src="combined_breathing_compressed.mp4"
+                src="/videos/combined-breath-optimized.webm"
+                type="video/webm"
+              />
+              <source
+                src="/videos/combined-breath-optimized.mp4"
                 type="video/mp4"
               />
             </video>
             <Link href="/game">
-              <div className="text-center mt-10 mx-6">
+              <div className="text-center mt-5 mx-6">
                 <button className="btn btn-primary w-full">{msg.start}</button>
               </div>
             </Link>
@@ -98,7 +105,7 @@ export default function Home() {
               className="artboard artboard-demo phone-2 from-sky-600 to-slate-700/20
                     bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))]"
             > */}
-            <div className="artboard artboard-demo phone-2 bg-sky-900">
+            <div className="artboard artboard-demo phone-2 bg-[#004e7d]">
               <div>
                 <h1 className="text-2xl text-sky-300 py-4 md:pb-4 md:pt-0 text-center">
                   {msg.points_intro_2}
@@ -121,14 +128,17 @@ export default function Home() {
                   poster="/images/buddha-belly-frog-sm.webp"
                   autoPlay
                   loop
-                  src="/videos/combined_breathing.mp4"
+                  // src="/videos/combined_breathing.mp4"
                   playsInline
                   muted
                   className="w-full mt-8"
                 >
-                  <source src="combined_breathing.webm" type="video/webm" />
                   <source
-                    src="combined_breathing_compressed.mp4"
+                    src="/videos/combined-breath-optimized.webm"
+                    type="video/webm"
+                  />
+                  <source
+                    src="/videos/combined-breath-optimized.mp4"
                     type="video/mp4"
                   />
                 </video>
