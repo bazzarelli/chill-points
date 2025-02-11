@@ -1,6 +1,6 @@
 export const msg = {
   points_intro_1: "Control Your Breath",
-  points_intro_2: "earn chill points",
+  points_intro_2: "Earn Chill Points",
   intro_hook: "Practice equal breathing with a brief and relaxing game.",
   welcome: "Press & hold to begin",
   inhale: "Hold finger down & inhale",

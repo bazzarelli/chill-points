@@ -46,26 +46,41 @@ export default function Home() {
               bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))]
             from-sky-600 to-slate-700/20"
         >
-          <div className="px-4">
+          <div>
             <h1 className="text-2xl text-sky-300 py-4 md:pb-4 md:pt-0 text-center">
-              {msg.points_intro_1}
+              {msg.points_intro_2}
             </h1>
             <div className="text-center">
               {/* add dynamic badge based on total points calculated by
               summing up points from each gameLength */}
-              <Badge time={totalTime} count={totalTime} shadow={false} />
+              <Badge time={0} count={totalTime} shadow={false} />
             </div>
-            <h2 className="text-md text-sky-300 pt-4 text-center">
+            {/* <h2 className="text-md text-sky-300 pt-4 text-center">
               {msg.points_intro_2}
-            </h2>
-            <Image
+            </h2> */}
+            {/* <Image
               alt="The Chill Frog"
               width={400}
               height={361}
               src="/images/buddha-belly-frog-sm.webp"
               priority
               className="mt-8 mx-auto"
-            />
+            /> */}
+            <video
+              poster="/images/buddha-belly-frog-sm.webp"
+              autoPlay
+              loop
+              src="/videos/combined_breathing.mp4"
+              playsInline
+              muted
+              className="w-full mt-8"
+            >
+              <source src="combined_breathing.webm" type="video/webm" />
+              <source
+                src="combined_breathing_compressed.mp4"
+                type="video/mp4"
+              />
+            </video>
             <Link href="/game">
               <div className="text-center mt-10 mx-6">
                 <button className="btn btn-primary w-full">{msg.start}</button>
@@ -79,28 +94,44 @@ export default function Home() {
         <div className="mockup-phone mt-5">
           <div className="camera"></div>
           <div className="display">
-            <div
+            {/* <div
               className="artboard artboard-demo phone-2 from-sky-600 to-slate-700/20
                     bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))]"
-            >
-              <div className="px-4">
+            > */}
+            <div className="artboard artboard-demo phone-2 bg-sky-900">
+              <div>
                 <h1 className="text-2xl text-sky-300 py-4 md:pb-4 md:pt-0 text-center">
-                  {msg.points_intro_1}
+                  {msg.points_intro_2}
                 </h1>
                 <div className="text-center">
-                  <Badge time={totalTime} count={totalTime} shadow={false} />
+                  <Badge time={0} count={totalTime} shadow={false} />
                 </div>
-                <h2 className="text-md text-sky-300 pt-4 text-center">
+                {/* <h2 className="text-md text-sky-300 pt-4 text-center">
                   {msg.points_intro_2}
-                </h2>
-                <Image
+                </h2> */}
+                {/* <Image
                   alt="The Chill Frog"
                   width={400}
                   height={361}
                   src="/images/buddha-belly-frog-sm.webp"
                   priority
                   className="mt-8 mx-auto"
-                />
+                />{" "} */}
+                <video
+                  poster="/images/buddha-belly-frog-sm.webp"
+                  autoPlay
+                  loop
+                  src="/videos/combined_breathing.mp4"
+                  playsInline
+                  muted
+                  className="w-full mt-8"
+                >
+                  <source src="combined_breathing.webm" type="video/webm" />
+                  <source
+                    src="combined_breathing_compressed.mp4"
+                    type="video/mp4"
+                  />
+                </video>
                 <Link href="/game">
                   <div className="text-center mt-10 mx-6">
                     <button className="btn btn-primary w-full">

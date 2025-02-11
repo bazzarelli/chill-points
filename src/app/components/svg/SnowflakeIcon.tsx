@@ -1,5 +1,3 @@
-import exp from "constants";
-
 type SvgProps = {
   [key: string]: any;
 };
