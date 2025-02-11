@@ -49,7 +49,7 @@ export default function Home() {
         <div
           className="text-slate-400 border-sky-300
               border-t-[10px] min-h-screen
-              bg-[#004e7d]"
+              bg-[#0072b7]"
         >
           <div>
             <h1 className="text-2xl text-sky-300 py-4 md:pb-4 md:pt-0 text-center">
@@ -77,7 +77,7 @@ export default function Home() {
               loop
               playsInline
               muted
-              className="w-full"
+              className="w-full my-10"
             >
               <source
                 src="/videos/combined-breath-optimized.webm"
