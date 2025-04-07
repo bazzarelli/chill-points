@@ -1,9 +1,9 @@
 "use client";
 
-import BreathSessionGraph from "@/app/components/history/BreathSessionGraph";
+// import BreathSessionGraph from "@/app/components/history/BreathSessionGraph";
 import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { msg } from "@/app/i18n/frog-msg";
-import calculateInhaleTimeDiff from "@/app/utils/calculateInhaleTimeDiff";
+// import calculateInhaleTimeDiff from "@/app/utils/calculateInhaleTimeDiff";
 // import { useSession } from "next-auth/react";
 import Link from "next/link";
 
@@ -23,9 +23,6 @@ export default function GameCompleteModal() {
           <p>
             {cycleCount} {msg.breath_cycles_completed}
           </p>
-          <div className="relative -left-6">
-            <BreathSessionGraph data={calculateInhaleTimeDiff(inhaleTimes)} />
-          </div>
 
           {/* {status === "authenticated" && inhaleTimes ? (
             <div className="relative -left-6">
@@ -48,11 +45,11 @@ export default function GameCompleteModal() {
           )} */}
         </div>
       )}
-      <div className="pl-4">
+      {/* <div className="pl-4">
         <button className="border-orange-400/80 border-2 px-2 py-1 my-5 rounded-lg text-sm text-slate-800 bg-fuchsia-200/80">
           <Link href="/survey">Feedback</Link>
         </button>
-      </div>
+      </div> */}
     </>
   );
 }

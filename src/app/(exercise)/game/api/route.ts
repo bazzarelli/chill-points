@@ -2,6 +2,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 type User = {
   id: string;
@@ -14,6 +15,9 @@ type User = {
 };
 
 export async function POST(req: Request) {
+  // Make sure to await cookies() before using it
+  const cookieStore = cookies();
+  
   const anonUserId = "anonymous";
   const anonUserEmail = "anonymous@example.com";
   const session = await getServerSession(authOptions);
@@ -45,6 +49,9 @@ export async function POST(req: Request) {
 
 // GET FULL GAME SESSION HISTORY
 export async function GET() {
+  // Make sure to await cookies() before using it
+  const cookieStore = cookies();
+  
   const session = await getServerSession(authOptions);
   const currentUserEmail = session?.user?.email as string;
   const userId = await prisma.user
@@ -69,6 +76,9 @@ export async function GET() {
 }
 
 export async function DELETE(req: Request) {
+  // Make sure to await cookies() before using it
+  const cookieStore = cookies();
+  
   const session = await getServerSession(authOptions);
   const currentUserEmail = session?.user?.email as string;
   const userId = await prisma.user

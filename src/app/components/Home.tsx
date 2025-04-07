@@ -17,9 +17,7 @@ export default function Home() {
       try {
         // Try to get from localStorage first
         const storedTotal = localStorage.getItem("totalGameLength");
-        if (storedTotal) {
-          setTotalTime(parseInt(storedTotal));
-        }
+        storedTotal ? setTotalTime(parseInt(storedTotal)) : setTotalTime(0);
 
         // Fetch latest from API
         const response = await fetch("/api/total-game-length");
