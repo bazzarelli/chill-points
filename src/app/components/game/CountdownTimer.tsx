@@ -53,7 +53,6 @@ export default function CountdownTimer({
       trailColor={"#1b2533"}
       colors={"#4eacd5"}
       onComplete={() => {
-        setInhaleTimes(Date.now());
         setIsCompleteStatus(true); // set state
         ({ shouldRepeat: false });
       }}
