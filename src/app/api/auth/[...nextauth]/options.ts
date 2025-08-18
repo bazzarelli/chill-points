@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import type { NextAuthOptions } from "next-auth";
-import EmailProvider from "next-auth/providers/email";
+// import EmailProvider from "next-auth/providers/email";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -20,39 +20,39 @@ export const authOptions: NextAuthOptions = {
           }),
         ]
       : []),
-    EmailProvider({
-      type: "email",
-      async sendVerificationRequest({ identifier: email, url }) {
-        const response = await fetch("https://api.sendgrid.com/v3/mail/send", {
-          body: JSON.stringify({
-            personalizations: [{ to: [{ email }] }],
-            from: { email: process.env.EMAIL_FROM },
-            subject: "Chill Points Game - Verify Your Email",
-            content: [
-              {
-                type: "text/plain",
-                value: `Please click here to authenticate - ${url}`,
-              },
-              {
-                type: "text/html",
-                value: `<p>Please <a href="${url}">click here</a> to authenticate.</p>
-                <p>Or copy and paste the link below into your browser:</p>
-                <p>${url}</p>
-                <p>If you have multiple browsers remember to use the same browser that has the Chill Points game page open</p>`,
-              },
-            ],
-          }),
-          headers: {
-            Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
-            "Content-Type": "application/json",
-          },
-          method: "POST",
-        });
-        if (!response.ok) {
-          const { errors } = await response.json();
-          throw new Error(JSON.stringify(errors));
-        }
-      },
-    }),
+    // EmailProvider({
+    //   type: "email",
+    //   async sendVerificationRequest({ identifier: email, url }) {
+    //     const response = await fetch("https://api.sendgrid.com/v3/mail/send", {
+    //       body: JSON.stringify({
+    //         personalizations: [{ to: [{ email }] }],
+    //         from: { email: process.env.EMAIL_FROM },
+    //         subject: "Chill Points Game - Verify Your Email",
+    //         content: [
+    //           {
+    //             type: "text/plain",
+    //             value: `Please click here to authenticate - ${url}`,
+    //           },
+    //           {
+    //             type: "text/html",
+    //             value: `<p>Please <a href="${url}">click here</a> to authenticate.</p>
+    //             <p>Or copy and paste the link below into your browser:</p>
+    //             <p>${url}</p>
+    //             <p>If you have multiple browsers remember to use the same browser that has the Chill Points game page open</p>`,
+    //           },
+    //         ],
+    //       }),
+    //       headers: {
+    //         Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
+    //         "Content-Type": "application/json",
+    //       },
+    //       method: "POST",
+    //     });
+    //     if (!response.ok) {
+    //       const { errors } = await response.json();
+    //       throw new Error(JSON.stringify(errors));
+    //     }
+    //   },
+    // }),
   ],
 };

@@ -45,9 +45,9 @@ export default async function Header() {
                 <li>
                   <Link href="/badges">Badges</Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link href="/history">History</Link>
-                </li>
+                </li> */}
                 <li>
                   <Link href="/profile">Profile</Link>
                 </li>
