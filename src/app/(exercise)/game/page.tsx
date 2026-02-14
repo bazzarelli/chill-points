@@ -121,7 +121,6 @@ export default function Page() {
           bg-no-repeat bg-center"
           id="frog-box"
           onContextMenu={(event) => event.preventDefault()}
-          onSelectStart={(event) => event.preventDefault()}
           onDragStart={(event) => event.preventDefault()}
         >
           <div
