@@ -1,42 +1,68 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+const ANON_USER_EMAIL = "anonymous@example.com";
 
-type User = {
-  id: string;
-  name: string | null;
-  bio: string | null;
-  age: number | null;
-  email: string | null;
-  emailVerified: Date | null;
-  image: string | null;
-};
+function hasAuthSessionCookie(req: Request) {
+  const cookieHeader = req.headers.get("cookie") ?? "";
+  return (
+    cookieHeader.includes("next-auth.session-token=") ||
+    cookieHeader.includes("__Secure-next-auth.session-token=")
+  );
+}
+
+async function getAnonymousUserId() {
+  const anonUser = await prisma.user.upsert({
+    where: { email: ANON_USER_EMAIL },
+    update: {},
+    create: {
+      email: ANON_USER_EMAIL,
+      name: "Anonymous",
+    },
+  });
+  return anonUser.id;
+}
+
+async function resolveCurrentUserId(req: Request) {
+  let currentUserEmail = ANON_USER_EMAIL;
+
+  if (hasAuthSessionCookie(req)) {
+    try {
+      const session = await getServerSession(authOptions);
+      currentUserEmail = (session?.user?.email as string) || ANON_USER_EMAIL;
+    } catch (error) {
+      console.warn("Session lookup failed in /game/api, defaulting to anonymous.");
+      currentUserEmail = ANON_USER_EMAIL;
+    }
+  }
+
+  const existingUser = await prisma.user.findUnique({
+    where: { email: currentUserEmail },
+  });
+
+  if (existingUser?.id) {
+    return existingUser.id;
+  }
+
+  if (currentUserEmail === ANON_USER_EMAIL) {
+    return getAnonymousUserId();
+  }
+
+  const createdUser = await prisma.user.create({
+    data: { email: currentUserEmail },
+  });
+  return createdUser.id;
+}
 
 export async function POST(req: Request) {
-  // Make sure to await cookies() before using it
-  const cookieStore = await cookies();
-
-  const anonUserId = "anonymous";
-  const anonUserEmail = "anonymous@example.com";
-  const session = await getServerSession(authOptions);
-  const currentUserEmail = (session?.user?.email as string) || anonUserEmail;
   const gameSessionData = await req.json();
   const { gameName, inhaleTimes, cycleCount, gameLength } = gameSessionData;
-
-  const currentUserId = await prisma.user
-    .findUnique({ where: { email: currentUserEmail } })
-    .then((user: User | null) => {
-      if (!user) {
-        throw new Error("User not found");
-      }
-      return user.id!;
-    });
+  const currentUserId = await resolveCurrentUserId(req);
 
   const gameSession = await prisma.gameSession.create({
     data: {
-      userId: currentUserId ? currentUserId : anonUserId,
+      userId: currentUserId,
       gameName,
       inhaleTimes,
       cycleCount,
@@ -48,27 +74,20 @@ export async function POST(req: Request) {
 }
 
 // GET FULL GAME SESSION HISTORY
-export async function GET() {
-  // Make sure to await cookies() before using it
-  const cookieStore = await cookies();
-
+export async function GET(req: Request) {
+  if (!hasAuthSessionCookie(req)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   const session = await getServerSession(authOptions);
   const currentUserEmail = session?.user?.email as string;
-  const userId = await prisma.user
-    .findUnique({ where: { email: currentUserEmail } })
-    .then((user: User | null) => {
-      if (!user) {
-        throw new Error("User not found");
-      }
-      return user.id!;
-    });
+  const userId = await prisma.user.findUnique({ where: { email: currentUserEmail } });
 
-  if (!userId) {
-    return NextResponse.error();
+  if (!userId?.id) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
   const gameSessions = await prisma.gameSession.findMany({
-    where: { userId },
+    where: { userId: userId.id },
     orderBy: { createdAt: "desc" },
   });
 
@@ -76,28 +95,21 @@ export async function GET() {
 }
 
 export async function DELETE(req: Request) {
-  // Make sure to await cookies() before using it
-  const cookieStore = await cookies();
-
+  if (!hasAuthSessionCookie(req)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   const session = await getServerSession(authOptions);
   const currentUserEmail = session?.user?.email as string;
-  const userId = await prisma.user
-    .findUnique({ where: { email: currentUserEmail } })
-    .then((user: User | null) => {
-      if (!user) {
-        throw new Error("User not found");
-      }
-      return user.id!;
-    });
+  const userId = await prisma.user.findUnique({ where: { email: currentUserEmail } });
 
   // could delete individual game sessions by id
   // const { id } = await req.json();
-  if (!userId) {
-    return NextResponse.error();
+  if (!userId?.id) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
   const deletedGameSession = await prisma.gameSession.deleteMany({
-    where: { userId },
+    where: { userId: userId.id },
   });
 
   return NextResponse.json(deletedGameSession);

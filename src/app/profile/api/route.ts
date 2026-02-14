@@ -5,11 +5,23 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
+function hasAuthSessionCookie(req: Request) {
+  const cookieHeader = req.headers.get("cookie") ?? "";
+  return (
+    cookieHeader.includes("next-auth.session-token=") ||
+    cookieHeader.includes("__Secure-next-auth.session-token=")
+  );
+}
+
 // SAVE USER GAME PREFERENCES
 export async function POST(req: Request) {
+  if (!hasAuthSessionCookie(req)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
-    throw new Error("User not authenticated");
+    return NextResponse.json({ error: "User not authenticated" }, { status: 401 });
   }
   const currentUserEmail = session?.user?.email as string;
   const gamePreferencesData = await req.json();
@@ -25,21 +37,28 @@ export async function POST(req: Request) {
       return user.id!;
     });
 
-    //! This is a bug
-  const gamePreferences = await prisma.userGamePreference.upsert({
-    where: { id: 1 },
-    create: {
-      userId: currentUserId,
-      userCycleSpeed,
-      userGameLength,
-      userMinutesGoal,
-    },
-    update: {
-      userCycleSpeed,
-      userGameLength,
-      userMinutesGoal,
-    },
+  const existingPreference = await prisma.userGamePreference.findFirst({
+    where: { userId: currentUserId },
+    orderBy: { id: "asc" },
   });
+
+  const gamePreferences = existingPreference
+    ? await prisma.userGamePreference.update({
+        where: { id: existingPreference.id },
+        data: {
+          userCycleSpeed,
+          userGameLength,
+          userMinutesGoal,
+        },
+      })
+    : await prisma.userGamePreference.create({
+        data: {
+          userId: currentUserId,
+          userCycleSpeed,
+          userGameLength,
+          userMinutesGoal,
+        },
+      });
 
   return NextResponse.json(gamePreferences);
 }
@@ -47,6 +66,9 @@ export async function POST(req: Request) {
 // GET GAME SESSIONS FOR THE WEEK
 export async function GET() {
   const session = await getServerSession(authOptions);
+  if (!session?.user?.email) {
+    return NextResponse.json({ error: "User not authenticated" }, { status: 401 });
+  }
   const currentUserEmail = session?.user?.email as string;
   const userId = await prisma.user
     .findUnique({ where: { email: currentUserEmail } })
