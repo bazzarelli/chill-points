@@ -7,6 +7,19 @@ import { Next13NProgress } from "nextjs13-progress";
 export const metadata = {
   title: "Chill Points: home",
   description: "Breath to optimize your health.",
+  icons: {
+    icon: [
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Chill Points",
+  },
   openGraph: {
     title: "Chill Points",
     description: "Play the game and learn breath control.",

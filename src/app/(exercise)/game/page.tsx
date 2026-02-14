@@ -122,6 +122,8 @@ export default function Page() {
           id="frog-box"
           onContextMenu={(event) => event.preventDefault()}
           onDragStart={(event) => event.preventDefault()}
+          onTouchStart={(event) => event.preventDefault()}
+          onTouchMove={(event) => event.preventDefault()}
         >
           <div
             ref={boxscope}
