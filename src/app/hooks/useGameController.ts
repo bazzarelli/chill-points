@@ -79,6 +79,8 @@ export function useGameController() {
     useGameAnalytics();
   const gameOver = useRef(false);
   const clockRef = useRef<HTMLDivElement | null>(null);
+  const holdStartedAtRef = useRef<number | null>(null);
+  const timerCompletedAtRef = useRef<number | null>(null);
   const preferencesSchedulerRef = useRef(
     createPreferencesSaveScheduler((preferences: GamePreferences) => {
       saveUserPreferencesData(preferences);
@@ -107,9 +109,10 @@ export function useGameController() {
   } = useBreathSessionStore();
 
   const handleAction = useCallback(
-    (action: GameAction) => {
+    (action: GameAction, options?: { allowGraceRelease?: boolean }) => {
       runGameAction({
         action,
+        allowGraceRelease: options?.allowGraceRelease,
         dispatch,
         isInProgress,
         isComplete,
@@ -140,6 +143,11 @@ export function useGameController() {
         trackGameCancel,
         trackGameReset,
       });
+
+      if (action === "reset" || action === "cancel") {
+        holdStartedAtRef.current = null;
+        timerCompletedAtRef.current = null;
+      }
     },
     [
       animateCancel,
@@ -174,6 +182,7 @@ export function useGameController() {
     }
 
     gameOver.current = true;
+    timerCompletedAtRef.current = Date.now();
     setIsInProgressStatus(false);
     handleAction("finish");
     setBanner({
@@ -258,13 +267,26 @@ export function useGameController() {
   const bind = useLongPress(longPressCallback, {
     onStart: (event: LongPressReactEvents<Element>) => {
       if (isComplete) return;
+      holdStartedAtRef.current = Date.now();
       isCancelled ? handleAction("disable") : handleAction("start");
     },
     onFinish: (event) => {
-      if (isComplete) return;
-      handleAction("release");
+      const allowGraceRelease =
+        Boolean(isComplete) &&
+        holdStartedAtRef.current !== null &&
+        timerCompletedAtRef.current !== null &&
+        holdStartedAtRef.current <= timerCompletedAtRef.current;
+
+      if (isComplete && !allowGraceRelease) {
+        holdStartedAtRef.current = null;
+        return;
+      }
+
+      handleAction("release", { allowGraceRelease });
+      holdStartedAtRef.current = null;
     },
     onCancel: (event) => {
+      holdStartedAtRef.current = null;
       if (isComplete) return;
       handleAction("cancel");
     },

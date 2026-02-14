@@ -28,6 +28,7 @@ type GameAnalyticsParams = {
 
 type RunGameActionDeps = {
   action: GameAction;
+  allowGraceRelease?: boolean;
   dispatch: (event: GamePhaseEvent) => void;
   isInProgress: boolean;
   isComplete: boolean;
@@ -64,6 +65,7 @@ type RunGameActionDeps = {
 
 export function runGameAction({
   action,
+  allowGraceRelease = false,
   dispatch,
   isInProgress,
   isComplete,
@@ -118,7 +120,7 @@ export function runGameAction({
       dispatch({ type: "RELEASE" });
       setInhaleTimes(Date.now());
       playAwardSound();
-      if (!isComplete) {
+      if (!isComplete || allowGraceRelease) {
         incrementCycleCount();
         setBoxBg(BOX_BG_COLOR.FUCHSIA);
         animateShrink(userCycleSpeed - humanDelay).then(() => {

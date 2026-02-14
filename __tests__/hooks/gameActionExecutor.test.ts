@@ -91,4 +91,15 @@ describe("runGameAction", () => {
     expect(deps.dispatch).toHaveBeenCalledWith({ type: "COMPLETE" });
     expect(deps.animateFinish).toHaveBeenCalled();
   });
+
+  it("counts release when grace flag is enabled after completion", () => {
+    const deps = createDeps();
+    deps.isComplete = true;
+
+    runGameAction({ ...deps, action: "release", allowGraceRelease: true });
+
+    expect(deps.dispatch).toHaveBeenCalledWith({ type: "RELEASE" });
+    expect(deps.incrementCycleCount).toHaveBeenCalled();
+    expect(deps.animateShrink).toHaveBeenCalled();
+  });
 });

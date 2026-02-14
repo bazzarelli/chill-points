@@ -2,6 +2,12 @@ import { useBreathSessionStore } from "@/app/hooks/useBreathSessionStore";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
+function getReactionBufferSeconds(userCycleSpeed: number) {
+  if (userCycleSpeed <= 3) return 0.25;
+  if (userCycleSpeed === 4) return 0.15;
+  return 0.1;
+}
+
 function BreathCountDots() {
   const [isHydrated, setIsHydrated] = useState(false);
   const {
@@ -31,8 +37,10 @@ function BreathCountDots() {
 
   useEffect(() => {
     const gameLengthSecs = userGameLength * 60;
+    const effectiveCycleSeconds =
+      userCycleSpeed * 2 + getReactionBufferSeconds(userCycleSpeed);
     const calculatedDotCount = Math.floor(
-      gameLengthSecs / (userCycleSpeed * 2),
+      gameLengthSecs / effectiveCycleSeconds,
     );
     setDotCountTotal(calculatedDotCount);
   }, [userCycleSpeed, userGameLength]);
