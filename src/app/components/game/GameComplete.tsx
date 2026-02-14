@@ -29,25 +29,26 @@ export default function GameCompleteModal() {
               <BreathSessionGraph data={calculateInhaleTimeDiff(inhaleTimes)} />
             </div>
           ) : (
-            <p className="mt-2">
+            <div className="mt-2">
               <p>Track your progress with an account.</p>
               <ul className="list-disc ml-6 mt-2 text-sm">
                 <li>Set Weekly Goals</li>
                 <li>Collect Chill Point Badges</li>
               </ul>
-              <Link href="/profile">
-                <button className="btn btn-primary mt-5 w-full">
-                  Create Account
-                </button>
+              <Link href="/profile" className="btn btn-primary mt-5 w-full">
+                Create Account
               </Link>
-            </p>
+            </div>
           )}
         </div>
       )}
       <div className="pl-4">
-        <button className="border-orange-400/80 border-2 px-2 py-1 my-5 rounded-lg text-sm text-slate-800 bg-fuchsia-200/80">
-          <Link href="/survey">Feedback</Link>
-        </button>
+        <Link
+          href="/survey"
+          className="inline-block border-orange-400/80 border-2 px-2 py-1 my-5 rounded-lg text-sm text-slate-800 bg-fuchsia-200/80"
+        >
+          Feedback
+        </Link>
       </div>
     </>
   );

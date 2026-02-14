@@ -20,6 +20,7 @@ import { msg } from "@/app/i18n/frog-msg";
 import calculateHumanDelay from "@/app/utils/humanDelay";
 import onContextMenuListener from "@/app/utils/onContextMenuListener";
 import rotatingCongrats from "@/app/utils/rotatingCongrats";
+import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import useWebShare from "react-use-web-share";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
@@ -51,6 +52,7 @@ export const gamePageShareInfo = {
 
 export function useGameController() {
   const { isSupported, loading, share } = useWebShare();
+  const { status: authStatus } = useSession();
   const {
     boxscope,
     animateGrow,
@@ -213,6 +215,10 @@ export function useGameController() {
 
   useEffect(() => {
     setHumanDelay(calculateHumanDelay(userGameLength));
+    if (authStatus !== "authenticated") {
+      preferencesSchedulerRef.current.cancelPending();
+      return;
+    }
     const pendingPreferences: GamePreferences = {
       userMinutesGoal,
       userCycleSpeed,
@@ -224,7 +230,7 @@ export function useGameController() {
     return () => {
       preferencesSchedulerRef.current.cancelPending();
     };
-  }, [setHumanDelay, userCycleSpeed, userGameLength, userMinutesGoal]);
+  }, [authStatus, setHumanDelay, userCycleSpeed, userGameLength, userMinutesGoal]);
 
   useEffect(() => {
     onContextMenuListener();

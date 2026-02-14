@@ -1,12 +1,13 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+"use client";
+
 import LogoType from "@/app/components/svg/LogoType";
 import ProfileIcon from "@/app/components/svg/ProfileIcon";
-import { getServerSession } from "next-auth/next";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { Link } from "nextjs13-progress";
 
-export default async function Header() {
-  const session = await getServerSession(authOptions);
+export default function Header() {
+  const { data: session } = useSession();
   const userImage = session?.user?.image || "";
 
   return (
