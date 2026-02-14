@@ -38,7 +38,7 @@ export default function Page() {
       <Head>
         <title>Chill Points: game</title>
       </Head>
-      <div className="w-full touch-none select-none relative z-10">
+      <div className="w-full touch-none select-none relative z-10 game-touch-lock">
         <div className="mx-auto">
           <div className="flex">
             {!loading && isSupported ? (
@@ -120,6 +120,9 @@ export default function Page() {
           bg-[url(/images/thumb-print-dk-blue.svg)]
           bg-no-repeat bg-center"
           id="frog-box"
+          onContextMenu={(event) => event.preventDefault()}
+          onSelectStart={(event) => event.preventDefault()}
+          onDragStart={(event) => event.preventDefault()}
         >
           <div
             ref={boxscope}
